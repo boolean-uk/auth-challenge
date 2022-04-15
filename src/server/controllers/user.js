@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const serverError = 'Something went wrong';
+const serverError = 'Something went wrong!';
 const secretKey = '!vbs*dfj#bhn$ksh%vjk';
 
 const registerUser = async (req, res) => {

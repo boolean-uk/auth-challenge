@@ -2,7 +2,7 @@ import './App.css';
 import { useState } from 'react';
 
 const apiUrl = 'http://localhost:4000';
-const somethingWrongError = 'Something went wrong!';
+const serverError = 'Something went wrong!';
 const registerRoute = '/user/register';
 const loginRoute = '/user/login';
 const initialRequestBody = {
@@ -46,6 +46,7 @@ function App() {
 			.then(setIsLoginForm(!isLoginForm))
 			.catch((e) => {
 				console.log(e);
+				res.status(500).json(serverError)
 			});
 	};
 
