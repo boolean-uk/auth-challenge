@@ -4,6 +4,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const serverError = 'Something went wrong!';
 const secretKey = '!vbs*dfj#bhn$ksh%vjk';
+const noAccessError = 'Invalid username or password';
 
 const registerUser = async (req, res) => {
 	try {
@@ -20,9 +21,22 @@ const registerUser = async (req, res) => {
 	}
 };
 
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+	const typedPassword = req.body.password;
+	const matchingUser = await prisma.user.findFirst({
+		where: { username: req.body.username },
+	});
+	const matchingPassword = bcrypt.compare(typedPassword, matchingUser.password);
+	if (matchingUser && matchingPassword) {
+		const token = jwt.sign({ username: matchingUser.username }, secretKey);
+		res.status(200).json({ token });
+		return;
+	}
+	res.status(401).json({ noAccessError });
+
+};
 
 module.exports = {
 	registerUser,
-	loginUser,
+	loginUser
 };
