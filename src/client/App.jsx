@@ -39,13 +39,11 @@ function App() {
 					setNewUser(jsonResponse.registeredUser.username);
 				}
 				if (route === loginRoute) {
-					console.log('server responded: ', jsonResponse)
-					localStorage.setItem('userToken', jsonResponse.token)
+					console.log('server responded: ', jsonResponse);
+					localStorage.setItem('userToken', jsonResponse.token);
 					// setNewUser(jsonResponse.loggedUser.username);
 				}
 			})
-
-			.then(setRequestBody(initialRequestBody))
 			.then(setIsLoginForm(!isLoginForm))
 			.catch((e) => {
 				console.log(e);
