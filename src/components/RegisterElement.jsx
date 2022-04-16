@@ -1,9 +1,9 @@
-function LoginElement({ onFormSubmit, onInputChange }) {
+function RegisterElement({ onFormSubmit, onInputChange, goToLoginForm }) {
 	return (
-		<div className='login-element'>
+		<div className='register-element'>
 			<div className='form-container'>
 				<form onSubmit={onFormSubmit}>
-					<h2>Login</h2>
+					<h2>Register</h2>
 					<input
 						type='text'
 						placeholder='Enter username'
@@ -20,15 +20,17 @@ function LoginElement({ onFormSubmit, onInputChange }) {
 						onChange={onInputChange}
 						required
 					/>
-					<input type='submit' value='Login' id='submit' />
+					<input type='submit' value='Register' id='submit' />
 				</form>
 			</div>
-			{/* <div className='login-instead-container'>
-				<p className='login-instead-text'>Not registered yet?</p>
-				<p className='login-instead-text login-link'>Register</p>
-			</div> */}
+			<div className='login-instead-container'>
+				<p className='login-instead-text'>Already registered?</p>
+				<p className='login-instead-text login-link' onClick={goToLoginForm}>
+					Login
+				</p>
+			</div>
 		</div>
 	);
 }
 
-export default LoginElement;
+export default RegisterElement;
