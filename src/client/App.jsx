@@ -1,19 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
 
-const apiUrl = 'http://localhost:4000';
 
 function App () {
   const [movies, setMovies] = useState([]);
   const [regInfo, setInfo] = useState({});
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
 
   const handleRegister = async ({ username, password }) => {
     const options = {
@@ -27,8 +21,9 @@ function App () {
         setInfo(res.data)
       })
       .catch(() => { setInfo('Server Error') })
+    console.log('my fetch response', regInfo)
   };
-  console.log('my fetch response', regInfo)
+
 
   const handleLogin = async ({ username, password }) => {
     const options = {
@@ -41,10 +36,14 @@ function App () {
       .then(res => {
         localStorage.setItem('jwt', res.data)
         console.log('loged in', localStorage.getItem('jwt'))
+        fetch(`http://localhost:4000/movie/${res.userId}`)
+          .then(res => res.json())
+          .then(res => setMovies(res.data));
       })
       .catch(err => console.log(err))
   };
-  console.log('jwt', localStorage.getItem('jwt'))
+
+
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     console.log('createMovie', { title, description, runtimeMins })
@@ -61,7 +60,6 @@ function App () {
       .then(res => res.json())
       .then(res => {
         setMovies([...movies, res.data])
-        console.log(res)
       })
       .catch(err => console.log(err))
   }

@@ -16,10 +16,12 @@ const createMovie = async (req, res) => {
   const token = parts[1]
   try {
     const payload = jwt.verify(token, key)
-    console.log(payload)
+    console.log('we just verified the user!!! and this is his payload', payload)
     req.userId = payload.userId
   } catch (e) {
-    return res.status(401).json({ error: 'Invalid token provided.' })
+    res.status(401)
+    res.json({ error: 'Invalid token provided.' })
+    return
   }
 
   const createdMovie = await prisma.movie.create({
@@ -34,10 +36,8 @@ const createMovie = async (req, res) => {
   res.json({ data: createdMovie });
 };
 
-
 const getAllMovies = async (req, res) => {
-  const movies = await prisma.movie.findMany({ where: { userId: req.userId } });
-
+  const movies = await prisma.movie.findMany({ where: { userId: parseInt(req.params.id) } });
   res.json({ data: movies });
 };
 
