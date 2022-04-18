@@ -4,10 +4,12 @@ import LoginElement from '../components/LoginElement';
 import RegisterElement from '../components/RegisterElement';
 import Welcome from '../components/Welcome';
 import MovieForm from '../components/MovieForm';
+
 const apiUrl = 'http://localhost:4000';
 const serverError = 'Something went wrong!';
 const registerRoute = '/user/register';
 const loginRoute = '/user/login';
+const movieRoute = '/movie';
 const initialRequestBody = {
 	username: '',
 	password: '',
@@ -33,10 +35,10 @@ function App() {
 	};
 
 	const onInputChange = (e) => {
-		setRequestBody({ ...requestBody, [e.target.name]: e.target.value });
+		setRequestBody({ [e.target.name]: e.target.value });
 	};
 
-	const fetchRequest = (route) => {
+	const postRequest = (route) => {
 		fetch(`${apiUrl}${route}`, {
 			method: 'POST',
 			headers: {
@@ -64,8 +66,13 @@ function App() {
 	const onFormSubmit = (e) => {
 		e.preventDefault();
 		if (!isLoginForm) {
-			fetchRequest(registerRoute);
-		} else fetchRequest(loginRoute);
+			postRequest(registerRoute);
+		} else postRequest(loginRoute);
+	};
+
+	const onMovieFormSubmit = (e) => {
+		e.preventDefault();
+		console.log('Movie added!');
 	};
 
 	return (
@@ -85,7 +92,7 @@ function App() {
 				/>
 			)}
 			{isUserLoggedIn && <Welcome username={username} />}
-			{isUserLoggedIn && <MovieForm />}
+			{isUserLoggedIn && <MovieForm onMovieFormSubmit={onMovieFormSubmit} />}
 		</>
 	);
 }

@@ -1,7 +1,7 @@
-function MovieForm() {
+function MovieForm({ onMovieFormSubmit }) {
 	return (
 		<div className='movie-form-container'>
-			<form>
+			<form onSubmit={onMovieFormSubmit}>
 				<div className='movie-form-title'>
 					<h2>Add movie</h2>
 				</div>
