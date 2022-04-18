@@ -73,7 +73,7 @@ function App() {
 
 	return (
 		<>
-			<h1>🎞 Boolean's movieDB 🎞</h1>
+			<h1>🎞 Nico's movieDb 🎞</h1>
 			{isRegisterForm && (
 				<RegisterElement
 					onFormSubmit={onFormSubmit}
