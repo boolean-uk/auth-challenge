@@ -15,15 +15,30 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    const options = {
+      method: "POST",
+      headers: {  
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    }
+
+    fetch('http://localhost:4000/user/register', options)
+    .then(res => res.json())
+    .then(json =>{
+      console.log('created new user:', json)
+    })
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+
   };
-  
+
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+
   }
 
   return (
