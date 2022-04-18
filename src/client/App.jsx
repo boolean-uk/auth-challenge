@@ -65,7 +65,8 @@ function App() {
     const options = {
       method: "POST",
       headers: {
-        Authorization: "Bearer" + localStorage.getItem("jwt"),
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
       },
       body: JSON.stringify({
         title: title,
@@ -75,19 +76,20 @@ function App() {
     }
 
     fetch("http://localhost:4000/movie", options)
-      .then((res) => res.json())
+      .then((res) => { res.json()
       .then((json) => {
         if (res.ok) {
-          setMovies(json.data)
+          console.log(json.data)
         } else {
           console.log("Invalid response code:", res.status)
           console.log("Invalid response data:", json)
         }
       })
+    })
       .catch((e) => {
         console.log("Unable to contact server:", e)
       })
-  }
+  } 
 
   return (
     <div className="App">
