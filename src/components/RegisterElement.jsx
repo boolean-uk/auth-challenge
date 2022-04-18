@@ -6,7 +6,7 @@ function RegisterElement({ onFormSubmit, onInputChange, goToLoginForm }) {
 					<h2>Register</h2>
 					<input
 						type='text'
-						placeholder='Enter username'
+						placeholder='Username'
 						id='username'
 						name='username'
 						onChange={onInputChange}
@@ -14,7 +14,7 @@ function RegisterElement({ onFormSubmit, onInputChange, goToLoginForm }) {
 					/>
 					<input
 						type='password'
-						placeholder='Enter password'
+						placeholder='Password'
 						id='password'
 						name='password'
 						onChange={onInputChange}

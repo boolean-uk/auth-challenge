@@ -3,6 +3,7 @@ import { useState } from 'react';
 import LoginElement from '../components/LoginElement';
 import RegisterElement from '../components/RegisterElement';
 import Welcome from '../components/Welcome';
+import MovieForm from '../components/MovieForm';
 const apiUrl = 'http://localhost:4000';
 const serverError = 'Something went wrong!';
 const registerRoute = '/user/register';
@@ -18,14 +19,11 @@ function App() {
 	const [username, setUsername] = useState('');
 	const [isLoginForm, setIsLoginForm] = useState(false);
 	const [isRegisterForm, setIsRegisterForm] = useState(true);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+	const [moviesList, setMoviesList] = useState([]);
 
 	const goToLoginForm = () => {
 		setIsLoginForm(true);
-		setIsRegisterForm(false);
-	};
-
-	const goToRegisterForm = () => {
 		setIsRegisterForm(false);
 	};
 
@@ -48,16 +46,15 @@ function App() {
 		})
 			.then((res) => res.json())
 			.then((jsonResponse) => {
-				if (route === registerRoute) {
+				if (route === registerRoute && jsonResponse.ok) {
 					setUsername(jsonResponse.registeredUser.username);
 				}
-				if (route === loginRoute) {
-					console.log('server responded: ', jsonResponse);
+				if (route === loginRoute && jsonResponse.ok) {
 					localStorage.setItem('userToken', jsonResponse.token);
 				}
 			})
 			.then(() => deactivateForms())
-			.then(() => setIsLoggedIn(true))
+			.then(() => setIsUserLoggedIn(true))
 			.catch((e) => {
 				console.log(e);
 				res.status(500).json(serverError);
@@ -73,7 +70,7 @@ function App() {
 
 	return (
 		<>
-			<h1>🎞 Nico's movieDb 🎞</h1>
+			<h1>🎞 Nico's MovieDB 🎞</h1>
 			{isRegisterForm && (
 				<RegisterElement
 					onFormSubmit={onFormSubmit}
@@ -87,7 +84,8 @@ function App() {
 					onInputChange={onInputChange}
 				/>
 			)}
-			{isLoggedIn && <Welcome username={username} />}
+			{isUserLoggedIn && <Welcome username={username} />}
+			{isUserLoggedIn && <MovieForm />}
 		</>
 	);
 }

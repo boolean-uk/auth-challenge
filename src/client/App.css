@@ -6,7 +6,8 @@
 }
 
 .register-element,
-.login-element {
+.login-element,
+.movie-form-container {
   text-align: center;
 }
 
@@ -34,6 +35,7 @@ input {
   font-size: 1rem;
 }
 
+.movie-form-container,
 .form-container {
   display: grid;
   place-content: center;
@@ -45,9 +47,13 @@ input {
   padding: 2rem;
 }
 
+.movie-form-container {
+  height: 350px;
+}
+
 #submit {
   font-weight: bold;
-  width: 50%;
+  width: 60%;
   height: 2.5rem;
   margin-bottom: 0;
   background-color: orange;
