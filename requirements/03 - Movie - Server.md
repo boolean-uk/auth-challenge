@@ -6,4 +6,4 @@ Do the work for this requirement in the `createMovie` function in [src/server/co
 
 1. A movie should only be created if a valid JWT has been provided to the route. Get the token from the appropriate request header and store it in the `token` variable.
 2. Use the `jsonwebtoken` library to verify the token, using the same secret as when creating the token during login.
-3. Create the movie and store the result in the `createdMovie` variable.
+3. Create the movie and store the result in the `createdMovie` variable. 
