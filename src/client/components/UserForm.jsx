@@ -1,27 +1,51 @@
-import { useState } from "react";
+import { useState } from "react"
+import { useLocation, Link } from "react-router-dom"
 
 export default function UserForm({ handleSubmit }) {
-    const [user, setUser] = useState({ username: '', password: '' });
+  const [user, setUser] = useState({ username: "", password: "" })
+  const location = useLocation()
+  let pathName
 
-    const handleSubmitDecorator = (e) => {
-        e.preventDefault();
-        handleSubmit(user);
-    };
+  if (location.pathname === "/register") {
+    pathName = "/login"
+  }
+  if (location.pathname === "/login") {
+    pathName = "/movieList"
+  }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+  const handleSubmitDecorator = (e) => {
+    e.preventDefault()
+    handleSubmit(user)
+  }
 
-        setUser({
-            ...user,
-            [name]: value
-        });
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target
 
-    return (
-        <form onSubmit={handleSubmitDecorator}>
-            <input type="text" name="username" placeholder="Username" value={user.username} onChange={handleChange} />
-            <input type="password" name="password" placeholder="Password" value={user.password} onChange={handleChange} />
-            <button type="submit">Submit</button>
-        </form>
-    );
+    setUser({
+      ...user,
+      [name]: value,
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmitDecorator}>
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        value={user.username}
+        onChange={handleChange}
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={user.password}
+        onChange={handleChange}
+      />
+      <Link to={pathName}>
+        <button type="submit">Submit</button>
+      </Link>
+    </form>
+  )
 }
