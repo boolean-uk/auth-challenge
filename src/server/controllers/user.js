@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
 	const typedPassword = req.body.password;
-	const matchingUser = await prisma.user.findFirst({
+	const matchingUser = await prisma.user.findUnique({
 		where: { username: req.body.username },
 	});
 	const matchingPassword = await bcrypt.compare(typedPassword, matchingUser.password);

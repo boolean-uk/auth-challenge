@@ -23,10 +23,6 @@ function LoginElement({ onFormSubmit, onInputChange }) {
 					<input type='submit' value='Login' id='submit' />
 				</form>
 			</div>
-			{/* <div className='login-instead-container'>
-				<p className='login-instead-text'>Not registered yet?</p>
-				<p className='login-instead-text login-link'>Register</p>
-			</div> */}
 		</div>
 	);
 }
