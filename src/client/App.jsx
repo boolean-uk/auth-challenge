@@ -9,7 +9,14 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      }
+    }
+    fetch(`${apiUrl}/movie`, options)
       .then(res => res.json())
       .then(res => {
         console.log(res.data)
@@ -79,7 +86,7 @@ function App() {
         res.json().then(json => {
           if (res.ok) {
             console.log("movie created:", json)
-            setMovies[[...movies, json.data]]
+            setMovies([...movies, json.data])
           } else {
             console.log("Invalid response code:", res.status)
             console.log("Invalid response data:", json)
