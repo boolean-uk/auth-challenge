@@ -6,7 +6,6 @@ const jwtSecret = "mysecret";
 
 const getAllMovies = async (req, res) => {
   const movies = await prisma.movie.findMany();
-
   res.json({ data: movies });
 };
 

@@ -9,14 +9,7 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-      }
-    }
-    fetch(`${apiUrl}/movie`, options)
+    fetch(`${apiUrl}/movie`)
       .then(res => res.json())
       .then(res => {
         console.log(res.data)
