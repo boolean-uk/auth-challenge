@@ -15,10 +15,41 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      })
+    }
+    fetch(`${apiUrl}/user/register`, options)
+    .then(res => res.json())
+    .then(json =>{
+      console.log('New User:', json.username)
+    })
     
   };
 
   const handleLogin = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    };
+    fetch('${apiUrl}/user/login', options)
+    .then(res => res.json())
+    .then(json => {
+      console.log('Logged in', json);
+      localStorage.setItem('token', json.data)
+    })
     
   };
   
