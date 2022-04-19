@@ -1,7 +1,7 @@
-function MovieElement() {
+function MovieElement({ moviesList }) {
 	return (
 		<div>
-			<h1>Movie added!!</h1>
+			<h1>Movies list</h1>
 		</div>
 	);
 }

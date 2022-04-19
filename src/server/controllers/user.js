@@ -7,6 +7,7 @@ const secretKey = '!vbs*dfj#bhn$ksh%vjk';
 const noAccessError = 'Invalid username or password';
 
 const registerUser = async (req, res) => {
+	console.log(req.body)
 	try {
 		const registeredUser = await prisma.user.create({
 			data: {
@@ -26,14 +27,13 @@ const loginUser = async (req, res) => {
 	const matchingUser = await prisma.user.findFirst({
 		where: { username: req.body.username },
 	});
-	const matchingPassword = bcrypt.compare(typedPassword, matchingUser.password);
+	const matchingPassword = await bcrypt.compare(typedPassword, matchingUser.password);
 	if (matchingUser && matchingPassword) {
 		const token = jwt.sign({ username: matchingUser.username }, secretKey);
 		res.status(200).json({ token });
 		return;
 	}
-	res.status(401).json({ noAccessError });
-
+	res.status(401).json({ error: noAccessError });
 };
 
 module.exports = {

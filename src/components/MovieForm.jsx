@@ -1,4 +1,5 @@
-function MovieForm({ onMovieFormSubmit }) {
+function MovieForm({ onMovieFormSubmit, onMovieFormChange, moviesList }) {
+
 	return (
 		<div className='movie-form-container'>
 			<form onSubmit={onMovieFormSubmit}>
@@ -10,21 +11,24 @@ function MovieForm({ onMovieFormSubmit }) {
 						type='text'
 						id='movie-title'
 						placeholder='Title'
-						name='movieTitle'
+						name='title'
+						onChange={onMovieFormChange}
 						required
 					/>
 					<input
 						type='text'
 						id='movie-review'
 						placeholder='Review'
-						name='movieReview'
+						name='description'
+						onChange={onMovieFormChange}
 						required
 					/>
 					<input
 						type='number'
 						id='movie-duration'
 						placeholder='Duration'
-						name='movieDuration'
+						name='runtimeMins'
+						onChange={onMovieFormChange}
 						required
 					/>
 					<input type='submit' value='Add movie' id='submit' />

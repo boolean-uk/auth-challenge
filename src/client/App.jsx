@@ -4,9 +4,11 @@ import LoginElement from '../components/LoginElement';
 import RegisterElement from '../components/RegisterElement';
 import Welcome from '../components/Welcome';
 import MovieForm from '../components/MovieForm';
+import MovieElement from '../components/MovieElement';
 
 const apiUrl = 'http://localhost:4000';
 const serverError = 'Something went wrong!';
+const noAccessError = 'Invalid username or password';
 const registerRoute = '/user/register';
 const loginRoute = '/user/login';
 const movieRoute = '/movie';
@@ -18,6 +20,7 @@ const initialRequestBody = {
 function App() {
 	console.log('RENDERING APP');
 	const [requestBody, setRequestBody] = useState(initialRequestBody);
+	const [movieRequestBody, setMovieRequestBody] = useState({});
 	const [username, setUsername] = useState('');
 	const [isLoginForm, setIsLoginForm] = useState(false);
 	const [isRegisterForm, setIsRegisterForm] = useState(true);
@@ -25,21 +28,35 @@ function App() {
 	const [moviesList, setMoviesList] = useState([]);
 
 	const goToLoginForm = () => {
+		setIsRegisterForm(false);
 		setIsLoginForm(true);
-		setIsRegisterForm(false);
-	};
-
-	const deactivateForms = () => {
-		setIsRegisterForm(false);
-		setIsLoginForm(false);
 	};
 
 	const onInputChange = (e) => {
-		setRequestBody({ [e.target.name]: e.target.value });
+		setRequestBody({ ...requestBody, [e.target.name]: e.target.value });
 	};
 
-	const postRequest = (route) => {
-		fetch(`${apiUrl}${route}`, {
+	const onMovieFormChange = (e) => {
+		setMovieRequestBody({	...movieRequestBody, [e.target.name]: e.target.value });
+	};
+
+	const registerRequest = () => {
+		fetch(`${apiUrl}${registerRoute}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(requestBody),
+		}).then((res) => {
+			if (res.ok) {
+				alert('Registration successful!');
+				goToLoginForm();
+			} else alert('Something went wrong, please try again later');
+		});
+	};
+
+	const loginRequest = () => {
+		fetch(`${apiUrl}${loginRoute}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -48,31 +65,41 @@ function App() {
 		})
 			.then((res) => res.json())
 			.then((jsonResponse) => {
-				if (route === registerRoute && jsonResponse.ok) {
-					setUsername(jsonResponse.registeredUser.username);
-				}
-				if (route === loginRoute && jsonResponse.ok) {
+				if (jsonResponse.error === noAccessError) {
+					alert(noAccessError);
+				} else {
 					localStorage.setItem('userToken', jsonResponse.token);
+					setIsLoginForm(false);
+					setIsUserLoggedIn(true);
 				}
-			})
-			.then(() => deactivateForms())
-			.then(() => setIsUserLoggedIn(true))
-			.catch((e) => {
-				console.log(e);
-				res.status(500).json(serverError);
 			});
+	};
+
+	const addMovieRequest = () => {
+		fetch(`${apiUrl}${movieRoute}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(movieRequestBody),
+		})
+		.then((res) => res.json())
+		.then((jsonResponse) => console.log(jsonResponse))
 	};
 
 	const onFormSubmit = (e) => {
 		e.preventDefault();
-		if (!isLoginForm) {
-			postRequest(registerRoute);
-		} else postRequest(loginRoute);
+		if (isRegisterForm) {
+			registerRequest();
+		}
+		if (isLoginForm) {
+			loginRequest();
+		}
 	};
 
 	const onMovieFormSubmit = (e) => {
 		e.preventDefault();
-		console.log('Movie added!');
+		addMovieRequest()
 	};
 
 	return (
@@ -92,7 +119,13 @@ function App() {
 				/>
 			)}
 			{isUserLoggedIn && <Welcome username={username} />}
-			{isUserLoggedIn && <MovieForm onMovieFormSubmit={onMovieFormSubmit} />}
+			{isUserLoggedIn && (
+				<MovieForm
+					onMovieFormSubmit={onMovieFormSubmit}
+					onMovieFormChange={onMovieFormChange}
+				/>
+			)}
+			{isUserLoggedIn && <MovieElement moviesList={moviesList} />}
 		</>
 	);
 }

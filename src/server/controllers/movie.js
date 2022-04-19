@@ -6,7 +6,9 @@ const secretKey = '!vbs*dfj#bhn$ksh%vjk';
 const serverError = 'Something went wrong!';
 
 const getAllMovies = async (req, res) => {
-	const moviesFound = await prisma.movie.findMany();
+	// TODO: insert req for authorization to get only the movies of logged user
+	const moviesFound = await prisma.movie.findMany()
+	res.status(200).json({moviesFound})
 };
 
 const addNewMovie = async (req, res) => {
@@ -15,10 +17,10 @@ const addNewMovie = async (req, res) => {
 			data: {
 				title: req.body.title,
 				description: req.body.description,
-				runtimeMins: req.body.runtimeMins,
+				runtimeMins: parseInt(req.body.runtimeMins),
 			},
 		});
-		res.status(200).json({ createdMovie });
+		res.status(200).json({ movie: createdMovie });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json(serverError);
