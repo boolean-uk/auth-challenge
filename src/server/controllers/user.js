@@ -24,7 +24,7 @@ const login = async (req, res) => {
 
     const foundUser = await prisma.user.findFirst({
         where: {
-            username
+            username: username
         }
     })
 
@@ -38,7 +38,7 @@ const login = async (req, res) => {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const token = jwt.sign({ username }, jwtSecret)
+    const token = jwt.sign(username , jwtSecret)
 
     res.json({ data: token });
 };

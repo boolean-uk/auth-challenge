@@ -11,7 +11,10 @@ function App() {
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then(res => {
+        console.log(res.data)
+        setMovies(res.data)
+      });
   }, []);
 
   const handleRegister = async ({ username, password }) => {
@@ -19,72 +22,72 @@ function App() {
     const options = {
       method: 'POST',
       headers: {
-          'content-type': 'application/json',
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
-          username: username,
-          password: password
+        username: username,
+        password: password
       }),
-  }
+    }
 
-  fetch('http://localhost:4000/user/register', options)
+    fetch(`${apiUrl}/user/register`, options)
       .then(res => res.json())
       .then(json => console.log('Registered User:' + json.data.username))
       .catch(() => {
-          console.log('server error')
+        console.log('server error')
       })
-  };
+  }
 
   const handleLogin = async ({ username, password }) => {
-    
+
     const options = {
       method: 'POST',
       headers: {
-          'content-type': 'application/json',
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
-          username: username,
-          password: password
+        username: username,
+        password: password
       }),
-  }
+    }
 
-  fetch('http://localhost:4000/user/login', options)
+    fetch(`${apiUrl}/user/login`, options)
       .then(res => res.json())
       .then(json => {
         console.log('logged in:' + json.data)
         localStorage.setItem('jwt', json.data)
       })
   };
-  
+
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
 
     const options = {
       method: 'POST',
       headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer ' + localStorage.getItem('jwt')
+        'content-type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('jwt')
       },
       body: JSON.stringify({
-         title: title,
-         description: description,
-         runtimeMins: runtimeMins
+        title: title,
+        description: description,
+        runtimeMins: runtimeMins
       }),
-  }
+    }
 
-  fetch('http://localhost:4000/movie', options)
-  .then(res => {
-    res.json().then(json => {
-      if(res.ok) {
-        console.log("movie created:", json)
-        setMovies(json)
-      } else {
-        console.log("Invalid response code:", res.status)
-        console.log("Invalid response data:", json)
-      }
-    })
-  }).catch(e=> {
-    console.log("Unable to contact server:", e)
-  })
+    fetch(`${apiUrl}/movie`, options)
+      .then(res => {
+        res.json().then(json => {
+          if (res.ok) {
+            console.log("movie created:", json)
+            setMovies[[...movies, json.data]]
+          } else {
+            console.log("Invalid response code:", res.status)
+            console.log("Invalid response data:", json)
+          }
+        })
+      }).catch(e => {
+        console.log("Unable to contact server:", e)
+      })
   }
 
   return (

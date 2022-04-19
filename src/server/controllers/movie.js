@@ -27,7 +27,7 @@ const createMovie = async (req, res) => {
       runtimeMins: runtimeMins,
     },
   });
-  res.json({ data: createdMovie });
+  res.json({data: createdMovie});
 };
 
 module.exports = {
