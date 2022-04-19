@@ -38,12 +38,36 @@ function App() {
     })
   };
 
-  const handleLogin = async ({ username, password }) => {
-    
+  const handleLogin = async (user) => {
+    fetch(`${apiUrl}/user/login`, {
+      ...headers,
+      body: JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log(json)
+      if (json.error) {
+        window.alert(`${json.error}!`)
+        return
+      }
+      if (json.data) {
+        localStorage.setItem('token',json.data)
+        window.alert(`${json.data} token!`)
+      }
+    })
   };
   
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+  const handleCreateMovie = async (movie) => {
+    let headersWithAuth = headers
+    headersWithAuth.headers.authorization = await localStorage.getItem('token')
+    console.log(headersWithAuth)
+    await fetch(`${apiUrl}/movie`, {
+      ...headersWithAuth,
+      body: JSON.stringify(movie)
+    })
+    await fetch(`${apiUrl}/movie`)
+    .then(res => res.json())
+    .then(json => setMovies(movies => json.data))
   }
 
   return (
