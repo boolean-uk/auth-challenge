@@ -24,8 +24,6 @@ const movieRouter = require('./routers/movie');
 app.use('/movie', movieRouter);
 
 
-
-
 // Set up a default "catch all" route to use when someone visits a route
 // that we haven't built
 app.get('*', (req, res) => {
