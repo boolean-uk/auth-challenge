@@ -6,7 +6,7 @@ const {
 
 const router = express.Router();
 
-router.get('/:id', getAllMovies);
+router.get('/', getAllMovies);
 
 router.post('/', createMovie);
 

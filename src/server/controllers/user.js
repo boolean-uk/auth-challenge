@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 const key = '87764d1a-92dc-4ced-a758-9c898c31d525'
 const saltRounds = 10;
+const maxAge = 7 * 24 * 60 * 60
 
 const register = async (req, res) => {
   const { username, password } = req.body;
@@ -28,7 +29,7 @@ const login = async (req, res) => {
   if (!match) {
     return res.status(401).json({ error: 'Invalid username or password.' });
   }
-  const token = jwt.sign({ userId: foundUser.id }, key);
+  const token = jwt.sign({ userId: foundUser.id }, key, { expiresIn: maxAge });
   res.json({ data: token, userId: foundUser.id });
 };
 

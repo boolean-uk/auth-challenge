@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
@@ -7,6 +7,19 @@ import UserForm from './components/UserForm';
 function App () {
   const [movies, setMovies] = useState([]);
   const [regInfo, setInfo] = useState({});
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      }
+    }
+    fetch(`http://localhost:4000/movie`, options)
+      .then(res => res.json())
+      .then(res => setMovies(res.data));
+  }, [])
 
 
   const handleRegister = async ({ username, password }) => {
@@ -36,7 +49,16 @@ function App () {
       .then(res => {
         localStorage.setItem('jwt', res.data)
         console.log('loged in', localStorage.getItem('jwt'))
-        fetch(`http://localhost:4000/movie/${res.userId}`)
+        console.log(res)
+
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+          }
+        }
+        fetch(`http://localhost:4000/movie`, options)
           .then(res => res.json())
           .then(res => setMovies(res.data));
       })
@@ -59,9 +81,17 @@ function App () {
     fetch('http://localhost:4000/movie', options)
       .then(res => res.json())
       .then(res => {
-        setMovies([...movies, res.data])
+        if (!res.error) {
+          setMovies([...movies, res.data])
+        }
+
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log('the error message!', err.message))
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt')
+    setMovies([])
   }
 
   return (
@@ -74,7 +104,7 @@ function App () {
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={ handleCreateMovie } />
-
+      <button onClick={ handleLogout }>logout</button>
       <h1>Movie list</h1>
       <ul>
         { movies.map(movie => {
