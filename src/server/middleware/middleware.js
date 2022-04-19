@@ -8,7 +8,7 @@ const verifyToken = async (req, res, next) => {
     console.log('middleware',bearertoken)
     if (!token) {
         res.status(401)
-        res.json({ error: 'not valid' })
+        res.json({ error: 'Header token not valid' })
     }
     try {
         const payLoad = jwt.verify(token, jwtSecret)
@@ -16,7 +16,7 @@ const verifyToken = async (req, res, next) => {
         next()
     } catch (e) {
         res.status(401)
-        res.json({ error: 'not valid!!!' })
+        res.json({ error: 'Token not valid!!!' + e })
         return
     }
 
