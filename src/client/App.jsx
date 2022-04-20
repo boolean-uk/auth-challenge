@@ -7,14 +7,19 @@ const apiUrl = "http://localhost:4000";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  
+
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
+    const token = localStorage.getItem("token");
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    };
+    fetch(`${apiUrl}/movie`, options)
       .then((res) => res.json())
       .then((res) => setMovies(res.data));
   }, []);
-
-  
 
   const handleRegister = async ({ username, password }) => {
     const options = {
@@ -29,7 +34,7 @@ function App() {
     };
     fetch(`${apiUrl}/user/register`, options)
       .then((res) => res.json())
-      .then((json) => console.log("registered", json.username));
+      .then((json) => console.log(json));
   };
 
   const handleLogin = async ({ username, password }) => {
@@ -46,14 +51,14 @@ function App() {
     fetch(`${apiUrl}/user/login`, options)
       .then((res) => res.json())
       .then((json) => {
-        console.log("logged in", json);
+        setMovies(json.movies)
         localStorage.setItem("token", json.data);
       });
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     const token = localStorage.getItem("token");
-    console.log("from localStorage", token);
+
     const options = {
       method: "POST",
       headers: {
@@ -69,9 +74,10 @@ function App() {
     fetch(`${apiUrl}/movie`, options)
       .then((res) => res.json())
       .then((json) => {
-        const newMovie = json.data
-        setMovies([...movies, newMovie])
-        console.log("movie created", json)});
+        const newMovie = json.data;
+        setMovies([...movies, newMovie]);
+        console.log({movieAdded: newMovie});
+      });
   };
 
   return (

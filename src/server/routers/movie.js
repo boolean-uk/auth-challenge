@@ -5,9 +5,10 @@ const {
 } = require('../controllers/movie');
 const { verifyToken } = require('../middleware/middleware')
 const router = express.Router();
-router.get('/', getAllMovies);
 
-router.use(verifyToken)// middlesware function to check for valid token from localstorage
+
+router.use(verifyToken)// middleware function to check for valid token from localstorage.
+router.get('/', getAllMovies);
 router.post('/', createMovie);
 
 module.exports = router;
