@@ -54,6 +54,24 @@ function App() {
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({
+        title: title,
+        description, description,
+        runtimeMins, runtimeMins,
+      })
+    }
+    fetch('${apiUrl}/movie', options)
+    .then(res => res.json())
+    .then(json => {
+      setMovies(movies => json.data)
+    })
+    
     
   }
 
