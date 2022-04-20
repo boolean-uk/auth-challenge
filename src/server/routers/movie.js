@@ -1,3 +1,4 @@
+const middleware = require('/Users/danielmccarthy/auth-challenge/src/middleware/middleware.js');
 const express = require('express');
 const {
     getAllMovies,
@@ -6,7 +7,8 @@ const {
 
 const router = express.Router();
 
-router.get('/', getAllMovies);
-router.post('/', createMovie);
+
+router.get('/getMovies', middleware.checkToken, getAllMovies);
+router.post('/', middleware.checkToken, createMovie);
 
 module.exports = router;

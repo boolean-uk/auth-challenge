@@ -8,7 +8,14 @@ export default function MovieList() {
   const [movies, setMovies] = useState([])
 
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
+    const options = {
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+    },
+  }
+    fetch(`${apiUrl}/movie/getMovies`, options)
       .then((res) => res.json())
       .then((res) => setMovies(res.data))
   }, [])
@@ -43,13 +50,15 @@ export default function MovieList() {
       })
   }
 
+  console.log(movies)
+
   return (
     <>
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
 
       <h1>Movie list</h1>
-      <ul>
+       <ul>
         {movies.map((movie) => {
           return (
             <li key={movie.id}>
@@ -59,7 +68,7 @@ export default function MovieList() {
             </li>
           )
         })}
-      </ul>
-    </>
+      </ul> 
+    </> 
   )
 }

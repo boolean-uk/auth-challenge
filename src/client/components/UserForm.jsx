@@ -1,17 +1,7 @@
 import { useState } from "react"
-import { useLocation, Link } from "react-router-dom"
 
 export default function UserForm({ handleSubmit }) {
   const [user, setUser] = useState({ username: "", password: "" })
-  const location = useLocation()
-  let pathName
-
-  if (location.pathname === "/register") {
-    pathName = "/login"
-  }
-  if (location.pathname === "/login") {
-    pathName = "/movieList"
-  }
 
   const handleSubmitDecorator = (e) => {
     e.preventDefault()
@@ -26,6 +16,7 @@ export default function UserForm({ handleSubmit }) {
       [name]: value,
     })
   }
+
 
   return (
     <form onSubmit={handleSubmitDecorator}>
@@ -43,9 +34,7 @@ export default function UserForm({ handleSubmit }) {
         value={user.password}
         onChange={handleChange}
       />
-      <Link to={pathName}>
         <button type="submit">Submit</button>
-      </Link>
     </form>
   )
 }
