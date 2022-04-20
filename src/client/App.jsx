@@ -44,7 +44,7 @@ function App() {
         password,
       }),
     };
-    fetch('${apiUrl}/user/login', options)
+    fetch(`${apiUrl}/user/login`, options)
     .then(res => res.json())
     .then(json => {
       console.log('Logged in', json);
@@ -66,7 +66,7 @@ function App() {
         runtimeMins, runtimeMins,
       })
     }
-    fetch('${apiUrl}/movie', options)
+    fetch(`${apiUrl}/movie`, options)
     .then(res => res.json())
     .then(json => {
       setMovies(movies => json.data)
