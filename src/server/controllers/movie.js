@@ -5,8 +5,12 @@ const prisma = new PrismaClient();
 const jwtSecret = "mysecret";
 
 const getAllMovies = async (req, res) => {
-  const movies = await prisma.movie.findMany();
-  res.json({ data: movies });
+  const movies = await prisma.movie.findMany({
+    where: { 
+      userId: req.userId
+    }
+  });
+  res.json({ data: movies })
 };
 
 const createMovie = async (req, res) => {
@@ -24,6 +28,7 @@ const createMovie = async (req, res) => {
       title: title,
       description: description,
       runtimeMins: runtimeMins,
+      userId: req.userId
     },
   });
   res.json({data: createdMovie});

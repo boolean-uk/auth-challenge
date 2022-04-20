@@ -9,7 +9,15 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
+    const options = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+    }
+
+    fetch(`${apiUrl}/movie`, options)
       .then(res => res.json())
       .then(res => {
         console.log(res.data)
@@ -57,6 +65,17 @@ function App() {
         console.log('logged in:' + json.data)
         localStorage.setItem('jwt', json.data)
       })
+
+      const options2 = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'Bearer ' + localStorage.getItem('jwt')
+        },
+      }
+      fetch(`${apiUrl}/movie`, options2) 
+        .then(res => res.json())
+        .then(json => setMovies(json.data))
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
