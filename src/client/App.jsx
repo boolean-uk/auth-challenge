@@ -8,22 +8,92 @@ const apiUrl = 'http://localhost:4000';
 function App() {
   const [movies, setMovies] = useState([]);
 
+
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      }
+    }
+    fetch(`${apiUrl}/movie`, options)
       .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then(res => {
+        console.log(res.data)
+        setMovies(res.data)
+      });
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      }),
+    }
+    fetch(`${apiUrl}/user/register`, options)
+    .then(res => res.json())
+    .then(json => console.log('Registered user:' + json.data.username))
+    .catch(() => console.log('Failed to register user'))
   };
 
   const handleLogin = async ({ username, password }) => {
     
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    }
+    fetch(`${apiUrl}/user/login`, options)
+    .then(res => {
+      res.json().then(json => {
+        if(res.ok) {
+          console.log('Captains Log, got token: ' + json.data)
+          localStorage.setItem('jwt', json.data)
+        } else {
+          console.log("Login Failed", res.status)
+        }
+      })
+    })
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+
+    const options = {
+      method: 'POST',
+      headers : { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+      body : JSON.stringify({ 
+        title: title, 
+        description: description, 
+        runtimeMins: runtimeMins
+      })
+    }
+    fetch(`${apiUrl}/movie`, options)
+    .then(res => {
+      res.json().then(json => {
+        if (res.ok) {
+          console.log("movie created:", json)
+          setMovies([...movies, json.data])
+        } else {
+          console.log("Invalid response code: ", res.status)
+        }
+      })
+    })
+    .catch(() => console.log('Connection Error: ', + res.status))
   }
 
   return (
