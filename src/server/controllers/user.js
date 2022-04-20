@@ -42,9 +42,9 @@ const loginUser = async (req, res) => {
         return res.status(401).json({ error: errorMessage });
     }
 
-    const token = jwt.sign({ username }, secret);
+    const token = jwt.sign({ username, userId: foundUser.id }, secret);
 
-    res.json({ data: token });
+    res.json({ data: "Movie Added" });
 }
 
 

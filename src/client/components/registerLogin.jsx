@@ -1,7 +1,11 @@
 import Form from "./form";
 import Item from "./item";
+import { useNavigate } from "react-router-dom";
 
 function RegisterLogin(props) {
+
+    const navigate = useNavigate()
+
   const { formname, handleSubmit, handleItem, username, password, message } =
     props;
 
@@ -29,6 +33,9 @@ function RegisterLogin(props) {
       />
 
       {message && <p>{message}</p>}
+      <br />
+      <div>New to CinemaApp? <strong><a onClick={() => navigate("/register")}>Register here</a></strong></div>
+      <div>Already a user? <strong><a onClick={() => navigate("/login")}>Login here</a></strong></div>
     </div>
   );
 }
