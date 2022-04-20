@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoginElement from '../components/LoginElement';
 import RegisterElement from '../components/RegisterElement';
 import Welcome from '../components/Welcome';
@@ -20,12 +20,17 @@ const initialRequestBody = {
 function App() {
 	console.log('RENDERING APP');
 	const [requestBody, setRequestBody] = useState(initialRequestBody);
-	const [movieRequestBody, setMovieRequestBody] = useState({});
 	const [username, setUsername] = useState('');
 	const [isLoginForm, setIsLoginForm] = useState(false);
 	const [isRegisterForm, setIsRegisterForm] = useState(true);
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [moviesList, setMoviesList] = useState([]);
+
+	useEffect(() => {
+		fetch(`${apiUrl}${movieRoute}`)
+		.then(res => res.json())
+		.then(jsonResponse => setMoviesList(jsonResponse.moviesFound))
+  }, []);
 
 	const goToLoginForm = () => {
 		setIsRegisterForm(false);
@@ -34,10 +39,6 @@ function App() {
 
 	const onInputChange = (e) => {
 		setRequestBody({ ...requestBody, [e.target.name]: e.target.value });
-	};
-
-	const onMovieFormChange = (e) => {
-		setMovieRequestBody({	...movieRequestBody, [e.target.name]: e.target.value });
 	};
 
 	const registerRequest = () => {
@@ -75,31 +76,15 @@ function App() {
 			});
 	};
 
-	const addMovieRequest = () => {
-		fetch(`${apiUrl}${movieRoute}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(movieRequestBody),
-		})
-		.then((res) => res.json())
-		.then((jsonResponse) => console.log(jsonResponse))
-	};
-
 	const onFormSubmit = (e) => {
 		e.preventDefault();
 		if (isRegisterForm) {
 			registerRequest();
+			setRequestBody(initialRequestBody)
 		}
 		if (isLoginForm) {
-			loginRequest();
+			loginRequest()
 		}
-	};
-
-	const onMovieFormSubmit = (e) => {
-		e.preventDefault();
-		addMovieRequest()
 	};
 
 	return (
@@ -121,8 +106,9 @@ function App() {
 			{isUserLoggedIn && <Welcome username={username} />}
 			{isUserLoggedIn && (
 				<MovieForm
-					onMovieFormSubmit={onMovieFormSubmit}
-					onMovieFormChange={onMovieFormChange}
+					apiUrl={apiUrl}
+					moviesList={moviesList}
+					setMoviesList={setMoviesList}
 				/>
 			)}
 			{isUserLoggedIn && <MovieElement moviesList={moviesList} />}

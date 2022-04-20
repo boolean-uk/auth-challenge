@@ -7,7 +7,6 @@ const secretKey = '!vbs*dfj#bhn$ksh%vjk';
 const noAccessError = 'Invalid username or password';
 
 const registerUser = async (req, res) => {
-	console.log(req.body)
 	try {
 		const registeredUser = await prisma.user.create({
 			data: {

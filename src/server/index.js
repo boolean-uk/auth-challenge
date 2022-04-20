@@ -21,7 +21,7 @@ const userRouter = require('./routers/user');
 app.use('/user', userRouter);
 
 const movieRouter = require('./routers/movie');
-app.use('/movie', movieRouter);
+app.use('/movie', movieRouter.router);
 
 
 
