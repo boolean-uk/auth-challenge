@@ -44,9 +44,14 @@ function Movie() {
       })
         .then((response) => response.json())
         .then((data) => {
+        if(data.message) {
           setMoviesList([...moviesList, movie]);
           setMovieMessage(data.message);
           setMovie(blankMovie);
+        }
+        else if (data.error) {
+            setMovieMessage("All fields required")
+        }
         })
         .catch((error) => {
           console.log("Error");

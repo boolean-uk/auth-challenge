@@ -9,6 +9,12 @@ const errorMessage = 'Invalid username or password.'
  const registerUser = async (req, res) => {
     const { username, password } = req.body;
 
+    if(!username || !password) {
+        res.status(401)
+        res.json({error: "All fields required"})
+        return
+    }
+
     const hashedPassword = bcrypt.hashSync(password, 10)
 
     const createdUser = await prisma.user.create({
@@ -23,8 +29,6 @@ const errorMessage = 'Invalid username or password.'
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
-
-   
 
     const foundUser = await prisma.user.findFirst({
         where: {
@@ -44,7 +48,7 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign({ username, userId: foundUser.id }, secret);
 
-    res.json({ data: "Movie Added" });
+    res.json({ data: token });
 }
 
 

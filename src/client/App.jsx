@@ -11,6 +11,7 @@ function App() {
   const blank = { username: "", password: "" };
 
   const [register, setRegister] = useState(blank);
+  const [registerMessage, setRegisterMessage] = useState("");
 
   const [login, setLogin] = useState(blank);
   const [loginMessage, setLoginMessage] = useState("");
@@ -21,6 +22,7 @@ function App() {
     e.preventDefault();
 
     setLoginMessage("")
+    setRegisterMessage("")
 
     fetch(apiUrl + "/user/register", {
       method: "POST",
@@ -31,8 +33,13 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
+        if(data.message) {
         setRegister(blank);
         navigate("/login")
+        }
+        else if (data.error) {
+        setRegisterMessage(data.error)
+        }
       })
       .catch((error) => {
         console.log("Error");
@@ -50,6 +57,9 @@ function App() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
+    setLoginMessage("")
+    setRegisterMessage("")
 
     fetch(apiUrl + "/user/login", {
       method: "POST",
@@ -95,6 +105,7 @@ function App() {
               handleItem={handleRegisterItem}
               username={register.username}
               password={register.password}
+              message={registerMessage}
             />
           }
         />

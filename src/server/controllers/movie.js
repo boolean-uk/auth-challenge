@@ -15,6 +15,12 @@ const createMovie = async (req, res) => {
 
     const { title, description, runtimeMins } = req.body;
 
+    if(!title || !description || !runtimeMins) {
+        res.status(401)
+        res.json({error: "All fields required"})
+        return
+    }
+
     const createdMovie = await prisma.movie.create({
         data: {
             title,
