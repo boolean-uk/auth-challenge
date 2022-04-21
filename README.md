@@ -35,3 +35,6 @@ Take a little bit of time to familiarise yourself with the project structure - t
 
 ## Example solution
 ![](./assets/Auth_Challenge.PNG)
+
+
+//try and catch in catch return error
