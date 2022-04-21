@@ -69,7 +69,8 @@ function App() {
       method: 'POST',
       //Set the headers
       headers : {
-        'Authorization': 'Bearer' + localStorage.getItem('jwt')
+        'Content-Type': 'application/json', 
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
       },
       //Transform JS objects into JSON format.
       body: JSON.stringify({
@@ -81,9 +82,11 @@ function App() {
 
     const jwtResult = localStorage.getItem('jwt')
 
+    console.log(title, description, runtimeMins)
     fetch(apiUrl + '/movie', options)
       .then(res =>{
         res.json().then(json =>{
+          setMovies([...movies, json.data])
           console.log('jwt result is..', jwtResult)
           if(res.ok) {
             console.log("movie:", json)

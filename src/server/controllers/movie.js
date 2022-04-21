@@ -11,7 +11,9 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
+    console.log('Hello data:', req.body)
     const { title, description, runtimeMins } = req.body;
+    
 
     const authorization = req.headers['authorization']
     if(!authorization) {
@@ -36,9 +38,9 @@ const createMovie = async (req, res) => {
 
     const createdMovie = await prisma.movie.create({
         data: {
-            title,
-            description,
-            runtimeMins,
+            title: title,
+            description: description,
+            runtimeMins: runtimeMins,
         },
     });
 
