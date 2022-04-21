@@ -4,6 +4,7 @@ const secretKey = '!vbs*dfj#bhn$ksh%vjk';
 const verifyToken = (req, res, next) => {
 	const authorization = req.headers['authorization'];
 	if (!authorization) {
+    console.log('no authorization')
 		res.status(401).json({ error: 'invalid token' });
 		return;
 	}
@@ -13,6 +14,7 @@ const verifyToken = (req, res, next) => {
     next()
   }
   catch (err) {
+    console.error(err)
 		res.status(401).json({ error: 'invalid token' });
     return
   }

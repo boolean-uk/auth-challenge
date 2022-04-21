@@ -25,7 +25,11 @@ function App() {
 	const [moviesList, setMoviesList] = useState([]);
 
 	useEffect(() => {
-		fetch(`${apiUrl}${movieRoute}`)
+		fetch(`${apiUrl}${movieRoute}`, {
+			headers: {
+				'authorization': 'Bearer ' + localStorage.getItem('userToken'),
+			},
+		})
 		.then(res => res.json())
 		.then(jsonResponse => setMoviesList(jsonResponse.moviesFound))
   }, []);
