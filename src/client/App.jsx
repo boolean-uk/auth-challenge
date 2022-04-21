@@ -15,15 +15,70 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    const options = {
+      method: 'POST',
+      headers: {
+          'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+          username: username,
+          password: password
+      }),
+  }
+
+  fetch('http://localhost:4000/user/register', options)
+      .then(res => res.json())
+      .then(json => console.log('Registered User:' + json.data.username))
+      .catch(() => {
+          console.log('server error')
+      })
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      }),
+    }
+
+    fetch(`${apiUrl}/user/login`, options)
+      .then(res => res.json())
+      .then(json => {
+        localStorage.setItem('jwt', json.data)
+      })
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({
+        title: title,
+        description: description,
+        runtimeMins: runtimeMins
+      }),
+    }
+
+    fetch(`${apiUrl}/movie`, options)
+      .then(res => {
+        res.json().then(json => {
+          if (res.ok) {
+            setMovies[[...movies, json.data]]
+          } else {
+           
+          }
+        })
+      }).catch(e => {
+      })
+    }
   }
 
   return (
