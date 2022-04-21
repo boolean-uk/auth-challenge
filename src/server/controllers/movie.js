@@ -13,14 +13,34 @@ const getAllMovies = async (req, res) => {
 const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
+    const authorization = req.headers['authorization']
+    if(!authorization) {
+        res.status(401)
+        res.json({error: 'token is not valid, no header'})
+        return
+    }
+
+    console.log("authorization is:", authorization)
+    
+
+    const parts = authorization.split(' ')
+    const token = parts[1]
+    console.log("token is", token)
     try {
-        const token = null;
         // todo verify the token
+        const payload = jwt.verify(token, jwtSecret)
     } catch (e) {
+        console.log(e)
         return res.status(401).json({ error: 'Invalid token provided.' })
     }
 
-    const createdMovie = null;
+    const createdMovie = await prisma.movie.create({
+        data: {
+            title,
+            description,
+            runtimeMins,
+        },
+    });
 
     res.json({ data: createdMovie });
 };
