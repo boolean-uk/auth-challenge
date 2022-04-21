@@ -7,7 +7,6 @@ import MovieForm from '../components/MovieForm';
 import MovieElement from '../components/MovieElement';
 
 const apiUrl = 'http://localhost:4000';
-const serverError = 'Something went wrong!';
 const noAccessError = 'Invalid username or password';
 const registerRoute = '/user/register';
 const loginRoute = '/user/login';
@@ -18,7 +17,6 @@ const initialRequestBody = {
 };
 
 function App() {
-	console.log('RENDERING APP');
 	const [requestBody, setRequestBody] = useState(initialRequestBody);
 	const [username, setUsername] = useState('');
 	const [isLoginForm, setIsLoginForm] = useState(false);

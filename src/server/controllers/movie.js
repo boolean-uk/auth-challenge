@@ -21,8 +21,8 @@ const addNewMovie = async (req, res) => {
 			},
 		});
 		res.status(200).json({ movie: createdMovie });
-	} catch (err) {
-		console.log(err);
+	} catch (e) {
+		console.log(e);
 		res.status(500).json(serverError);
 	}
 };
