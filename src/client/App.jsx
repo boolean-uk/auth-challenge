@@ -1,56 +1,28 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { Routes, Route, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import "./App.css"
+import Register from "/Users/danielmccarthy/auth-challenge/src/client/components/Register.jsx"
+import Login from "/Users/danielmccarthy/auth-challenge/src/client/components/Login.jsx"
+import MovieList from "/Users/danielmccarthy/auth-challenge/src/client/components/MovieList.jsx"
 
-const apiUrl = 'http://localhost:4000';
 
 function App() {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
-
-  const handleRegister = async ({ username, password }) => {
-    
-  };
-
-  const handleLogin = async ({ username, password }) => {
-    
-  };
+  let navigate = useNavigate();
   
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-  }
+  useEffect(() => {
+    navigate("/register")
+  }, [])
 
+  
   return (
     <div className="App">
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
-
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
-
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />}/>
+        <Route path="/movieList" element={<MovieList />} />
+      </Routes>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
