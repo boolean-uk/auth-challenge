@@ -1,11 +1,14 @@
 import { useState } from "react";
 
-export default function UserForm({ handleSubmit }) {
-    const [user, setUser] = useState({ username: '', password: '' });
+const blankForm = { username: '', password: '' }
 
-    const handleSubmitDecorator = (e) => {
+export default function UserForm({ handleSubmit }) {
+    const [user, setUser] = useState(blankForm);
+
+    const handleSubmitDecorator = e => {
         e.preventDefault();
         handleSubmit(user);
+        setUser(blankForm);
     };
 
     const handleChange = (e) => {

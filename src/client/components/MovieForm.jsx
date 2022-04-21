@@ -6,15 +6,16 @@ export default function MovieForm({ handleSubmit }) {
     const handleSubmitDecorator = (e) => {
         e.preventDefault();
         handleSubmit(movie);
+        setMovie(currentMovie => ({ title: '', description: '', runtimeMins: 60 }));
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        setMovie({
+        setMovie(currentMovie => ({
             ...movie,
             [name]: name === 'runtimeMins' ? parseInt(value) : value
-        });
+        }));
     }
 
     return (
