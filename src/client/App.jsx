@@ -15,16 +15,68 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type' : 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    }
+
+    fetch ('http://localhost:4000/user/register', options)
+    .then(res => res.json())
+    .then(json => {
+      console.log('handleRegister', json)
+
+    })
     
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type' : 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    }
+
+    fetch ('http://localhost:4000/user/register', options)
+    .then(res => res.json())
+    .then(json => {
+      console.log('handleLogin', json)
+    })
+
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type' : 'application/json'
+      },
+      body: JSON.stringify({
+        title: title,
+        description: description,
+        runtimeMins: runtimeMins 
+      })
+    }
+  
+
+    fetch ('http://localhost:4000/user/movie', options)
+    .then(res => res.json())
+    .then(json => {
+      console.log('handlecreatemovie', json)
+    })
+
+  };
     
-  }
 
   return (
     <div className="App">
@@ -51,6 +103,6 @@ function App() {
       </ul>
     </div>
   );
-}
+  }
 
 export default App;

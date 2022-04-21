@@ -14,13 +14,19 @@ const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
     try {
-        const token = null;
+        const token = jwt.sign({title, description, runtimeMins}, jwtSecret);
         // todo verify the token
     } catch (e) {
         return res.status(401).json({ error: 'Invalid token provided.' })
     }
 
-    const createdMovie = null;
+    const createdMovie = await prisma.movie.create({
+        data:{
+            title,
+            description,
+            runtimeMins
+        }
+    })
 
     res.json({ data: createdMovie });
 };
