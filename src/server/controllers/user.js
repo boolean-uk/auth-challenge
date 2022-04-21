@@ -29,15 +29,12 @@ const login = async (req, res) => {
     },
   })
 
-  if (!foundUser) {
-    return res.status(401).json({ error: "Invalid username or password." })
-  }
-
   const passwordsMatch = await bcrypt.compare(password, foundUser.password)
 
-  if (!passwordsMatch) {
+  if (!foundUser || !passwordsMatch) {
     return res.status(401).json({ error: "Invalid username or password." })
   }
+
 
   const payload = {
     username: username,

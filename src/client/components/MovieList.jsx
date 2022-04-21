@@ -12,7 +12,7 @@ export default function MovieList() {
     method: "GET",
     headers: {
       "content-type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("jwt"),
+      'Authorization': "Bearer " + localStorage.getItem("jwt"),
     },
   }
     fetch(`${apiUrl}/movie/getMovies`, options)
@@ -25,7 +25,7 @@ export default function MovieList() {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        'Authorization': "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         title: title,
