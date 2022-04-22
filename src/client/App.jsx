@@ -14,13 +14,12 @@ function App() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        'authorization': 'Bearer ' + localStorage.getItem('jwt')
       }
     }
     fetch(`${apiUrl}/movie`, options)
       .then(res => res.json())
       .then(res => {
-        console.log(res.data)
         setMovies(res.data)
       });
   }, []);
@@ -61,6 +60,17 @@ function App() {
         if(res.ok) {
           console.log('Captains Log, got token: ' + json.data)
           localStorage.setItem('jwt', json.data)
+
+          const options = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
+          }
+          fetch(`${apiUrl}/movie`, options)
+          .then(res => res.json())
+          .then(res => setMovies(res.data));
         } else {
           console.log("Login Failed", res.status)
         }
