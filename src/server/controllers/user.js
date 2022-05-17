@@ -26,7 +26,10 @@ const loginUser = async (req, res) => {
 	const matchingUser = await prisma.user.findUnique({
 		where: { username: req.body.username },
 	});
-	const matchingPassword = await bcrypt.compare(typedPassword, matchingUser.password);
+	const matchingPassword = await bcrypt.compare(
+		typedPassword,
+		matchingUser.password
+	);
 	if (matchingUser && matchingPassword) {
 		const token = jwt.sign({ username: matchingUser.username }, secretKey);
 		res.status(200).json({ token });
@@ -37,5 +40,5 @@ const loginUser = async (req, res) => {
 
 module.exports = {
 	registerUser,
-	loginUser
+	loginUser,
 };

@@ -23,6 +23,7 @@ function MovieForm({ apiUrl, moviesList, setMoviesList }) {
 			body: JSON.stringify(movieRequestBody),
 		}).then((res) => {
 			if (res.ok) {
+				console.log(res)
 				setMoviesList([...moviesList, jsonResponse.movie])
 			} else alert('Please login again!')
 		})
