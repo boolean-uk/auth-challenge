@@ -30,6 +30,10 @@ function App() {
 
     const fetchRes = await fetch(url, opts);
     const data = await fetchRes.json();
+
+    if (data.error) {
+      alert(data.error);
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
@@ -45,9 +49,12 @@ function App() {
 
     localStorage.setItem("token", data.data);
 
-    setUpdateMovieList(updateMovieList + 1);
+    if (data.error) {
+      alert(data.error);
+    }
 
     if (data.data) {
+      setUpdateMovieList(updateMovieList + 1);
       navigate("/movies");
     }
   };
@@ -65,7 +72,13 @@ function App() {
 
     const fetchRes = await fetch(url, opts);
 
-    setUpdateMovieList(updateMovieList + 1);
+    if (data.error) {
+      alert(data.error);
+    }
+
+    if (data.data) {
+      setUpdateMovieList(updateMovieList + 1);
+    }
   };
 
   return (
@@ -99,7 +112,6 @@ function App() {
           }
         />
       </Routes>
-      <>Error messages</>
     </div>
   );
 }
