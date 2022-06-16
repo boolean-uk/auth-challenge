@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "./App.css";
 import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
@@ -6,9 +7,11 @@ import UserForm from "./components/UserForm";
 const apiUrl = "http://localhost:4000";
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
   const [addedMovie, setAddedMovie] = useState(0);
   const [userLogged, setUserLogged] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`, {
@@ -43,6 +46,10 @@ function App() {
 
     localStorage.setItem("token", data.data);
     setUserLogged(username);
+
+    if (data.data) {
+      navigate("/movies");
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
@@ -65,28 +72,59 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Register</h1>
+      <ul>
+        <Link to="/">
+          <li>Login</li>
+        </Link>
+        <Link to="/register">
+          <li>Register</li>
+        </Link>
+        <Link to="/movies">
+          <li>Movies</li>
+        </Link>
+      </ul>
+      <Routes>
+        <Route
+          path="/"
+          element={<UserForm handleSubmit={handleLogin} title={"Login"} />}
+        />
+        <Route
+          path="/register"
+          element={
+            <UserForm handleSubmit={handleRegister} title={"Register"} />
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            <MovieForm handleSubmit={handleCreateMovie} movies={movies} />
+          }
+        />
+      </Routes>
+    </div>
+    // <div className="App">
+    /* <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
 
       <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
+      <MovieForm handleSubmit={handleCreateMovie} /> */
 
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    // <h1>Movie list</h1>
+    // <ul>
+    //   {movies.map((movie) => {
+    //     return (
+    //       <li key={movie.id}>
+    //         <h3>{movie.title}</h3>
+    //         <p>Description: {movie.description}</p>
+    //         <p>Runtime: {movie.runtimeMins}</p>
+    //       </li>
+    //     );
+    //   })}
+    // </ul>
+    // </div>
   );
 }
 
