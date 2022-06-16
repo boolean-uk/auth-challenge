@@ -8,8 +8,7 @@ const apiUrl = "http://localhost:4000";
 
 function App() {
   const [movies, setMovies] = useState(null);
-  const [addedMovie, setAddedMovie] = useState(0);
-  const [userLogged, setUserLogged] = useState(null);
+  const [updateMovieList, setUpdateMovieList] = useState(0);
 
   const navigate = useNavigate();
 
@@ -19,7 +18,7 @@ function App() {
     })
       .then((res) => res.json())
       .then((res) => setMovies(res.data));
-  }, [userLogged, addedMovie]);
+  }, [updateMovieList]);
 
   const handleRegister = async ({ username, password }) => {
     const url = "http://localhost:4000/user/register";
@@ -45,7 +44,8 @@ function App() {
     const data = await fetchRes.json();
 
     localStorage.setItem("token", data.data);
-    setUserLogged(username);
+
+    setUpdateMovieList(updateMovieList + 1);
 
     if (data.data) {
       navigate("/movies");
@@ -59,15 +59,13 @@ function App() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-        userLoggedIn: userLogged,
       },
       body: JSON.stringify({ title, description, runtimeMins }),
     };
 
     const fetchRes = await fetch(url, opts);
-    // const data = await fetchRes.json();
 
-    setAddedMovie(addedMovie + 1);
+    setUpdateMovieList(updateMovieList + 1);
   };
 
   return (
@@ -101,30 +99,8 @@ function App() {
           }
         />
       </Routes>
+      <>Error messages</>
     </div>
-    // <div className="App">
-    /* <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
-
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} /> */
-
-    // <h1>Movie list</h1>
-    // <ul>
-    //   {movies.map((movie) => {
-    //     return (
-    //       <li key={movie.id}>
-    //         <h3>{movie.title}</h3>
-    //         <p>Description: {movie.description}</p>
-    //         <p>Runtime: {movie.runtimeMins}</p>
-    //       </li>
-    //     );
-    //   })}
-    // </ul>
-    // </div>
   );
 }
 
