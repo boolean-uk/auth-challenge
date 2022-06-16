@@ -5,10 +5,17 @@ const prisma = new PrismaClient();
 const jwtSecret = "mysecret";
 
 const getAllMovies = async (req, res) => {
-  const userLoggedIn = req.headers.userloggedin;
+  let payload;
+  try {
+    const [_, token] = req.headers.authorization.split(" ");
+
+    payload = jwt.verify(token, jwtSecret);
+  } catch (e) {
+    return res.status(401).json({ error: "Invalid token provided." });
+  }
 
   const user = await prisma.user.findFirst({
-    where: { username: userLoggedIn },
+    where: { username: payload.username },
   });
 
   if (user) {
@@ -22,18 +29,18 @@ const getAllMovies = async (req, res) => {
 
 const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body;
-  const userLoggedIn = req.headers.userloggedin;
+  let payload;
 
   try {
     const [_, token] = req.headers.authorization.split(" ");
 
-    jwt.verify(token, jwtSecret);
+    payload = jwt.verify(token, jwtSecret);
   } catch (e) {
     return res.status(401).json({ error: "Invalid token provided." });
   }
 
   const user = await prisma.user.findFirst({
-    where: { username: userLoggedIn },
+    where: { username: payload.username },
   });
 
   try {

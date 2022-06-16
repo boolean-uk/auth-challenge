@@ -11,7 +11,9 @@ function App() {
   const [userLogged, setUserLogged] = useState(null);
 
   useEffect(() => {
-    fetch(`${apiUrl}/movie`, { headers: { userLoggedIn: userLogged } })
+    fetch(`${apiUrl}/movie`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then((res) => res.json())
       .then((res) => setMovies(res.data));
   }, [userLogged, addedMovie]);
