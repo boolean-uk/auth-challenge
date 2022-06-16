@@ -27,7 +27,19 @@ function App() {
     // console.log(data);
   };
 
-  const handleLogin = async ({ username, password }) => {};
+  const handleLogin = async ({ username, password }) => {
+    const url = "http://localhost:4000/user/login";
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+
+    const fetchRes = await fetch(url, opts);
+    const data = await fetchRes.json();
+    // console.log(data);
+    localStorage.setItem("token", data.data);
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
