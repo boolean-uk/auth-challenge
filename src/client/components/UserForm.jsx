@@ -19,7 +19,7 @@ export default function UserForm({ handleSubmit, title }) {
 
   return (
     <>
-      <h1>{String(title)}</h1>
+      <h1>{title}</h1>
       <form onSubmit={handleSubmitDecorator}>
         <input
           type="text"

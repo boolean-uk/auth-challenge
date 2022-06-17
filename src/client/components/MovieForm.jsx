@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Movie from "./Movie";
 
 export default function MovieForm({ handleSubmit, movies }) {
   const [movie, setMovie] = useState({
@@ -17,7 +18,7 @@ export default function MovieForm({ handleSubmit, movies }) {
 
     setMovie({
       ...movie,
-      [name]: name === "runtimeMins" ? parseInt(value) : value,
+      [name]: parseInt(value) || value,
     });
   };
 
@@ -52,15 +53,15 @@ export default function MovieForm({ handleSubmit, movies }) {
       <h1>Movie list</h1>
       <ul>
         {movies &&
-          movies.map((movie) => {
-            return (
-              <li key={movie.id}>
-                <h3>{movie.title}</h3>
-                <p>Description: {movie.description}</p>
-                <p>Runtime: {movie.runtimeMins}</p>
-              </li>
-            );
-          })}
+          movies.map((movie, i) => (
+            <Movie
+              key={i}
+              id={movie.id}
+              title={movie.title}
+              description={movie.description}
+              runtimeMins={movie.runtimeMins}
+            />
+          ))}
       </ul>
     </>
   );

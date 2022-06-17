@@ -4,7 +4,7 @@ import "./App.css";
 import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
 
-const apiUrl = "http://localhost:4000";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function App() {
   const [movies, setMovies] = useState(null);
@@ -12,16 +12,18 @@ function App() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`, {
+  useEffect(async () => {
+    const opts = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-      .then((res) => res.json())
-      .then((res) => setMovies(res.data));
+    };
+    const fetchRes = await fetch(`${apiUrl}/movie`, opts);
+    const data = await fetchRes.json();
+
+    setMovies(data.data);
   }, [updateMovieList]);
 
   const handleRegister = async ({ username, password }) => {
-    const url = "http://localhost:4000/user/register";
+    const url = `${apiUrl}/register`;
     const opts = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -37,7 +39,7 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
-    const url = "http://localhost:4000/user/login";
+    const url = `${apiUrl}/user/login`;
     const opts = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -60,7 +62,7 @@ function App() {
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    const url = "http://localhost:4000/movie";
+    const url = `${apiUrl}/movie`;
     const opts = {
       method: "POST",
       headers: {
@@ -71,6 +73,7 @@ function App() {
     };
 
     const fetchRes = await fetch(url, opts);
+    const data = await fetchRes.json();
 
     if (data.error) {
       alert(data.error);
@@ -83,17 +86,19 @@ function App() {
 
   return (
     <div className="App">
-      <ul>
-        <Link to="/">
-          <li>Login</li>
-        </Link>
-        <Link to="/register">
-          <li>Register</li>
-        </Link>
-        <Link to="/movies">
-          <li>Movies</li>
-        </Link>
-      </ul>
+      <nav>
+        <ul className="nav-links">
+          <Link to="/">
+            <li>Login</li>
+          </Link>
+          <Link to="/register">
+            <li>Register</li>
+          </Link>
+          <Link to="/movies">
+            <li>Movies</li>
+          </Link>
+        </ul>
+      </nav>
       <Routes>
         <Route
           path="/"

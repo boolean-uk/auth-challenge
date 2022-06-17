@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const jwtSecret = "mysecret";
+const jwtSecret = process.env.JWT_SECRET;
 
 const getAllMovies = async (req, res) => {
   let payload;
@@ -14,17 +14,19 @@ const getAllMovies = async (req, res) => {
     return res.status(401).json({ error: "Invalid token provided." });
   }
 
-  const user = await prisma.user.findFirst({
+  const foundUser = await prisma.user.findUnique({
     where: { username: payload.username },
   });
 
-  if (user) {
-    const movies = await prisma.movie.findMany({
-      where: { userId: user.id },
-    });
-
-    res.json({ data: movies });
+  if (!foundUser) {
+    return res.status(401).json({ error: "Invalid username." });
   }
+
+  const movies = await prisma.movie.findMany({
+    where: { userId: foundUser.id },
+  });
+
+  res.json({ data: movies });
 };
 
 const createMovie = async (req, res) => {
