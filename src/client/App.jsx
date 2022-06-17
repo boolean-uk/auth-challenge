@@ -1,54 +1,122 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
-const apiUrl = 'http://localhost:4000';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
+  const [updateMovieList, setUpdateMovieList] = useState(0);
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
+  const navigate = useNavigate();
+
+  useEffect(async () => {
+    const opts = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    };
+    const fetchRes = await fetch(`${apiUrl}/movie`, opts);
+    const data = await fetchRes.json();
+
+    setMovies(data.data);
+  }, [updateMovieList]);
 
   const handleRegister = async ({ username, password }) => {
-    
+    const url = `${apiUrl}/register`;
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+
+    const fetchRes = await fetch(url, opts);
+    const data = await fetchRes.json();
+
+    if (data.error) {
+      alert(data.error);
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    const url = `${apiUrl}/user/login`;
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+
+    const fetchRes = await fetch(url, opts);
+    const data = await fetchRes.json();
+
+    localStorage.setItem("token", data.data);
+
+    if (data.error) {
+      alert(data.error);
+    }
+
+    if (data.data) {
+      setUpdateMovieList(updateMovieList + 1);
+      navigate("/movies");
+    }
   };
-  
+
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-  }
+    const url = `${apiUrl}/movie`;
+    const opts = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    };
+
+    const fetchRes = await fetch(url, opts);
+    const data = await fetchRes.json();
+
+    if (data.error) {
+      alert(data.error);
+    }
+
+    if (data.data) {
+      setUpdateMovieList(updateMovieList + 1);
+    }
+  };
 
   return (
     <div className="App">
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
-
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
-
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <nav>
+        <ul className="nav-links">
+          <Link to="/">
+            <li>Login</li>
+          </Link>
+          <Link to="/register">
+            <li>Register</li>
+          </Link>
+          <Link to="/movies">
+            <li>Movies</li>
+          </Link>
+        </ul>
+      </nav>
+      <Routes>
+        <Route
+          path="/"
+          element={<UserForm handleSubmit={handleLogin} title={"Login"} />}
+        />
+        <Route
+          path="/register"
+          element={
+            <UserForm handleSubmit={handleRegister} title={"Register"} />
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            <MovieForm handleSubmit={handleCreateMovie} movies={movies} />
+          }
+        />
+      </Routes>
     </div>
   );
 }

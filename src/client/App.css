@@ -40,3 +40,8 @@
 ul {
   list-style: none;
 }
+
+.nav-links li {
+  display: inline;
+  margin-right: 1rem;
+}
