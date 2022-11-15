@@ -22,4 +22,6 @@ const checkToken = (req, res, next) => {
     }
 }
 
+//module
+
 module.exports = {checkToken}
