@@ -7,8 +7,15 @@ const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
     const { username, password } = req.body;
+    console.log(username, password);
 
-    const createdUser = null;
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const createdUser = await prisma.user.create({
+        data: {username, password: hashedPassword}
+    });
+
+    console.log(createdUser)
 
     res.json({ data: createdUser });
 };
@@ -16,19 +23,21 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    const foundUser = null;
+    const foundUser = await prisma.user.findUnique({
+        where: {username: username},
+    });
 
     if (!foundUser) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const passwordsMatch = false;
+    const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const token = null;
+    const token = jwt.sign(username, process.env.SECRET)
 
     res.json({ data: token });
 };
