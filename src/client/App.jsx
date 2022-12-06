@@ -39,27 +39,29 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         localStorage.setItem("token", data.data);
+        localStorage.setItem("userId", data.userId);
       });
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
     fetch(apiUrl + "/movie", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem('token'),
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
       body: JSON.stringify({
         title,
         description,
         runtimeMins,
+        userId: localStorage.getItem("userId"),
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        setMovies([...movies, data])
+        setMovies([...movies, data]);
       });
   };
 
@@ -77,12 +79,14 @@ function App() {
       <h1>Movie list</h1>
       <ul>
         {movies.map((movie) => {
-          return (
+          return movie.id === Number(localStorage.getItem("userId")) ? (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
               <p>Description: {movie.description}</p>
               <p>Runtime: {movie.runtimeMins}</p>
             </li>
+          ) : (
+            false
           );
         })}
       </ul>

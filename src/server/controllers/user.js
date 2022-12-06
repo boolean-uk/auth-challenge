@@ -55,7 +55,7 @@ const login = async (req, res) => {
 
   const token = jwt.sign({ username }, mySecret);
 
-  res.status(201).json({ data: token });
+  res.status(201).json({ data: token, userId: findUser.id });
 };
 
 module.exports = {
