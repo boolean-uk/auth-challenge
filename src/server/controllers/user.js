@@ -1,39 +1,64 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
+const mySecret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const createdUser = null;
+  const findUser = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
 
-    res.json({ data: createdUser });
+  if (findUser) {
+    return res.status(409).json({
+      error: "That username is already taken",
+    });
+  }
+
+  const hash = await bcrypt.hash(password, 10);
+
+  const createdUser = await prisma.user.create({
+    data: {
+      username,
+      password: hash,
+    },
+  });
+
+  delete createdUser.password;
+
+  res.status(201).json({ data: createdUser });
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const foundUser = null;
+  const findUser = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  if (!findUser) {
+    return res.status(401).json({ error: "User doesn't exist." });
+  }
 
-    const passwordsMatch = false;
+  const passwordsMatch = await bcrypt.compare(password, findUser.password);;
 
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  if (!passwordsMatch) {
+    return res.status(404).json({ error: "Invalid username or password." });
+  }
 
-    const token = null;
+  const token = jwt.sign({ username }, mySecret);
 
-    res.json({ data: token });
+  res.status(201).json({ data: token });
 };
 
 module.exports = {
-    register,
-    login
+  register,
+  login,
 };
