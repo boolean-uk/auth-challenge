@@ -10,6 +10,7 @@ const apiUrl = 'http://localhost:4000';
 function App() {
 	const [movies, setMovies] = useState([]);
 	const [notification, setNotification] = useState('');
+	const [loggedIn, setLoggedIn] = useState(false);
 
 	useEffect(() => {
 		fetch(`${apiUrl}/movie`)
@@ -18,10 +19,7 @@ function App() {
 	}, []);
 
 	const handleRegister = async ({ username, password }) => {
-		const data = {
-			username,
-			password,
-		};
+		const data = { username, password };
 
 		// send post request to API with username and pwd
 		fetch(`${apiUrl}/user/register`, {
@@ -32,7 +30,6 @@ function App() {
 			.then((response) => response.json())
 			.then((data) => {
 				setNotification('');
-				// TODO: checks if key is error
 				const keyName = Object.keys(data)[0];
 				if (keyName === 'error') setNotification(`${data.error} 🔴`);
 				else setNotification(`User ${data.user.username} created 🟢`);
@@ -41,13 +38,31 @@ function App() {
 				setNotification('');
 				setNotification(`Error code ${error.code} 🔴\n${error.message}`);
 			});
-		// TODO: handle API response - errors and correct register - use notification
-		// setNotification('Registered Sucessfuly 🟢');
 	};
 
 	const handleLogin = async ({ username, password }) => {
-		console.log('Username', username);
-		console.log('Pass', password);
+		const data = { username, password };
+
+		fetch(`${apiUrl}/user/login`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setNotification('');
+				const keyName = Object.keys(data)[0];
+				if (keyName === 'error') setNotification(`${data.error} 🔴`);
+				else {
+					localStorage.setItem('accessToken', data.accessToken);
+					setLoggedIn(true);
+					setNotification('Logged in 🟢');
+				}
+			})
+			.catch((error) => {
+				setNotification('');
+				setNotification(`Error code ${error.code} 🔴\n${error.message}`);
+			});
 	};
 
 	const handleCreateMovie = async ({ title, description, runtimeMins }) => {
@@ -58,7 +73,7 @@ function App() {
 
 	return (
 		<div className="App">
-			<LoginStatus />
+			<LoginStatus loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
 
 			{notification && (
 				<Notification
