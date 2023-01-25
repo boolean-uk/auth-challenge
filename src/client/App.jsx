@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 import "./App.css";
 
@@ -12,6 +13,7 @@ function App() {
     runtime: "",
   });
   const [movies, setMovies] = useState([]);
+  const [registerResponse, setRegisterResponse] = useState(null);
 
   const handleChangeUser = (e) => {
     const { name, value } = e.target;
@@ -31,7 +33,27 @@ function App() {
     });
   };
 
-  const registerUser = (e) => {};
+  const registerUser = async (e) => {
+    e.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    };
+
+    const response = await fetch(`${apiUrl}/user/register`, options);
+    const data = await response.json();
+
+    setRegisterResponse(data.status);
+
+    // const response = axios.post(`${apiUrl}/user/register`, user);
+
+    // console.log(response);
+    // setRegisterResponse(response.data.status);
+  };
 
   const loginUser = (e) => {};
 
@@ -57,6 +79,8 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
+
+      {registerResponse && <p>{registerResponse}</p>}
 
       <h2>Log in</h2>
       <form onSubmit={loginUser}>
