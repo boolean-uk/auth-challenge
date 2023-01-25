@@ -59,7 +59,8 @@ const login = async (req, res) => {
 		process.env.JWT_SECRET
 	);
 
-	// TODO: Save token in **localStorage**
+	// Save token in localStorage
+	localStorage.setItem('accessToken', token);
 
 	// Return Access Token
 	res.json({ data: token });
