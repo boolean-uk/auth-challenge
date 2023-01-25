@@ -13,79 +13,92 @@ function App() {
   });
   const [movies, setMovies] = useState([]);
 
-  const handleChange = (e) => {
+  const handleChangeUser = (e) => {
     const { name, value } = e.target;
 
     setUser({
       ...user,
       [name]: value,
     });
-
-    console.log(user);
   };
+
+  const handleChangeMovie = (e) => {
+    const { name, value } = e.target;
+
+    setMovie({
+      ...movie,
+      [name]: value,
+    });
+  };
+
+  const registerUser = (e) => {};
+
+  const loginUser = (e) => {};
+
+  const createMovie = (e) => {};
 
   return (
     <div className="App">
       <h2>Register</h2>
-      <form>
+      <form onSubmit={registerUser}>
         <input
           type="text"
           placeholder="username"
           name="username"
           value={user.username}
-          onChange={handleChange}
+          onChange={handleChangeUser}
         />
         <input
           type="password"
           placeholder="password"
           name="password"
           value={user.password}
-          onChange={handleChange}
+          onChange={handleChangeUser}
         />
         <button type="submit">Submit</button>
       </form>
 
       <h2>Log in</h2>
-      <form>
+      <form onSubmit={loginUser}>
         <input
           type="text"
           placeholder="username"
           name="username"
           value={user.username}
-          onChange={handleChange}
+          onChange={handleChangeUser}
         />
         <input
           type="password"
           placeholder="password"
           name="password"
           value={user.password}
-          onChange={handleChange}
+          onChange={handleChangeUser}
         />
         <button type="submit">Submit</button>
       </form>
 
       <h2>Create a movie</h2>
-      <form>
+      <form onSubmit={createMovie}>
         <input
           type="text"
           placeholder="title"
           name="title"
           value={movie.title}
-          onChange={handleChange}
+          onChange={handleChangeMovie}
         />
         <input
           type="text"
           placeholder="description"
           name="description"
           value={movie.description}
-          onChange={handleChange}
+          onChange={handleChangeMovie}
         />
         <input
-          type="text"
+          type="number"
           placeholder="runtime"
           name="runtime"
           value={movie.runtime}
-          onChange={handleChange}
+          onChange={handleChangeMovie}
         />
         <button type="submit">Submit</button>
       </form>
