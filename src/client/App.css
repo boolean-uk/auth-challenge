@@ -18,3 +18,16 @@ ul {
 
   cursor: pointer;
 }
+
+.LoginStatus {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 1rem;
+
+  border-radius: 20px;
+  border: 1px solid black;
+  background-color: white;
+
+  cursor: pointer;
+}

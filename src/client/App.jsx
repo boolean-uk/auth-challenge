@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import LoginStatus from './components/LoginStatus';
 import MovieForm from './components/MovieForm';
 import Notification from './components/Notification';
 import UserForm from './components/UserForm';
@@ -33,7 +34,6 @@ function App() {
 				setNotification('');
 				// TODO: checks if key is error
 				const keyName = Object.keys(data)[0];
-				console.log(data);
 				if (keyName === 'error') setNotification(`${data.error} 🔴`);
 				else setNotification(`User ${data.user.username} created 🟢`);
 			})
@@ -58,6 +58,8 @@ function App() {
 
 	return (
 		<div className="App">
+			<LoginStatus />
+
 			{notification && (
 				<Notification
 					message={notification}
