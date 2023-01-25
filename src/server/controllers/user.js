@@ -16,7 +16,7 @@ const register = async (req, res) => {
 	}
 
 	bcrypt.hash(password, 12, async (err, encryptedPwd) => {
-		if (err) return res.status(500).json({ encryptionError: err });
+		if (err) return res.status(500).json({ error: err });
 
 		try {
 			const createdUser = await prisma.user.create({
@@ -27,10 +27,10 @@ const register = async (req, res) => {
 			});
 			delete createdUser.password;
 
-			res.status(201).json({ data: createdUser });
+			res.status(201).json({ user: createdUser });
 		} catch (error) {
 			res.status(500).json({
-				prismaError: `Code: ${error.code} - ${error.message}`,
+				error: `Code: ${error.code} - ${error.message}`,
 			});
 		}
 	});

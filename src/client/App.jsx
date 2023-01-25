@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
+import Notification from './components/Notification';
 import UserForm from './components/UserForm';
 
 const apiUrl = 'http://localhost:4000';
 
 function App() {
 	const [movies, setMovies] = useState([]);
+	const [notification, setNotification] = useState('');
 
 	useEffect(() => {
 		fetch(`${apiUrl}/movie`)
@@ -15,12 +17,32 @@ function App() {
 	}, []);
 
 	const handleRegister = async ({ username, password }) => {
-		console.log('Username', username);
-		console.log('Pass', password);
+		const data = {
+			username,
+			password,
+		};
 
-		// TODO: Check if username already exists - BACK-END not FRONT
-		// TODO: Throw error of Existing User - BACKEND
-		// TODO: Add User to DB - BACKEND
+		// send post request to API with username and pwd
+		fetch(`${apiUrl}/user/register`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setNotification('');
+				// TODO: checks if key is error
+				const keyName = Object.keys(data)[0];
+				console.log(data);
+				if (keyName === 'error') setNotification(`${data.error} 🔴`);
+				else setNotification(`User ${data.user.username} created 🟢`);
+			})
+			.catch((error) => {
+				setNotification('');
+				setNotification(`Error code ${error.code} 🔴\n${error.message}`);
+			});
+		// TODO: handle API response - errors and correct register - use notification
+		// setNotification('Registered Sucessfuly 🟢');
 	};
 
 	const handleLogin = async ({ username, password }) => {
@@ -36,6 +58,13 @@ function App() {
 
 	return (
 		<div className="App">
+			{notification && (
+				<Notification
+					message={notification}
+					setNotification={setNotification}
+				/>
+			)}
+
 			<h1>Register</h1>
 			<UserForm handleSubmit={handleRegister} />
 
