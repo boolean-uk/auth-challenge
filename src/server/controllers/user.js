@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 const register = async (req, res) => {
 	const { username, password } = req.body;
 
-	// TODO: Check if username already exists - BACK-END not FRONT
 	const foundUser = await prisma.user.findUnique({
 		where: { username: username },
 	});
@@ -16,11 +15,9 @@ const register = async (req, res) => {
 		return res.status(409).json({ error: 'Username already exists.' });
 	}
 
-	// TODO: Hash pwd
 	bcrypt.hash(password, 12, async (err, encryptedPwd) => {
 		if (err) return res.status(500).json({ encryptionError: err });
 
-		// TODO: Add User to DB
 		try {
 			const createdUser = await prisma.user.create({
 				data: {
@@ -42,20 +39,29 @@ const register = async (req, res) => {
 const login = async (req, res) => {
 	const { username, password } = req.body;
 
-	const foundUser = null;
-
+	// Find Username
+	const foundUser = await prisma.user.findUnique({
+		where: { username: username },
+	});
 	if (!foundUser) {
 		return res.status(401).json({ error: 'Invalid username or password.' });
 	}
 
-	const passwordsMatch = false;
-
+	// Match passwords
+	const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 	if (!passwordsMatch) {
 		return res.status(401).json({ error: 'Invalid username or password.' });
 	}
 
-	const token = null;
+	// Create Access Token
+	const token = jwt.sign(
+		{ id: foundUser.id, username: foundUser.username },
+		process.env.JWT_SECRET
+	);
 
+	// TODO: Save token in **localStorage**
+
+	// Return Access Token
 	res.json({ data: token });
 };
 
