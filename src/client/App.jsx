@@ -56,7 +56,7 @@ function App() {
 				else {
 					localStorage.setItem('accessToken', data.accessToken);
 					setLoggedIn(true);
-					setNotification('Logged in 🟢');
+					setNotification('Login successful 🟢');
 				}
 			})
 			.catch((error) => {

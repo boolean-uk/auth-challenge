@@ -26,14 +26,13 @@ ul {
 .SectionUserForm {
 	display: flex;
 	align-self: center;
-	gap: 1rem;
 }
 
 .SectionMovieForm {
 	display: flex;
 	align-self: center;
-	gap: 1rem;
 }
+
 section section {
 	border: 0.2rem solid black;
 	border-radius: 1rem;
@@ -66,7 +65,8 @@ button:focus {
 .Notification {
 	position: absolute;
 	bottom: 1rem;
-	right: 1rem;
+	right: 50%;
+	transform: translateX(50%);
 	padding: 1rem;
 
 	border-radius: 2rem;
@@ -74,12 +74,16 @@ button:focus {
 	background-color: white;
 
 	cursor: pointer;
+	animation-name: notification;
+	animation-duration: 0.5s;
 }
 
 .LoginStatus {
 	position: absolute;
 	top: 1rem;
-	right: 1rem;
+	right: 50%;
+	transform: translateX(50%);
+
 	padding: 1rem;
 
 	border-radius: 20px;
@@ -87,4 +91,14 @@ button:focus {
 	background-color: white;
 
 	cursor: pointer;
+}
+
+@keyframes notification {
+	from {
+		bottom: -5rem;
+	}
+
+	to {
+		bottom: 1rem;
+	}
 }
