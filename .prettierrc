@@ -18,6 +18,4 @@
   "trailingComma": "es5",
   "useTabs": true,
   "vueIndentScriptAndStyle": false,
-  "filepath": "c:\\Users\\Luciano\\Documents\\codes\\boolean\\auth-challenge\\src\\server\\index.js",
-  "parser": "babel"
 }

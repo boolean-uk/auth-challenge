@@ -4,7 +4,7 @@ export default function MovieForm({ handleSubmit }) {
 	const [movie, setMovie] = useState({
 		title: '',
 		description: '',
-		runtimeMins: 60,
+		runtimeMins: undefined,
 	});
 
 	const handleSubmitDecorator = (e) => {
@@ -22,7 +22,7 @@ export default function MovieForm({ handleSubmit }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmitDecorator}>
+		<form className="MovieForm" onSubmit={handleSubmitDecorator}>
 			<input
 				type="text"
 				name="title"

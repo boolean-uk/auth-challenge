@@ -1,33 +1,90 @@
 ul {
-  list-style: none;
+	list-style: none;
 }
 
 .App {
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.UserForm {
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+}
+
+.MovieForm {
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+}
+
+/* Sections */
+.SectionUserForm {
+	display: flex;
+	align-self: center;
+	gap: 1rem;
+}
+
+.SectionMovieForm {
+	display: flex;
+	align-self: center;
+	gap: 1rem;
+}
+section section {
+	border: 0.2rem solid black;
+	border-radius: 1rem;
+	padding: 1rem;
+	margin: 1rem;
+}
+/* --- */
+
+form {
+	gap: 0.5rem;
+}
+input {
+	font-size: 1rem;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	transition: ease scale 0.2s;
+}
+button {
+	font-size: 1rem;
+	padding: 0.5rem;
+	border-radius: 2rem;
+	cursor: pointer;
+	transition: ease scale 0.2s;
+}
+input:focus,
+button:focus {
+	scale: 1.2;
 }
 
 .Notification {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  padding: 1rem;
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	padding: 1rem;
 
-  border-radius: 20px;
-  border: 1px solid black;
-  background-color: white;
+	border-radius: 2rem;
+	border: 0.2rem solid black;
+	background-color: white;
 
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .LoginStatus {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 1rem;
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	padding: 1rem;
 
-  border-radius: 20px;
-  border: 1px solid black;
-  background-color: white;
+	border-radius: 20px;
+	border: 0.2rem solid black;
+	background-color: white;
 
-  cursor: pointer;
+	cursor: pointer;
 }

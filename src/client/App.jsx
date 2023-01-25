@@ -82,27 +82,39 @@ function App() {
 				/>
 			)}
 
-			<h1>Register</h1>
-			<UserForm handleSubmit={handleRegister} />
+			<section className="SectionUserForm">
+				<section>
+					<h1>Register</h1>
+					<UserForm handleSubmit={handleRegister} />
+				</section>
 
-			<h1>Login</h1>
-			<UserForm handleSubmit={handleLogin} />
+				<section>
+					<h1>Login</h1>
+					<UserForm handleSubmit={handleLogin} />
+				</section>
+			</section>
 
-			<h1>Create a movie</h1>
-			<MovieForm handleSubmit={handleCreateMovie} />
+			<section className="SectionMovieForm">
+				<section>
+					<h1>Create a movie</h1>
+					<MovieForm handleSubmit={handleCreateMovie} />
+				</section>
 
-			<h1>Movie list</h1>
-			<ul>
-				{movies.map((movie) => {
-					return (
-						<li key={movie.id}>
-							<h3>{movie.title}</h3>
-							<p>Description: {movie.description}</p>
-							<p>Runtime: {movie.runtimeMins}</p>
-						</li>
-					);
-				})}
-			</ul>
+				<section>
+					<h1>Movie list</h1>
+					<ul>
+						{movies.map((movie) => {
+							return (
+								<li key={movie.id}>
+									<h3>{movie.title}</h3>
+									<p>Description: {movie.description}</p>
+									<p>Runtime: {movie.runtimeMins}</p>
+								</li>
+							);
+						})}
+					</ul>
+				</section>
+			</section>
 		</div>
 	);
 }

@@ -18,7 +18,7 @@ export default function UserForm({ handleSubmit }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmitDecorator}>
+		<form className="UserForm" onSubmit={handleSubmitDecorator}>
 			<input
 				type="text"
 				name="username"
