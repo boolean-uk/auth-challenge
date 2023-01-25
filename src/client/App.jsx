@@ -1,30 +1,77 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { prisma } from "@prisma/client";
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
-const apiUrl = 'http://localhost:4000';
+const apiUrl = "http://localhost:4000";
+const secret = process.env.JWT_SECRET;
 
 function App() {
+  const [token, setToken] = useState([]);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    };
+    fetch(`${apiUrl}/user/register`, opts)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    };
+    fetch(`${apiUrl}/user/login`, opts)
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("token", data.accessToken);
+        setToken(localStorage.token);
+      });
   };
-  
+
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-  }
+    const opts = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: title,
+        description: description,
+        runtimeMins,
+      }),
+    };
+    fetch(`${apiUrl}/movie`, opts)
+      .then((res) => res.json())
+      .then((data) => {
+        const movie = {...data.data}
+        const updatedMovies = [...movies, movie]
+        setMovies(updatedMovies);
+      });
+
+  };
 
   return (
     <div className="App">
@@ -39,7 +86,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>

@@ -1,39 +1,66 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const saltRounds = 10;
 
-const jwtSecret = 'mysecret';
+const secret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
-
-    const createdUser = null;
-
-    res.json({ data: createdUser });
+  const { username, password } = req.body;
+  bcrypt.hash(password, saltRounds, async function (err, hash) {
+    try {
+      const createdUser = await prisma.user.create({
+        data: {
+          username: username,
+          password: hash,
+        },
+      });
+      delete user.password;
+      return res.status(201).json({ createdUser });
+    } catch (error) {
+      if (error.code === "P2002") {
+        res
+          .status(403)
+          .json({ error: `The username ${username} is already taken!` });
+      } else {
+        res.status(500).json({ error: "what is going on?" });
+      }
+    }
+  });
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
+  const user = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+  });
 
-    const foundUser = null;
+  if (!user) {
+    return res.status(401).json({
+      error: "Invalid username or password",
+    });
+  }
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (!result) {
+      return res.status(401).json({
+        error: "Invalid username or password",
+      });
     }
-
-    const passwordsMatch = false;
-
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-
-    const token = null;
-
-    res.json({ data: token });
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+      },
+      secret
+    );
+    res.status(201).json({ accessToken });
+  });
 };
 
 module.exports = {
-    register,
-    login
+  register,
+  login,
 };
