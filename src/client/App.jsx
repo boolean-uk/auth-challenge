@@ -10,13 +10,13 @@ const apiUrl = 'http://localhost:4000';
 function App() {
 	const [movies, setMovies] = useState([]);
 	const [notification, setNotification] = useState('');
-	const [loggedIn, setLoggedIn] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(null);
 
 	useEffect(() => {
 		fetch(`${apiUrl}/movie`)
 			.then((res) => res.json())
 			.then((res) => setMovies(res.data));
-	}, []);
+	}, [loggedIn]);
 
 	const handleRegister = async ({ username, password }) => {
 		const data = { username, password };
@@ -53,8 +53,8 @@ function App() {
 				const keyName = Object.keys(data)[0];
 				if (keyName === 'error') setNotification(`${data.error} 🔴`);
 				else {
-					localStorage.setItem('accessToken', data.accessToken);
-					setLoggedIn(true);
+					localStorage.setItem('user', data.user);
+					setLoggedIn(data.user);
 					setNotification('Login successful 🟢');
 				}
 			})

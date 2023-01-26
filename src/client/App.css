@@ -8,7 +8,7 @@ ul {
 	text-align: center;
 	justify-content: center;
 	height: 100vh;
-	transition: ease height 1s;
+	transition: ease all 1s;
 }
 
 .UserForm {
@@ -68,6 +68,7 @@ button:focus {
 }
 
 .Notification {
+	z-index: 10;
 	position: absolute;
 	bottom: 1rem;
 	right: 50%;

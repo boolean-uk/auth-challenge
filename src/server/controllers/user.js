@@ -59,8 +59,12 @@ const login = async (req, res) => {
 		process.env.JWT_SECRET
 	);
 
-	// Return Access Token
-	res.json({ accessToken: token });
+	// Removes password from foundUser - adds Token
+	delete foundUser.password;
+	foundUser.accessToken = token;
+
+	// Return User with AccessToken inside
+	res.json({ user: foundUser });
 };
 
 module.exports = {

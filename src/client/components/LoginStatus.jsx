@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function LoginStatus({ loggedIn, setLoggedIn }) {
 	useEffect(() => {
-		const token = localStorage.getItem('accessToken');
-		if (token) setLoggedIn(true);
+		const user = localStorage.getItem('user');
+		if (user) {
+			setLoggedIn(user);
+		}
 	}, []);
 
 	function logout() {
 		localStorage.removeItem('accessToken');
-		setLoggedIn(false);
+		setLoggedIn(null);
 	}
 
 	return (
