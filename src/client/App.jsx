@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-
 import "./App.css";
 
 const apiUrl = "http://localhost:4000";
@@ -16,6 +14,8 @@ function App() {
   const [registerResponse, setRegisterResponse] = useState(null);
   const [loginResponse, setLoginResponse] = useState(null);
   const [movieResponse, setMovieResponse] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
+  const [loginError, setLoginError] = useState(null);
 
   useEffect(() => {
     fetchMovies();
@@ -58,14 +58,13 @@ function App() {
 
     const response = await fetch(`${apiUrl}/user/register`, options);
     const data = await response.json();
+    if (data.error) {
+      setRegisterError(data.error);
+      return;
+    }
 
     setRegisterResponse(data.status);
     setUser({ username: "", password: "" });
-
-    // const response = axios.post(`${apiUrl}/user/register`, user);
-
-    // console.log(response.data);
-    // setRegisterResponse(response.data.status);
   };
 
   const loginUser = async (e) => {
@@ -81,9 +80,10 @@ function App() {
 
     const response = await fetch(`${apiUrl}/user/login`, options);
     const data = await response.json();
-    // if (data.error) {
-    //   setLoginResponse(data.error);
-    // }
+    if (data.error) {
+      setLoginError(data.error);
+      return;
+    }
     localStorage.setItem("access-token", data.token);
     setLoginResponse(data.status);
     setUser({ username: "", password: "" });
@@ -129,6 +129,8 @@ function App() {
       setRegisterResponse(null);
       setLoginResponse(null);
       setMovieResponse(null);
+      setLoginError(null);
+      setRegisterError(null);
     }, 2000);
   };
 
@@ -153,6 +155,12 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
+      {registerError && (
+        <>
+          <p style={{ color: "red" }}>{registerError}</p>
+          {removeAlert()}
+        </>
+      )}
       {registerResponse && (
         <>
           <p style={{ color: "lightgreen" }}>{registerResponse}</p>
@@ -179,6 +187,12 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
+      {loginError && (
+        <>
+          <p style={{ color: "red" }}>{loginError}</p>
+          {removeAlert()}
+        </>
+      )}
       {loginResponse && (
         <>
           <p style={{ color: "lightgreen" }}>{loginResponse}</p>
