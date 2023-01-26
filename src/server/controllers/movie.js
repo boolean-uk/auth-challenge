@@ -11,7 +11,7 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
-  const { title, description, runtime } = req.body;
+  const { title, description, runtimeMins } = req.body;
   let bearer = req.headers.authorization;
 
   if (!bearer) {
@@ -30,7 +30,7 @@ const createMovie = async (req, res) => {
     data: {
       title,
       description,
-      runtimeMins: runtime,
+      runtimeMins,
     },
   });
 

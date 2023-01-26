@@ -10,11 +10,12 @@ function App() {
   const [movie, setMovie] = useState({
     title: "",
     description: "",
-    runtime: "",
+    runtimeMins: "",
   });
   const [movies, setMovies] = useState([]);
   const [registerResponse, setRegisterResponse] = useState(null);
   const [loginResponse, setLoginResponse] = useState(null);
+  const [movieResponse, setMovieResponse] = useState(null);
 
   useEffect(() => {
     fetchMovies();
@@ -40,7 +41,7 @@ function App() {
 
     setMovie({
       ...movie,
-      [name]: value,
+      [name]: name === "runtimeMins" ? Number(value) : value,
     });
   };
 
@@ -59,6 +60,7 @@ function App() {
     const data = await response.json();
 
     setRegisterResponse(data.status);
+    setUser({ username: "", password: "" });
 
     // const response = axios.post(`${apiUrl}/user/register`, user);
 
@@ -84,9 +86,42 @@ function App() {
     // }
     localStorage.setItem("access-token", data.token);
     setLoginResponse(data.status);
+    setUser({ username: "", password: "" });
   };
 
-  const createMovie = (e) => {};
+  const createMovie = async (e) => {
+    e.preventDefault();
+
+    const accessToken = localStorage.getItem("access-token");
+
+    if (!accessToken) {
+      console.error("Please log in to create a movie");
+      setMovieResponse("Please log in");
+      return;
+    }
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(movie),
+    };
+
+    try {
+      const response = await fetch(`${apiUrl}/movie`, options);
+      const data = await response.json();
+      setMovies([...movies, data.movie]);
+      setMovie({
+        title: "",
+        description: "",
+        runtimeMins: "",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="App">
@@ -151,8 +186,8 @@ function App() {
         <input
           type="number"
           placeholder="runtime"
-          name="runtime"
-          value={movie.runtime}
+          name="runtimeMins"
+          value={movie.runtimeMins}
           onChange={handleChangeMovie}
         />
         <button type="submit">Submit</button>
