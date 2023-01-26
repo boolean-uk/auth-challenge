@@ -20,7 +20,6 @@ const createMovie = async (req, res) => {
 			.json({ error: "Please log in before using this feature" });
 	}
 
-	console.log(bearer);
 	bearer = bearer.replace("Bearer ", "");
 
 	try {
