@@ -8,6 +8,7 @@ const apiUrl = "http://localhost:4000";
 function App() {
 	const [movies, setMovies] = useState([]);
 	const [registerResponse, setRegisterResponse] = useState(null);
+	const [loginResponse, setLoginResponse] = useState(null);
 
 	useEffect(() => {
 		fetch(`${apiUrl}/movie`)
@@ -17,7 +18,6 @@ function App() {
 
 	const handleRegister = async (user) => {
 		if (!user.username || !user.password) return;
-		console.log(user);
 
 		const options = {
 			method: "POST",
@@ -27,14 +27,24 @@ function App() {
 
 		const res = await fetch(`${apiUrl}/user/register`, options);
 		const data = await res.json();
-
-		console.log(data);
-
 		setRegisterResponse(data);
-		console.log(registerResponse);
 	};
 
-	const handleLogin = async ({ username, password }) => {};
+	const handleLogin = async (user) => {
+		if (!user.username || !user.password) return;
+
+		const options = {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(user),
+		};
+
+		const res = await fetch(`${apiUrl}/user/login`, options);
+		const accessToken = await res.json();
+
+		localStorage.setItem("access-token", accessToken.data);
+		setLoginResponse(accessToken);
+	};
 
 	const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
