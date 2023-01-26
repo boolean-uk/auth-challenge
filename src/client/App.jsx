@@ -95,7 +95,7 @@ function App() {
       {regError !== undefined && <>{regError}</>}
 
       <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
+      <UserForm handleSubmit={handleLogin} setRegError={setRegError} />
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
