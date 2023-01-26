@@ -17,6 +17,7 @@ function App() {
 
 	const handleRegister = async (user) => {
 		if (!user.username || !user.password) return;
+		console.log(user);
 
 		const options = {
 			method: "POST",
@@ -26,6 +27,8 @@ function App() {
 
 		const res = await fetch(`${apiUrl}/user/register`, options);
 		const data = await res.json();
+
+		console.log(data);
 
 		setRegisterResponse(data);
 		console.log(registerResponse);

@@ -8,9 +8,10 @@ const jwtSecret = "mysecret";
 
 const register = async (req, res) => {
 	const { username, password } = req.body;
+	console.log(username, password);
 	const saltRounds = 10;
 
-	bcrypt.hash(password, saltRounds, async (hashed_pw) => {
+	bcrypt.hash(password, saltRounds, async (err, hashed_pw) => {
 		try {
 			const newUser = await prisma.user.create({
 				data: {
@@ -21,11 +22,11 @@ const register = async (req, res) => {
 
 			delete newUser.password;
 			res.status(201).json({ user: newUser });
-		} catch (e) {
-			if (e.code === "P2002") {
+		} catch (error) {
+			if (error.code === "P2002") {
 				res.status(403).json({ error: "The username is already taken" });
 			} else {
-				res.status(500).json({ error: e });
+				res.status(500).json({ error });
 			}
 		}
 	});
