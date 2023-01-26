@@ -15,11 +15,28 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
+    fetch("http://localhost:4000/user/register/", {
+      method: "POST",
+      headers: { "Content-type": "application/JSON" },
+      body: JSON.stringify({ username, password })
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data) )
     
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    fetch("http://localhost:4000/user/login/", {
+            method: "POST",
+            headers: { "Content-type": "application/JSON" },
+      body: JSON.stringify({ username, password }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                
+                console.log("Login succesful", data);
+                localStorage.setItem("Token", data.token)
+            });
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
