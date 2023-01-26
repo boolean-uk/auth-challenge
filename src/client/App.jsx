@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./App.css";
@@ -15,6 +15,16 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [registerResponse, setRegisterResponse] = useState(null);
   const [loginResponse, setLoginResponse] = useState(null);
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+  const fetchMovies = async () => {
+    const response = await fetch(`${apiUrl}/movie`);
+    const data = await response.json();
+    setMovies(data.movies);
+  };
 
   const handleChangeUser = (e) => {
     const { name, value } = e.target;
@@ -149,6 +159,16 @@ function App() {
       </form>
 
       <h2>Movie list</h2>
+      {movies.map((movie) => {
+        const { title, description, runtimeMins, id } = movie;
+        return (
+          <div key={id}>
+            <h3>{title}</h3>
+            <p>Description: {description}</p>
+            <p>Runtime: {runtimeMins} minutes</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
