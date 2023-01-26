@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function UserForm({
-  handleSubmit,
-  regError,
-  setRegError,
-  regSuccess,
-}) {
+export default function UserForm({ handleSubmit, setRegError, regSuccess }) {
   const [user, setUser] = useState({ username: "", password: "" });
   const [noUsername, setNoUsername] = useState(false);
   const [userPlace, setUserPlace] = useState("username");
@@ -27,7 +22,6 @@ export default function UserForm({
   const handleChange = (e) => {
     e.preventDefault();
     setRegError(undefined);
-    console.log(e.target.name);
     const { name, value } = e.target;
 
     setUser({

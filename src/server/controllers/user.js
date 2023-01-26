@@ -57,7 +57,7 @@ const login = async (req, res) => {
       },
       secret
     );
-    res.status(201).json({ accessToken });
+    res.status(201).json({ accessToken, user });
   });
 };
 

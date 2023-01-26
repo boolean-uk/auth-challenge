@@ -5,14 +5,13 @@ import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
 
 const apiUrl = "http://localhost:4000";
-const secret = process.env.JWT_SECRET;
 
 function App() {
   const [token, setToken] = useState([]);
   const [movies, setMovies] = useState([]);
   const [regError, setRegError] = useState(undefined);
   const [regSuccess, setRegSuccess] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState("");
+  const [loggedInUser, setLoggedInUser] = useState({});
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -54,10 +53,10 @@ function App() {
     fetch(`${apiUrl}/user/login`, opts)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         localStorage.setItem("token", data.accessToken);
         setToken(localStorage.token);
-        setLoggedInUser(username);
-        console.log(loggedInUser);
+        setLoggedInUser(data.user);
       });
   };
 
@@ -72,6 +71,7 @@ function App() {
         title: title,
         description: description,
         runtimeMins,
+        userId: loggedInUser.id,
       }),
     };
     fetch(`${apiUrl}/movie`, opts)
