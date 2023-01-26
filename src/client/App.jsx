@@ -118,9 +118,18 @@ function App() {
         description: "",
         runtimeMins: "",
       });
+      setMovieResponse("Created movie successfully!");
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const removeAlert = () => {
+    setTimeout(() => {
+      setRegisterResponse(null);
+      setLoginResponse(null);
+      setMovieResponse(null);
+    }, 2000);
   };
 
   return (
@@ -144,7 +153,12 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
-      {registerResponse && <p>{registerResponse}</p>}
+      {registerResponse && (
+        <>
+          <p style={{ color: "lightgreen" }}>{registerResponse}</p>
+          {removeAlert()}
+        </>
+      )}
 
       <h2>Log in</h2>
       <form onSubmit={loginUser}>
@@ -165,7 +179,12 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
-      {loginResponse && <p>{loginResponse}</p>}
+      {loginResponse && (
+        <>
+          <p style={{ color: "lightgreen" }}>{loginResponse}</p>
+          {removeAlert()}
+        </>
+      )}
 
       <h2>Create a movie</h2>
       <form onSubmit={createMovie}>
@@ -192,6 +211,13 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
+
+      {movieResponse && (
+        <>
+          <p style={{ color: "lightgreen" }}>{movieResponse}</p>
+          {removeAlert()}
+        </>
+      )}
 
       <h2>Movie list</h2>
       {movies.map((movie) => {
