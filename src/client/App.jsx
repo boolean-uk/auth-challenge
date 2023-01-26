@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import UserForm from "./components/UserForm";
+import MovieForm from "./components/MovieForm";
 
 const apiUrl = "http://localhost:4000";
 
 function App() {
-  const [user, setUser] = useState({ username: "", password: "" });
-  const [movie, setMovie] = useState({
-    title: "",
-    description: "",
-    runtimeMins: "",
-  });
   const [movies, setMovies] = useState([]);
   const [registerResponse, setRegisterResponse] = useState(null);
   const [loginResponse, setLoginResponse] = useState(null);
@@ -27,27 +23,7 @@ function App() {
     setMovies(data.movies);
   };
 
-  const handleChangeUser = (e) => {
-    const { name, value } = e.target;
-
-    setUser({
-      ...user,
-      [name]: value,
-    });
-  };
-
-  const handleChangeMovie = (e) => {
-    const { name, value } = e.target;
-
-    setMovie({
-      ...movie,
-      [name]: name === "runtimeMins" ? Number(value) : value,
-    });
-  };
-
-  const registerUser = async (e) => {
-    e.preventDefault();
-
+  const registerUser = async (user) => {
     if (!user.username && !user.password) return;
 
     const options = {
@@ -66,12 +42,10 @@ function App() {
     }
 
     setRegisterResponse(data.status);
-    setUser({ username: "", password: "" });
+    // setUser({ username: "", password: "" });
   };
 
-  const loginUser = async (e) => {
-    e.preventDefault();
-
+  const loginUser = async (user) => {
     if (!user.username && !user.password) return;
 
     const options = {
@@ -90,12 +64,10 @@ function App() {
     }
     localStorage.setItem("access-token", data.token);
     setLoginResponse(data.status);
-    setUser({ username: "", password: "" });
+    // setUser({ username: "", password: "" });
   };
 
-  const createMovie = async (e) => {
-    e.preventDefault();
-
+  const createMovie = async (movie) => {
     if (!movie.title && !movie.description && !movie.runtimeMins) return;
 
     const accessToken = localStorage.getItem("access-token");
@@ -119,11 +91,11 @@ function App() {
       const response = await fetch(`${apiUrl}/movie`, options);
       const data = await response.json();
       setMovies([...movies, data.movie]);
-      setMovie({
-        title: "",
-        description: "",
-        runtimeMins: "",
-      });
+      // setMovie({
+      //   title: "",
+      //   description: "",
+      //   runtimeMins: "",
+      // });
       setMovieResponse("Created movie successfully!");
     } catch (err) {
       console.log(err);
@@ -143,23 +115,7 @@ function App() {
   return (
     <div className="App">
       <h2>Register</h2>
-      <form onSubmit={registerUser}>
-        <input
-          type="text"
-          placeholder="username"
-          name="username"
-          value={user.username}
-          onChange={handleChangeUser}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          name="password"
-          value={user.password}
-          onChange={handleChangeUser}
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <UserForm handleSubmit={registerUser} />
 
       {registerError && (
         <>
@@ -175,23 +131,7 @@ function App() {
       )}
 
       <h2>Log in</h2>
-      <form onSubmit={loginUser}>
-        <input
-          type="text"
-          placeholder="username"
-          name="username"
-          value={user.username}
-          onChange={handleChangeUser}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          name="password"
-          value={user.password}
-          onChange={handleChangeUser}
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <UserForm handleSubmit={loginUser} />
 
       {loginError && (
         <>
@@ -207,30 +147,7 @@ function App() {
       )}
 
       <h2>Create a movie</h2>
-      <form onSubmit={createMovie}>
-        <input
-          type="text"
-          placeholder="title"
-          name="title"
-          value={movie.title}
-          onChange={handleChangeMovie}
-        />
-        <input
-          type="text"
-          placeholder="description"
-          name="description"
-          value={movie.description}
-          onChange={handleChangeMovie}
-        />
-        <input
-          type="number"
-          placeholder="runtime"
-          name="runtimeMins"
-          value={movie.runtimeMins}
-          onChange={handleChangeMovie}
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <MovieForm handleSubmit={createMovie} />
 
       {movieResponse && (
         <>
