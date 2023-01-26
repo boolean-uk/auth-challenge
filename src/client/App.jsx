@@ -24,7 +24,9 @@ function App() {
       username: username,
       password: username
     }
+    console.log(body)
     console.log('this is before my fetch')
+
     useEffect((event) => {
       event.preventDefault()
 
@@ -35,13 +37,8 @@ function App() {
       })
         .then((response) => response.json())
         .then((data) => {
-          const key = Object.keys(data)[0]
-          console.log('this is my data', data)
-          if (key === 'username') {
-            setregisterNewUser('Registered succesfully!')
-          } else {
-            setregisterNewUser('Error: Username taken already')
-          }
+          const keyName = Object.keys(data)[0]
+          console.log('this is my data', keyName)
         })
     })
   }
