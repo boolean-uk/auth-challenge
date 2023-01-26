@@ -8,6 +8,7 @@ ul {
 	text-align: center;
 	justify-content: center;
 	height: 100vh;
+	transition: ease height 1s;
 }
 
 .UserForm {
@@ -31,6 +32,10 @@ ul {
 .SectionMovieForm {
 	display: flex;
 	align-self: center;
+	scale: 1;
+	animation-name: movieForm;
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
 }
 
 section section {
@@ -100,5 +105,15 @@ button:focus {
 
 	to {
 		bottom: 1rem;
+	}
+}
+
+@keyframes movieForm {
+	from {
+		scale: 0;
+	}
+
+	to {
+		scale: 1;
 	}
 }
