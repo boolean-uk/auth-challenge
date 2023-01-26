@@ -1,56 +1,66 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
-const apiUrl = 'http://localhost:4000';
+const [registerResponse, setRegisterResponse] = useState(null);
+
+const apiUrl = "http://localhost:4000";
 
 function App() {
-  const [movies, setMovies] = useState([]);
+	const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
+	useEffect(() => {
+		fetch(`${apiUrl}/movie`)
+			.then((res) => res.json())
+			.then((res) => setMovies(res.data));
+	}, []);
 
-  const handleRegister = async ({ username, password }) => {
-    
-  };
+	const handleRegister = async (user) => {
+		if (!user.username || !user.password) return;
 
-  const handleLogin = async ({ username, password }) => {
-    
-  };
-  
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-  }
+		const options = {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(user),
+		};
 
-  return (
-    <div className="App">
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
+		const res = await fetch(`${apiUrl}/user/register`, options);
+		const data = await res.json();
 
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
+		setRegisterResponse(data);
+		console.log(registerResponse);
+	};
 
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
+	const handleLogin = async ({ username, password }) => {};
 
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
+	const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+
+	return (
+		<div className="App">
+			<h1>Register</h1>
+			<UserForm handleSubmit={handleRegister} />
+
+			<h1>Login</h1>
+			<UserForm handleSubmit={handleLogin} />
+
+			<h1>Create a movie</h1>
+			<MovieForm handleSubmit={handleCreateMovie} />
+
+			<h1>Movie list</h1>
+			<ul>
+				{movies.map((movie) => {
+					return (
+						<li key={movie.id}>
+							<h3>{movie.title}</h3>
+							<p>Description: {movie.description}</p>
+							<p>Runtime: {movie.runtimeMins}</p>
+						</li>
+					);
+				})}
+			</ul>
+		</div>
+	);
 }
 
 export default App;
