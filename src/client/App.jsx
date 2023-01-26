@@ -21,44 +21,43 @@ function App() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
-    }
-      .then((res) => res.json()))
+    })
+      .then((res) => res.json())
+  };
+
+  const handleLogin = async ({ username, password }) => {
+    // Post req in here aswell 
+  };
+
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+
   }
-};
 
-const handleLogin = async ({ username, password }) => {
-  // same Post res in here aswell 
-};
+  return (
+    <div className="App">
+      <h1>Register</h1>
+      <UserForm handleSubmit={handleRegister} />
 
-const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+      <h1>Login</h1>
+      <UserForm handleSubmit={handleLogin} />
 
-}
+      <h1>Create a movie</h1>
+      <MovieForm handleSubmit={handleCreateMovie} />
 
-return (
-  <div className="App">
-    <h1>Register</h1>
-    <UserForm handleSubmit={handleRegister} />
-
-    <h1>Login</h1>
-    <UserForm handleSubmit={handleLogin} />
-
-    <h1>Create a movie</h1>
-    <MovieForm handleSubmit={handleCreateMovie} />
-
-    <h1>Movie list</h1>
-    <ul>
-      {movies.map(movie => {
-        return (
-          <li key={movie.id}>
-            <h3>{movie.title}</h3>
-            <p>Description: {movie.description}</p>
-            <p>Runtime: {movie.runtimeMins}</p>
-          </li>
-        );
-      })}
-    </ul>
-  </div>
-);
+      <h1>Movie list</h1>
+      <ul>
+        {movies.map(movie => {
+          return (
+            <li key={movie.id}>
+              <h3>{movie.title}</h3>
+              <p>Description: {movie.description}</p>
+              <p>Runtime: {movie.runtimeMins}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
 
 export default App;
