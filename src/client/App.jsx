@@ -48,6 +48,8 @@ function App() {
   const registerUser = async (e) => {
     e.preventDefault();
 
+    if (!user.username && !user.password) return;
+
     const options = {
       method: "POST",
       headers: {
@@ -70,6 +72,8 @@ function App() {
   const loginUser = async (e) => {
     e.preventDefault();
 
+    if (!user.username && !user.password) return;
+
     const options = {
       method: "POST",
       headers: {
@@ -91,6 +95,8 @@ function App() {
 
   const createMovie = async (e) => {
     e.preventDefault();
+
+    if (!movie.title && !movie.description && !movie.runtimeMins) return;
 
     const accessToken = localStorage.getItem("access-token");
 
