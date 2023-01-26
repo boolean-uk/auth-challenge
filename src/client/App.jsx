@@ -3,12 +3,11 @@ import "./App.css";
 import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
 
-const [registerResponse, setRegisterResponse] = useState(null);
-
 const apiUrl = "http://localhost:4000";
 
 function App() {
 	const [movies, setMovies] = useState([]);
+	const [registerResponse, setRegisterResponse] = useState(null);
 
 	useEffect(() => {
 		fetch(`${apiUrl}/movie`)
