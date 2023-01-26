@@ -10,6 +10,8 @@ const secret = process.env.JWT_SECRET;
 function App() {
   const [token, setToken] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [regError, setRegError] = useState(undefined);
+  const [regSuccess, setRegSuccess] = useState(true);
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -27,9 +29,15 @@ function App() {
       }),
     };
     fetch(`${apiUrl}/user/register`, opts)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+      .then((res) => {
+        if (res.ok !== true) {
+          throw Error(`The username ${username} is already taken!`);
+        }
+        res.json();
+      })
+      .then((data) => {})
+      .catch((err) => {
+        return setRegError(err.message);
       });
   };
 
@@ -66,17 +74,22 @@ function App() {
     fetch(`${apiUrl}/movie`, opts)
       .then((res) => res.json())
       .then((data) => {
-        const movie = {...data.data}
-        const updatedMovies = [...movies, movie]
+        const movie = { ...data.data };
+        const updatedMovies = [...movies, movie];
         setMovies(updatedMovies);
       });
-
   };
 
   return (
     <div className="App">
       <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
+      <UserForm
+        handleSubmit={handleRegister}
+        regError={regError}
+        setRegError={setRegError}
+        regSuccess={regSuccess}
+      />
+      {regError !== null && <>{regError}</>}
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />

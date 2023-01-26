@@ -8,6 +8,7 @@ const secret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   const { username, password } = req.body;
+  if (username === "" || password === "") return;
   bcrypt.hash(password, saltRounds, async function (err, hash) {
     try {
       const createdUser = await prisma.user.create({
@@ -16,9 +17,9 @@ const register = async (req, res) => {
           password: hash,
         },
       });
-      delete user.password;
       return res.status(201).json({ createdUser });
     } catch (error) {
+      console.log("error is", error);
       if (error.code === "P2002") {
         res
           .status(403)
