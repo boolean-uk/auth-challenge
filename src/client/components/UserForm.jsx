@@ -11,17 +11,23 @@ export default function UserForm({
   const [userPlace, setUserPlace] = useState("username");
   const [pwPlace, setPwPlace] = useState("password");
 
+  useEffect(() => {
+    if (regSuccess === true) {
+      setUser({ username: "", password: "" });
+    }
+  }, [regSuccess]);
+
   const handleSubmitDecorator = (e) => {
     e.preventDefault();
-    if (user.username === "") setUserPlace("please enter username..");
-    if (user.password === "") setPwPlace("please enter password..");
+    if (user.username === "") return setUserPlace("please enter username..");
+    if (user.password === "") return setPwPlace("please enter password..");
     handleSubmit(user);
-    setUser({ username: "", password: "" });
-    setUserPlace("username");
-    setUserPlace("password");
   };
 
   const handleChange = (e) => {
+    e.preventDefault();
+    setRegError(undefined);
+    console.log(e.target.name);
     const { name, value } = e.target;
 
     setUser({

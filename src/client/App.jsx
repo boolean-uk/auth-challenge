@@ -11,7 +11,8 @@ function App() {
   const [token, setToken] = useState([]);
   const [movies, setMovies] = useState([]);
   const [regError, setRegError] = useState(undefined);
-  const [regSuccess, setRegSuccess] = useState(true);
+  const [regSuccess, setRegSuccess] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState("");
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -33,7 +34,7 @@ function App() {
         if (res.ok !== true) {
           throw Error(`The username ${username} is already taken!`);
         }
-        res.json();
+        setRegSuccess(true);
       })
       .then((data) => {})
       .catch((err) => {
@@ -55,6 +56,8 @@ function App() {
       .then((data) => {
         localStorage.setItem("token", data.accessToken);
         setToken(localStorage.token);
+        setLoggedInUser(username);
+        console.log(loggedInUser);
       });
   };
 
@@ -89,7 +92,7 @@ function App() {
         setRegError={setRegError}
         regSuccess={regSuccess}
       />
-      {regError !== null && <>{regError}</>}
+      {regError !== undefined && <>{regError}</>}
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />

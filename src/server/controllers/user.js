@@ -25,7 +25,7 @@ const register = async (req, res) => {
           .status(403)
           .json({ error: `The username ${username} is already taken!` });
       } else {
-        res.status(500).json({ error: "what is going on?" });
+        res.status(500).json({ error: "server error" });
       }
     }
   });
