@@ -14,6 +14,7 @@ function App() {
   });
   const [movies, setMovies] = useState([]);
   const [registerResponse, setRegisterResponse] = useState(null);
+  const [loginResponse, setLoginResponse] = useState(null);
 
   const handleChangeUser = (e) => {
     const { name, value } = e.target;
@@ -51,11 +52,29 @@ function App() {
 
     // const response = axios.post(`${apiUrl}/user/register`, user);
 
-    // console.log(response);
+    // console.log(response.data);
     // setRegisterResponse(response.data.status);
   };
 
-  const loginUser = (e) => {};
+  const loginUser = async (e) => {
+    e.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    };
+
+    const response = await fetch(`${apiUrl}/user/login`, options);
+    const data = await response.json();
+    // if (data.error) {
+    //   setLoginResponse(data.error);
+    // }
+    localStorage.setItem("access-token", data.token);
+    setLoginResponse(data.status);
+  };
 
   const createMovie = (e) => {};
 
@@ -100,6 +119,8 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
+
+      {loginResponse && <p>{loginResponse}</p>}
 
       <h2>Create a movie</h2>
       <form onSubmit={createMovie}>
