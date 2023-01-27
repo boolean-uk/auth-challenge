@@ -23,10 +23,17 @@ function App() {
       body: JSON.stringify({ username, password }),
     })
       .then((res) => res.json())
+
   };
 
   const handleLogin = async ({ username, password }) => {
-    // Post req in here aswell 
+    fetch(`${apiUrl}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
