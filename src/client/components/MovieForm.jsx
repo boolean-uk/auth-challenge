@@ -4,7 +4,7 @@ export default function MovieForm({ handleSubmit }) {
 	const [movie, setMovie] = useState({
 		title: "",
 		description: "",
-		runtimeMins: 60,
+		runtimeMins: "",
 	});
 
 	const handleSubmitDecorator = (e) => {
