@@ -5,7 +5,12 @@ const prisma = new PrismaClient();
 const secret = process.env.JWT_SECRET;
 
 const getAllMovies = async (req, res) => {
-  const movies = await prisma.movie.findMany();
+  const { id } = req.params;
+  const movies = await prisma.movie.findMany({
+    where: {
+      userId: Number(id),
+    },
+  });
 
   res.json({ data: movies });
 };

@@ -11,13 +11,19 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [regError, setRegError] = useState(undefined);
   const [regSuccess, setRegSuccess] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser, setLoggedInUser] = useState(undefined);
 
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then((res) => res.json())
-      .then((res) => setMovies(res.data));
-  }, []);
+    if (loggedInUser !== undefined) {
+      fetch(`${apiUrl}/movie/${loggedInUser.id}`)
+        .then((res) => res.json())
+        .then((res) => {
+          setMovies(res.data);
+        });
+    }
+    console.log(loggedInUser);
+    console.log(movies);
+  }, [loggedInUser]);
 
   const handleRegister = async ({ username, password }) => {
     const opts = {
