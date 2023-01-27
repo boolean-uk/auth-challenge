@@ -12,16 +12,12 @@ function App() {
 	const [movieResponse, setMovieResponse] = useState(null);
 
 	useEffect(() => {
-		// fetch(`${apiUrl}/movie`)
-		// 	.then((res) => res.json())
-		// 	.then((res) => setMovies(res.data));
 		fetchMovies();
 	}, []);
 
 	const fetchMovies = async () => {
 		const res = await fetch(`${apiUrl}/movie`);
 		const data = await res.json();
-		console.log(data);
 		setMovies(data.movies);
 	};
 
@@ -53,12 +49,10 @@ function App() {
 
 		localStorage.setItem("access-token", accessToken.data);
 		setLoginResponse(accessToken);
-		console.log(accessToken);
 	};
 
 	const handleCreateMovie = async (movie) => {
 		const accessToken = localStorage.getItem("access-token");
-		console.log(accessToken);
 
 		if (!accessToken) {
 			console.log("Please log in first!");
@@ -77,15 +71,10 @@ function App() {
 			body: JSON.stringify(movie),
 		};
 
-		console.log(movie);
-
 		try {
 			const res = await fetch(`${apiUrl}/movie`, options);
 			const data = await res.json();
-			console.log(movies);
-			console.log(data);
 			setMovies([...movies, data.data]);
-			console.log(movies);
 		} catch (error) {
 			console.log(error);
 		}
