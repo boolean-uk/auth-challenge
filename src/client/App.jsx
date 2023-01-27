@@ -68,7 +68,28 @@ function App() {
       })
   }
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {}
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const elToken = localStorage.getItem(token)
+    if (!elToken) {
+      console.error(
+        'Thou Shall loggeth inneth before thine can a movie creatith'
+      )
+      return
+    }
+
+    fetch('http://localhost:4000/movies', {
+      method: 'POST',
+      headers: {
+        'content-Type': 'application/json',
+        autorization: `Bearer ${elToken}`
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    })
+      .then((res) => res.json())
+      .then((createdMovieResponse) => {
+        setMovies([...movies, createdMovieResponse.data])
+      })
+  }
 
   return (
     <div className="App">
