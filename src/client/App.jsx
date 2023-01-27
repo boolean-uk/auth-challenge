@@ -22,7 +22,7 @@ function App() {
 		const res = await fetch(`${apiUrl}/movie`);
 		const data = await res.json();
 		console.log(data);
-		setMovies(data.data);
+		setMovies(data.movies);
 	};
 
 	const handleRegister = async (user) => {
@@ -83,7 +83,8 @@ function App() {
 			const res = await fetch(`${apiUrl}/movie`, options);
 			const data = await res.json();
 			console.log(movies);
-			setMovies([...movies, data.data]);
+			console.log(data);
+			setMovies([...movies, data.movies]);
 			console.log(movies);
 		} catch (error) {
 			console.log(error);
