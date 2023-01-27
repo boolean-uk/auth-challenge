@@ -9,12 +9,21 @@ function App() {
 	const [movies, setMovies] = useState([]);
 	const [registerResponse, setRegisterResponse] = useState(null);
 	const [loginResponse, setLoginResponse] = useState(null);
+	const [movieResponse, setMovieResponse] = useState(null);
 
 	useEffect(() => {
-		fetch(`${apiUrl}/movie`)
-			.then((res) => res.json())
-			.then((res) => setMovies(res.data));
+		// fetch(`${apiUrl}/movie`)
+		// 	.then((res) => res.json())
+		// 	.then((res) => setMovies(res.data));
+		fetchMovies();
 	}, []);
+
+	const fetchMovies = async () => {
+		const res = await fetch(`${apiUrl}/movie`);
+		const data = await res.json();
+		console.log(data);
+		setMovies(data.data);
+	};
 
 	const handleRegister = async (user) => {
 		if (!user.username || !user.password) return;
@@ -44,9 +53,42 @@ function App() {
 
 		localStorage.setItem("access-token", accessToken.data);
 		setLoginResponse(accessToken);
+		console.log(accessToken);
 	};
 
-	const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+	const handleCreateMovie = async (movie) => {
+		const accessToken = localStorage.getItem("access-token");
+		console.log(accessToken);
+
+		if (!accessToken) {
+			console.log("Please log in first!");
+			setMovieResponse("Please log in first!");
+			return;
+		}
+
+		if ((!movie.title, !movie.description, !movie.runtimeMins)) return;
+
+		const options = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: `Bearer ${accessToken}`,
+			},
+			body: JSON.stringify(movie),
+		};
+
+		console.log(movie);
+
+		try {
+			const res = await fetch(`${apiUrl}/movie`, options);
+			const data = await res.json();
+			console.log(movies);
+			setMovies([...movies, data]);
+			console.log(movies);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="App">
