@@ -9,22 +9,22 @@ const register = async (req, res) => {
     const { username, password } = req.body;
     const saltRound = 10
 
-    bcrypt.genSalt(saltRound, (err, salt) => {
-        bcrypt.hash(password, salt, async (err, hashedPw) => {
+    const createdUser =
+        bcrypt.genSalt(saltRound, (err, salt) => {
+            bcrypt.hash(password, salt, async (err, hashedPw) => {
 
-            const newUser = await prisma.user.create({
-                data: {
-                    username,
-                    password: hashedPw
-                }
+                const newUser = await prisma.user.create({
+                    data: {
+                        username,
+                        password: hashedPw
+                    }
+                })
+
+                delete newUser.password;
+                res.status(201).json({ user: newUser })
             })
 
-            delete newUser.password;
-            res.status(201).json({ user: newUser })
         })
-
-    })
-    const createdUser = null;
 
     res.json({ data: createdUser });
 };

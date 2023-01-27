@@ -34,6 +34,8 @@ function App() {
       },
       body: JSON.stringify({ username, password }),
     })
+      .then((res) => res.json())
+      .then((loginRes) => { localStorage.setItem(tokenKey, loginRes.data) })
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
