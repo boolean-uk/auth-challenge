@@ -84,7 +84,7 @@ function App() {
 			const data = await res.json();
 			console.log(movies);
 			console.log(data);
-			setMovies([...movies, data.movies]);
+			setMovies([...movies, data.data]);
 			console.log(movies);
 		} catch (error) {
 			console.log(error);
