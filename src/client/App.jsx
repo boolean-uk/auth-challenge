@@ -83,7 +83,7 @@ function App() {
 			const res = await fetch(`${apiUrl}/movie`, options);
 			const data = await res.json();
 			console.log(movies);
-			setMovies([...movies, data]);
+			setMovies([...movies, data.data]);
 			console.log(movies);
 		} catch (error) {
 			console.log(error);
