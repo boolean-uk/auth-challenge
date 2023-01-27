@@ -1,12 +1,17 @@
 import { prisma } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router";
 import "./App.css";
-import MovieForm from "./components/MovieForm";
-import UserForm from "./components/UserForm";
+import Movies from "./components/Movies";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = "http://localhost:4000";
 
 function App() {
+  const navigate = useNavigate();
+
   const [token, setToken] = useState([]);
   const [movies, setMovies] = useState([]);
   const [regError, setRegError] = useState(undefined);
@@ -21,8 +26,6 @@ function App() {
           setMovies(res.data);
         });
     }
-    console.log(loggedInUser);
-    console.log(movies);
   }, [loggedInUser]);
 
   const handleRegister = async ({ username, password }) => {
@@ -41,7 +44,9 @@ function App() {
         }
         setRegSuccess(true);
       })
-      .then((data) => {})
+      .then((data) => {
+        navigate("/login");
+      })
       .catch((err) => {
         return setRegError(err.message);
       });
@@ -63,6 +68,7 @@ function App() {
         localStorage.setItem("token", data.accessToken);
         setToken(localStorage.token);
         setLoggedInUser(data.user);
+        navigate("/movies");
       });
   };
 
@@ -91,33 +97,31 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Register</h1>
-      <UserForm
-        handleSubmit={handleRegister}
-        regError={regError}
-        setRegError={setRegError}
-        regSuccess={regSuccess}
-      />
-      {regError !== undefined && <>{regError}</>}
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} setRegError={setRegError} />
-
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
-
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Register
+              handleSubmit={handleRegister}
+              regError={regError}
+              setRegError={setRegError}
+              regSuccess={regSuccess}
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Login handleSubmit={handleLogin} setRegError={setRegError} />
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            <Movies movies={movies} handleCreateMovie={handleCreateMovie} />
+          }
+        />
+      </Routes>
     </div>
   );
 }
