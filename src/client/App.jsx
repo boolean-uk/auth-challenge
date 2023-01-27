@@ -35,12 +35,27 @@ function App() {
             .then((data) => {
                 
                 console.log("Login succesful", data);
-                localStorage.setItem("Token", data.token)
+                localStorage.setItem("token", data.token)
             });
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+    console.log({ title, description, runtimeMins })
+    fetch("http://localhost:4000/movie/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/JSON",
+        "Authorization": `${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    })
+      .then(res => res.json())
+      .then(res => {
+        setMovies([...movies, res.data])
+        console.log(res)
+      })
+    .catch(e=>console.log(e))
+  
   }
 
   return (
