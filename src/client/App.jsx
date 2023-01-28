@@ -39,6 +39,16 @@ function App() {
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    fetch(`${apiUrl}/user/movie`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: tokenKey
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    })
+      .then((res) => res.json())
+      .then((newMovie) => setMovies([...movies, newMovie.data]))
 
   }
 
