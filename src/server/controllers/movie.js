@@ -5,22 +5,29 @@ const prisma = new PrismaClient()
 const jwtSecret = 'mysecret'
 
 const getAllMovies = async (req, res) => {
+  const movies = await prisma.movie.findMany()
+
   res.json({ data: movies })
 }
 
 const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body
-  const movies = await prisma.movie.findMany()
 
-  let bearer = req.headers.authorization
-  const token = header.split(' ')[1]
-  try {
-    const validToken = jwt.verify(token, jwtSecret)
-  } catch (err) {
-    return res.status(401).json({ error: 'Invalid token provided.' })
+  let bearer = req.headers.authorisation
+
+  if (!bearer) {
+    res.status(403).json({ error: 'You need to log in!' })
   }
 
-  const createdMovie = await prisma.movie.create({
+  bearer = bearer.replace('Bearer ', '')
+
+  try {
+    const verify = jwt.verify(bearer, jwtSecret)
+  } catch (err) {
+    return res.status(401).json({ message: 'Wrong token' })
+  }
+
+  const createNewMovie = await prisma.movie.create({
     data: {
       title,
       description,
@@ -28,7 +35,7 @@ const createMovie = async (req, res) => {
     }
   })
 
-  res.status(201).json({ data: 'Great Success!', createdMovie })
+  res.status(201).json({ status: 'Great success', movie: createNewMovie })
 }
 
 module.exports = {
