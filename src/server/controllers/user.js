@@ -27,13 +27,6 @@ const register = async (req, res) => {
 
 };
 
-
-// const createToken = (id) => {
-//     return jwt.sign({ id }, jwtSecret, {
-//         expiresIn: maxAge
-//     });
-// }
-
 const login = async (req, res) => {
     const { username, password } = req.body;
     
@@ -53,10 +46,8 @@ const login = async (req, res) => {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const maxAge = 3 * 24 * 60 * 60
     const token = jwt.sign(foundUser.id, jwtSecret);
-    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000 });
-
+    
     res.status(200).json({ jwt: token });
 };
 
