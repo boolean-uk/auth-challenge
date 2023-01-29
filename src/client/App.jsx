@@ -36,8 +36,24 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
-    
-  };
+    const user = {username, password};
+
+    await  fetch(`${apiUrl}/user/login`, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+      
+    };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     
