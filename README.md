@@ -1,5 +1,13 @@
 # Authentication Challenge
 
+## Not Logged
+
+![Not Logged](not-logged.png)
+
+## Logged
+
+![Logged](logged.png)
+
 ## Learning Objectives
 
 - Use a token-based approach to authorise access to API resources
@@ -8,7 +16,7 @@
 
 ## Introduction
 
-You are tasked with building a small frontend application containing 3 forms and a list. There is a screenshot at the bottom of this document that gives you an idea of what to aim for. As you'll be able to see, it doesn't have to *look* good so don't spend time on styling!
+You are tasked with building a small frontend application containing 3 forms and a list. There is a screenshot at the bottom of this document that gives you an idea of what to aim for. As you'll be able to see, it doesn't have to _look_ good so don't spend time on styling!
 
 The flow of the application you build looks like this:
 
@@ -19,7 +27,7 @@ The flow of the application you build looks like this:
 
 ## Setting up
 
-Take a little bit of time to familiarise yourself with the project structure - this exercise has both a front-end React app (`src/client/`) *and* a back-end express API (`src/server/`) in it.
+Take a little bit of time to familiarise yourself with the project structure - this exercise has both a front-end React app (`src/client/`) _and_ a back-end express API (`src/server/`) in it.
 
 1. Fork this repository and clone the fork.
 2. Rename `.env.example` to `.env`
@@ -30,8 +38,9 @@ Take a little bit of time to familiarise yourself with the project structure - t
 
 ## Instructions
 
-- Run the app with `npm start` - this will open a React app in your browser *and* run the express server. The server will default to port `4000`, you can change this by adding an `API_PORT` variable to your `.env` if you want.
+- Run the app with `npm start` - this will open a React app in your browser _and_ run the express server. The server will default to port `4000`, you can change this by adding an `API_PORT` variable to your `.env` if you want.
 - Work through each file in the `requirements` directory in numerical order. You can choose whether to work on the Client or Server version of each requirement first, but you may find it easier to do Server first.
 
 ## Example solution
+
 ![](./assets/Auth_Challenge.PNG)

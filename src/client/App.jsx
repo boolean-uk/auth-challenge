@@ -12,10 +12,26 @@ function App() {
 	const [notification, setNotification] = useState('');
 	const [loggedIn, setLoggedIn] = useState(null);
 
-	useEffect(() => {
-		fetch(`${apiUrl}/movie`)
+	// FIXME: MUST FETCH THE MOVIES OF THE LOGGEDIN ID AT EVERY RELOAD!
+
+	// const user = localStorage.getItem('user');
+	// if (user) {
+	// 	setLoggedIn(user);
+	// }
+
+	useEffect(async () => {
+		// TODO: check if there is localStorage data
+		const user = localStorage.getItem('user');
+		if (!user) return;
+
+		if (!loggedIn) return;
+		console.log(loggedIn);
+
+		await setLoggedIn(user);
+
+		fetch(`${apiUrl}/movie/${loggedIn.id}`)
 			.then((res) => res.json())
-			.then((res) => setMovies(res.data));
+			.then((res) => setMovies(res.movies));
 	}, [loggedIn]);
 
 	const handleRegister = async ({ username, password }) => {
@@ -65,9 +81,30 @@ function App() {
 	};
 
 	const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-		console.log('title', title);
-		console.log('description', description);
-		console.log('runtimeMins', runtimeMins);
+		const accessToken = loggedIn.accessToken;
+		const data = { title, description, runtimeMins, accessToken };
+		console.log('data is: ', data);
+
+		// TODO: fetch creating movie
+		fetch(`${apiUrl}/user/register`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setNotification('');
+				const keyName = Object.keys(data)[0];
+				if (keyName === 'error') setNotification(`${data.error} 🔴`);
+				else {
+					setNotification(`Movie created 🟢`);
+					setMovies(data.movies);
+				}
+			})
+			.catch((error) => {
+				setNotification('');
+				setNotification(`Error code ${error.code} 🔴\n${error.message}`);
+			});
 	};
 
 	return (
@@ -103,15 +140,16 @@ function App() {
 					<section>
 						<h1>Movie list</h1>
 						<ul>
-							{movies.map((movie) => {
-								return (
-									<li key={movie.id}>
-										<h3>{movie.title}</h3>
-										<p>Description: {movie.description}</p>
-										<p>Runtime: {movie.runtimeMins}</p>
-									</li>
-								);
-							})}
+							{movies &&
+								movies.map((movie) => {
+									return (
+										<li key={movie.id}>
+											<h3>{movie.title}</h3>
+											<p>Description: {movie.description}</p>
+											<p>Runtime: {movie.runtimeMins}</p>
+										</li>
+									);
+								})}
 						</ul>
 					</section>
 				</section>

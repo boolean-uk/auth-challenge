@@ -25,6 +25,7 @@ export default function UserForm({ handleSubmit }) {
 				placeholder="Username"
 				value={user.username}
 				onChange={handleChange}
+				required
 			/>
 			<input
 				type="password"
@@ -32,6 +33,7 @@ export default function UserForm({ handleSubmit }) {
 				placeholder="Password"
 				value={user.password}
 				onChange={handleChange}
+				required
 			/>
 			<button type="submit">Submit</button>
 		</form>
