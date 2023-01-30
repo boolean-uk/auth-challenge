@@ -34,13 +34,14 @@ function App() {
             .then((res) => res.json())
             .then((data) => {
                 
-                console.log("Login succesful", data);
-                localStorage.setItem("token", data.token)
+              console.log("Login succesful", data);
+        
+              localStorage.setItem("token", data.data)
+            
             });
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    console.log({ title, description, runtimeMins })
     fetch("http://localhost:4000/movie/", {
       method: "POST",
       headers: {
@@ -52,7 +53,6 @@ function App() {
       .then(res => res.json())
       .then(res => {
         setMovies([...movies, res.data])
-        console.log(res)
       })
     .catch(e=>console.log(e))
   
