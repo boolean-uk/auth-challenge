@@ -38,7 +38,6 @@ function App() {
           setNewNotification(
             `A new User ${data.user.username} has been created.`
           )
-        console.log('this the data console', data)
       })
   }
 
@@ -57,8 +56,6 @@ function App() {
       .then((data) => {
         const keyName = Object.keys(data)[0]
 
-        console.log('this is my login data', data)
-
         if (keyName === 'token') {
           setLoginResponse('Login succesful')
           localStorage.setItem('LoginToken', data.token)
@@ -69,25 +66,25 @@ function App() {
   }
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    const elToken = localStorage.getItem(token)
-    if (!elToken) {
+    const token = localStorage.getItem('LoginToken')
+    if (!token) {
       console.error(
         'Thou Shall loggeth inneth before thine can a movie creatith'
       )
       return
     }
 
-    fetch('http://localhost:4000/movies', {
+    fetch('http://localhost:4000/movie', {
       method: 'POST',
       headers: {
-        'content-Type': 'application/json',
-        autorization: `Bearer ${elToken}`
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ title, description, runtimeMins })
     })
       .then((res) => res.json())
       .then((createdMovieResponse) => {
-        setMovies([...movies, createdMovieResponse.data])
+        setMovies([...movies, createdMovieResponse.movie])
       })
   }
 

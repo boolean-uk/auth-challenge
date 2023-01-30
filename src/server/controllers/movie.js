@@ -13,7 +13,7 @@ const getAllMovies = async (req, res) => {
 const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body
 
-  let bearer = req.headers.authorisation
+  let bearer = req.headers.authorization
 
   if (!bearer) {
     res.status(403).json({ error: 'You need to log in!' })
