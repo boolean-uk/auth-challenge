@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
     const { username, password } = req.body;
     const salt = await bcrypt.genSalt();
+
     this.password = await bcrypt.hash(password, salt);
 
     try {
@@ -17,16 +17,23 @@ const register = async (req, res) => {
                 password: this.password
             }
         });
-    
+
+        // delete the created password
+        delete createdUser.password
         res.json({ data: createdUser });
     }
 
     catch(error){
-        console.log(error);
-    }
+        if(error.code === 'P2002'){
+            res.status(403).json({error: `The username with ${username} is already exits`});
+        }
+         
+        else{
+            res.status(503).json({error})
+        }  
 
 };
-
+}
 const login = async (req, res) => {
     const { username, password } = req.body;
     
@@ -40,13 +47,15 @@ const login = async (req, res) => {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const passwordsMatch = await bcrypt.compare(password, foundUser.password);
+    const passwordsMatch = await bcrypt.compare( password, foundUser.password );
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const token = jwt.sign(foundUser.id, jwtSecret);
+    const jwtSecret = process.env.jwtSecret; 
+    
+    const token = jwt.sign( foundUser.id, jwtSecret );
     
     res.status(200).json({ jwt: token });
 };

@@ -56,7 +56,23 @@ function App() {
     };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+    const movie = { title, description, runtimeMins };
+
+    fetch(`${apiUrl}/movie`, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(movie),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
   }
 
   return (
@@ -74,10 +90,10 @@ function App() {
       <ul>
         {movies.map(movie => {
           return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
+            <li key={ movie.id }>
+              <h3>{ movie.title }</h3>
+              <p>Description: { movie.description }</p>
+              <p>Runtime: { movie.runtimeMins }</p>
             </li>
           );
         })}
