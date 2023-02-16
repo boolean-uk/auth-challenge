@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
-const { user } = require("../../../../auth-hashing/src/utils/prisma");
+const { user } = require("../../utils/prisma");
 const prisma = new PrismaClient();
 
 const jwtSecret = "mysecret";
