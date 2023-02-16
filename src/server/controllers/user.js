@@ -8,7 +8,6 @@ const jwtSecret = "mysecret";
 
 const register = async (req, res) => {
 	const { username, password } = req.body;
-	console.log(username, password);
 	const saltRounds = 10;
 
 	bcrypt.hash(password, saltRounds, async (err, hashed_pw) => {
@@ -40,8 +39,6 @@ const login = async (req, res) => {
 			username: username,
 		},
 	});
-
-	console.log(foundUser);
 
 	if (!foundUser) {
 		return res.status(401).json({ error: "Invalid username or password." });
