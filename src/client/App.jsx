@@ -38,25 +38,21 @@ function App() {
         body: JSON.stringify({ username, password }),
       })
         .then((res) => res.json())
-        .then((data) => localStorage.setItem("token", data.token));
+        .then((data) => localStorage.setItem("token", data.data));
     }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    if (!title || !description || !runtimeMins) {
-      return;
-    } else {
-      fetch(`${apiUrl}/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify({ title, description, runtimeMins }),
-      })
-        .then((res) => res.json())
-        .then((data) => setMovies([...movies, data.data]));
-    }
+    fetch(`${apiUrl}/movie`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    })
+      .then((response) => response.json())
+      .then((data) => setMovies([...movies, data.data]));
   };
 
   return (
