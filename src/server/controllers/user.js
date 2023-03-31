@@ -13,7 +13,7 @@ const register = async (req, res) => {
     const user = await prisma.user.create({
       data: { username: username, password: hash },
     });
-    res.status(201).json({ data: user.username });
+    res.status(201).json({ data: { id: user.id, username: user.username } });
   } catch (e) {
     if (e.code === "P2002") {
       res.status(403).json({ error: "Username is taken" });
