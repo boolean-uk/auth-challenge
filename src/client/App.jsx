@@ -1,4 +1,3 @@
-import { response } from 'express';
 import { useEffect, useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
@@ -8,7 +7,6 @@ const apiUrl = 'http://localhost:4000';
 
 function App() {
   const [movies, setMovies] = useState([]);
-  
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -22,7 +20,7 @@ function App() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({username, password})
     }
-    fetch('http://localhost:4000/register', options)
+    fetch(`${apiUrl}/user/register`, options)
       .then(response => response.json())
       .then(data => console.log(data))
   };
@@ -33,12 +31,16 @@ function App() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({username, password})
     }
-    fetch('http://localhost:4000/login', options)
+    fetch(`${apiUrl}/user/login`, options)
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        console.log("login sucsessful", data.data)
+        window.localStorage.setItem("token", data.data)})
+
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    
     
   }
 

@@ -16,6 +16,7 @@ const register = async (req, res) => {
                 password: hash
             }
         });
+        delete createdUser.password
         res.status(201).json({data: createdUser});
     } catch(e) {
         console.log(e)
@@ -27,13 +28,15 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    const foundUser = null;
+    const foundUser = await prisma.user.findUnique({
+        where: {username: username}
+    });
 
     if (!foundUser) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const passwordsMatch = false;
+    const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid username or password.' });
@@ -41,7 +44,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign({username: username, password: password}, jwtSecret)
 
-    res.json({ data: token });
+    res.status(200).json({ data: token });
 };
 
 module.exports = {
