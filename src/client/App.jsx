@@ -1,3 +1,4 @@
+import { response } from 'express';
 import { useEffect, useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
@@ -7,6 +8,7 @@ const apiUrl = 'http://localhost:4000';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -15,11 +17,25 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    const options = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username, password})
+    }
+    fetch('http://localhost:4000/register', options)
+      .then(response => response.json())
+      .then(data => console.log(data))
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    const options = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username, password})
+    }
+    fetch('http://localhost:4000/login', options)
+      .then(response => response.json())
+      .then(data => console.log(data))
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
