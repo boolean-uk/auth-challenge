@@ -42,7 +42,22 @@ function App() {
     }
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    if (!title || !description || !runtimeMins) {
+      return;
+    } else {
+      fetch(`${apiUrl}/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      })
+        .then((res) => res.json())
+        .then((data) => setMovies([...movies, data.data]));
+    }
+  };
 
   return (
     <div className="App">
