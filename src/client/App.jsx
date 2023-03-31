@@ -28,7 +28,19 @@ function App() {
     }
   };
 
-  const handleLogin = async ({ username, password }) => {};
+  const handleLogin = async ({ username, password }) => {
+    if (!username || !password) {
+      return;
+    } else {
+      fetch(`${apiUrl}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => localStorage.setItem("token", data.token));
+    }
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
