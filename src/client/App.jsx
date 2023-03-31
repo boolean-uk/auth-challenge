@@ -35,13 +35,22 @@ function App() {
       .then(response => response.json())
       .then(data => {
         console.log("login sucsessful", data.data)
-        window.localStorage.setItem("token", data.data)})
+        localStorage.setItem("token", data.data)})
 
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-    
+    const options = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({title, description, runtimeMins})
+    }
+    fetch(`${apiUrl}/movie`, options)
+      .then(response => response.json())
+      .then(data => console.log(data))
   }
 
   return (
