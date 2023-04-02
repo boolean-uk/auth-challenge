@@ -1,39 +1,68 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
+const jwtSecret = "mysecret";
+const saltRounds = 10;
 
+//    Using the `username` and `password` provided in the request body, create a new user. The password *must* be hashed before creation.
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  //get user details from req.body
+  const { username, password } = req.body;
+  const createdUser = null;
 
-    const createdUser = null;
+  //hash the passsword:
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hash = bcrypt.hashSync(password, salt);
 
-    res.json({ data: createdUser });
+  try {
+    const createdUser = await prisma.user.create({
+      data: {
+        username: username,
+        password: hash,
+      },
+    });
+
+    const userAndId = {
+      id: createdUser.id,
+      username: createdUser.username,
+    };
+    console.log("userAndId-----", userAndId);
+    res.status(201).json({ user: userAndId });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+
+  //finally return:
+  console.log(createdUser);
+  res.json({ data: createdUser });
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  //get username and password
+  const { username, password } = req.body;
 
-    const foundUser = null;
+  //check user exists
+  const foundUser = await prisma.user.findUnique({
+    where: { username },
+  });
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  //bcrypt to compare passwords and check that they match:
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
-    const passwordsMatch = false;
-
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-
-    const token = null;
-
+  //if not:: errors
+  if (!foundUser || !passwordsMatch) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  } else {
+    //if successful: assign token
+    const token = jwt.sign(foundUser.username, jwtSecret);
+    console.log("token----", token);
     res.json({ data: token });
+  }
 };
 
 module.exports = {
-    register,
-    login
+  register,
+  login,
 };
