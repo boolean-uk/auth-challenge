@@ -16,6 +16,23 @@ function App() {
 
   const handleRegister = async ({ username, password }) => {
     
+
+    if(!username || !password){
+      alert("Please fill in all fields to register")
+      return 
+    } 
+   fetch("http://localhost:4000/user/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => setRegisterResponse(data))
+
+      UserForm.setUser(data)
+      // console.log("UserForm.user----", UserForm.user)
   };
 
   const handleLogin = async ({ username, password }) => {
