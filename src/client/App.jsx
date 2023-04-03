@@ -9,7 +9,6 @@ function App() {
   const [movies, setMovies] = useState([]);
   //TODO: Check these bits below out further
   const [registerResponse, setRegisterResponse] = useState("");
-  const [loginResponse, setLoginResponse] = useState("");
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -50,15 +49,29 @@ function App() {
       body: JSON.stringify({ username, password }),
     })
       .then((response) => response.json())
-      .then((data) => setLoginResponse(data.data));
+      .then((data) => window.localStorage.setItem("token", data.data));
 
-    //    console.log("logged in?", loginResponse);
-
-    const token = JSON.stringify(loginResponse);
-    window.localStorage.setItem("loginResponse", token);
+    // window.localStorage.setItem("token", token);
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const tokenFromStorage = window.localStorage.getItem("token");
+    // console.log("tokenFromStorage:--", tokenFromStorage);
+
+    fetch(`${apiUrl}/movie`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenFromStorage}`,
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    })
+      .then((response) => response.json())
+      .then(console.log("response:", response.json()))
+      // .then((data) => setMovies(...movies, data.data))
+      .then((data) => console.log(data))
+      .then(console.log("movies======".movies));
+  };
 
   return (
     <div className="App">
