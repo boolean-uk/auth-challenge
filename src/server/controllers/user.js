@@ -56,7 +56,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign(username, jwtSecret);
 
-    res.json({ data: token });
+    res.json({ data: token, id: foundUser.id });
 };
 
 module.exports = {

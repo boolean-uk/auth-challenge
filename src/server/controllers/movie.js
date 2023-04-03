@@ -10,10 +10,44 @@ const getAllMovies = async (req, res) => {
     res.json({ data: movies });
 };
 
-const createMovie = async (req, res) => {
-    const { title, description, runtimeMins } = req.body;
+const getMovieById = async (req, res) => {
+    const id = Number(req.params.id);
 
-    if (!title || !description || !runtimeMins) {
+    // try {
+    //     const movies = await prisma.movie.findMany({
+    //         where: {
+    //             users: [
+    //                 {
+    //                     id,
+    //                 },
+    //             ],
+    //         },
+    //     });
+    //     res.json({ data: movies });
+    // } catch (e) {
+    //     console.log(e);
+    //     res.status(500).json({ error: e });
+    // }
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id,
+            },
+            include: {
+                movies: true,
+            },
+        });
+        res.json({ data: user });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: e });
+    }
+};
+
+const createMovie = async (req, res) => {
+    const { title, description, runtimeMins, userId } = req.body;
+
+    if (!title || !description || !runtimeMins || !userId) {
         return res
             .status(400)
             .json({ error: 'Missing fields in request body' });
@@ -34,9 +68,17 @@ const createMovie = async (req, res) => {
                 title,
                 description,
                 runtimeMins,
+                users: {
+                    connect: {
+                        id: userId,
+                    },
+                },
+            },
+            include: {
+                users: true,
             },
         });
-
+        console.log(createdMovie);
         res.json({ data: createdMovie });
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -46,11 +88,13 @@ const createMovie = async (req, res) => {
                 });
             }
         }
-        res.status(500).json({ error: e.message });
+        console.log(e);
+        res.status(500).json({ error: e });
     }
 };
 
 module.exports = {
     getAllMovies,
+    getMovieById,
     createMovie,
 };

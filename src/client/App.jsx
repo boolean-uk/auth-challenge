@@ -7,9 +7,10 @@ const apiUrl = 'http://localhost:4000';
 
 function App() {
     const [movies, setMovies] = useState([]);
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
-        fetch(`${apiUrl}/movie`)
+        fetch(`${apiUrl}/movie/`)
             .then((res) => res.json())
             .then((res) => setMovies(res.data));
     }, []);
@@ -54,13 +55,20 @@ function App() {
                 if (data.data) {
                     console.log('Successfully logged in');
                     localStorage.setItem('token', data.data);
+                    setUserId(data.id);
                 }
+                fetch(`${apiUrl}/movie/${data.id}`)
+                    .then((res) => res.json())
+                    .then((res) => {
+                        console.log(res);
+                        setMovies(res.data.movies);
+                    });
             });
     };
 
     const handleCreateMovie = async ({ title, description, runtimeMins }) => {
         const token = localStorage.getItem('token');
-        const newMovie = { title, description, runtimeMins };
+        const newMovie = { title, description, runtimeMins, userId };
         const newMovieJSON = JSON.stringify(newMovie);
 
         const options = {
@@ -75,12 +83,12 @@ function App() {
         fetch('http://localhost:4000/movie', options)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-                if (data.data) {
-                    const updatedMovies = [...movies];
-                    updatedMovies.push(data.data);
-                    setMovies(updatedMovies);
-                }
+                fetch(`${apiUrl}/movie/${data.data.users[0].id}`)
+                    .then((res) => res.json())
+                    .then((res) => {
+                        console.log(res);
+                        setMovies(res.data.movies);
+                    });
             });
     };
 

@@ -15,6 +15,7 @@ model User {
   id          Int         @id @default(autoincrement())
   username    String      @unique
   password    String
+  movies      Movie[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -24,6 +25,8 @@ model Movie {
   title         String      @unique
   description   String
   runtimeMins   Int
+  users         User[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }
+
