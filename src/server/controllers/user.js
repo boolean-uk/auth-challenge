@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 const jwtSecret = "mysecret";
 const saltRounds = 10;
 
-//    Using the `username` and `password` provided in the request body, create a new user. The password *must* be hashed before creation.
 const register = async (req, res) => {
   //get user details from req.body
   const { username, password } = req.body;
@@ -34,8 +33,6 @@ const register = async (req, res) => {
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
-
-  // res.json({ data: createdUser });
 };
 
 const login = async (req, res) => {
@@ -50,7 +47,7 @@ const login = async (req, res) => {
   //bcrypt to compare passwords and check that they match:
   const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
-  //if not:: errors
+  //if not: errors
   if (!foundUser || !passwordsMatch) {
     return res.status(401).json({ error: "Invalid username or password." });
   } else {

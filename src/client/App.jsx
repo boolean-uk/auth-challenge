@@ -7,8 +7,6 @@ const apiUrl = "http://localhost:4000";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  //TODO: Check these bits below out further
-  const [registerResponse, setRegisterResponse] = useState("");
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -29,10 +27,7 @@ function App() {
       body: JSON.stringify({ username, password }),
     })
       .then((response) => response.json())
-      .then((data) => setRegisterResponse(data));
-
-    UserForm.setUser(data);
-    // console.log("UserForm.user----", UserForm.user)
+      .then((data) => UserForm.setUser(data));
   };
 
   const handleLogin = async ({ username, password }) => {
@@ -50,8 +45,6 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => window.localStorage.setItem("token", data.data));
-
-    // window.localStorage.setItem("token", token);
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
@@ -67,10 +60,7 @@ function App() {
       body: JSON.stringify({ title, description, runtimeMins }),
     })
       .then((response) => response.json())
-      .then(console.log("response:", response.json()))
-      // .then((data) => setMovies(...movies, data.data))
-      .then((data) => console.log(data))
-      .then(console.log("movies======".movies));
+      .then((data) => setMovies([...movies, data.data]));
   };
 
   return (
