@@ -15,15 +15,43 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    fetch('http://localhost:4000/user/register', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    })
+      .then(res => res.json())
+      .then((data) => console.log(data))
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    fetch('http://localhost:4000/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    })
+      .then(res => res.json())
+      .then((data) => {
+        console.log('LOGIN' , data)
+        localStorage.setItem('token', data.data)})
   };
-  
+
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+    fetch('http://localhost:4000/movie', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    })
+      .then(res => res.json())
+      .then((data) => setMovies(data.token))
+     // .then((data) => console.log(data))
   }
 
   return (
