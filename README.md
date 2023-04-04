@@ -1,5 +1,9 @@
 # Authentication Challenge
 
+## Extension: From Scratch
+- Client Repo: https://github.com/MaybeFreak/auth-challange-from-scratch
+- Server Repo: https://github.com/MaybeFreak/auth-challenge-from-scratch-server
+
 ## Learning Objectives
 
 - Use a token-based approach to authorise access to API resources
