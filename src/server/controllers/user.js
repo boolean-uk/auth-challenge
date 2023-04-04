@@ -26,12 +26,12 @@ const register = async (req, res) => {
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === 'P2002') {
-                res.status(401).json({
+                return res.status(401).json({
                     error: 'A username with that name already exists',
                 });
             }
         }
-        res.status(500).json({ error: e.message });
+        res.status(500).json({ e });
     }
 };
 

@@ -8,6 +8,9 @@ const apiUrl = 'http://localhost:4000';
 function App() {
     const [movies, setMovies] = useState([]);
     const [userId, setUserId] = useState('');
+    const [errorRegister, setErrorRegister] = useState(null);
+    const [errorLogin, setErrorLogin] = useState(null);
+    const [errorMovie, setErrorMovie] = useState(null);
 
     useEffect(() => {
         fetch(`${apiUrl}/movie/`)
@@ -30,7 +33,12 @@ function App() {
         fetch('http://localhost:4000/user/register', options)
             .then((res) => res.json())
             .then((data) => {
-                console.log('Created new user: ', data.data.username);
+                if (data.error) {
+                    setErrorRegister(data.error);
+                } else {
+                    console.log('Successfully registered');
+                    setErrorRegister(null);
+                }
             });
     };
 
@@ -50,18 +58,22 @@ function App() {
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) {
-                    console.log(data);
+                    return setErrorLogin(data.error);
                 }
                 if (data.data) {
                     console.log('Successfully logged in');
                     localStorage.setItem('token', data.data);
+                    setErrorLogin(null);
                     setUserId(data.id);
                 }
                 fetch(`${apiUrl}/movie/${data.id}`)
                     .then((res) => res.json())
-                    .then((res) => {
-                        console.log(res);
-                        setMovies(res.data.movies);
+                    .then((data) => {
+                        if (data.error) {
+                            console.log(data);
+                        } else {
+                            setMovies(data.data.movies);
+                        }
                     });
             });
     };
@@ -83,12 +95,15 @@ function App() {
         fetch('http://localhost:4000/movie', options)
             .then((res) => res.json())
             .then((data) => {
-                fetch(`${apiUrl}/movie/${data.data.users[0].id}`)
-                    .then((res) => res.json())
-                    .then((res) => {
-                        console.log(res);
-                        setMovies(res.data.movies);
-                    });
+                if (data.error) {
+                    return setErrorMovie(data.error);
+                } else {
+                    fetch(`${apiUrl}/movie/${data.data.users[0].id}`)
+                        .then((res) => res.json())
+                        .then((res) => {
+                            setMovies(res.data.movies);
+                        });
+                }
             });
     };
 
@@ -96,12 +111,14 @@ function App() {
         <div className="App">
             <h1>Register</h1>
             <UserForm handleSubmit={handleRegister} />
-
+            {errorRegister && <p>{errorRegister}</p>}
             <h1>Login</h1>
             <UserForm handleSubmit={handleLogin} />
+            {errorLogin && <p>{errorLogin}</p>}
 
             <h1>Create a movie</h1>
             <MovieForm handleSubmit={handleCreateMovie} />
+            {errorMovie && <p>{errorMovie}</p>}
 
             <h1>Movie list</h1>
             <ul>
