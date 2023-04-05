@@ -1,2 +1,0 @@
-DATABASE_URL="postgres://mrdsbuhq:Z1wfvkDHvgTQjadAeCDA5Ft-oNCpAaG_@rogue.db.elephantsql.com/mrdsbuhq?schema=prisma"
-SHADOW_DATABASE_URL="postgres://rjovofns:9fqpTuqramcJbhgiQ4y91lT5uySzrP85@rogue.db.elephantsql.com/rjovofns?schema=shadow"
