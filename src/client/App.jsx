@@ -36,8 +36,9 @@ function App() {
     })
       .then(res => res.json())
       .then((data) => {
-        console.log('LOGIN' , data)
-        localStorage.setItem('token', data.data)})
+        console.log('LOGIN', data)
+        localStorage.setItem('token', data.data)
+      })
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
@@ -51,7 +52,7 @@ function App() {
     })
       .then(res => res.json())
       .then((data) => setMovies(data.token))
-     // .then((data) => console.log(data))
+    // .then((data) => console.log(data))
   }
 
   return (
@@ -66,19 +67,24 @@ function App() {
       <MovieForm handleSubmit={handleCreateMovie} />
 
       <h1>Movie list</h1>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
+      {Array.isArray(movies) && movies.length > 0  || movies !== undefined ? (
+        <ul>
+          {movies.map(movie => {
+            return (
+              <li key={movie.id}>
+                <h3>{movie.title}</h3>
+                <p>Description: {movie.description}</p>
+                <p>Runtime: {movie.runtimeMins}</p>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p>Empty movies list</p>
+      )}
     </div>
   );
 }
 
 export default App;
+
