@@ -1,39 +1,50 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
+// const jwtSecret = "mysecret";
+const secret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
+  const hash = await bcrypt.hash(password, 10);
 
-    const createdUser = null;
-
+  try {
+    const createdUser = await prisma.user.create({
+      data: { username: username, password: hash },
+    });
     res.json({ data: createdUser });
+    console.log("createdUser", createdUser);
+  } catch (error) {
+    res.status(500).json({ error: "Cannot be registered!" });
+  }
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const foundUser = null;
+  const foundUser = await prisma.user.findUnique({
+    where: { username: username },
+  });
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  if (!foundUser) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
 
-    const passwordsMatch = false;
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
+  // console.log("bcyrpt.compare: ", passwordsMatch);
 
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  if (!passwordsMatch) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
 
-    const token = null;
+  const token = jwt.sign({ username: foundUser.username }, secret);
 
-    res.json({ data: token });
+  res.json({ data: token });
 };
 
 module.exports = {
-    register,
-    login
+  register,
+  login,
 };
