@@ -15,13 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-
 const loginRouter = require('./routers/login');
-app.use('/user', loginRouter);
+app.use('/login', loginRouter);
 
 const registerRouter = require('./routers/register');
-app.use('/user', registerRouter);
+app.use('/', registerRouter);
 
 const movieRouter = require('./routers/movie');
 app.use('/movie', movieRouter);

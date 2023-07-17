@@ -1,11 +1,41 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import '../../App.css';
 import './index.css'
 
 function UserRegister () {
 
-    return (
+    const [user, setUser] = useState({ username: '', password: ''})
+    const [registerCompletion, setRegisterCompletion] = useState('')
 
+    const register = (e) => {
+        e.preventDefault();
+
+        console.log(user)
+
+        const response = fetch('http://localhost:4000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify(user)
+          })
+
+          console.log(response)
+
+          setRegisterCompletion(response)
+    }
+
+    const handleChange = (e) => {
+        const { value, name } = e.target;
+
+        setUser({
+            ...user,
+            [name]: value
+        });
+    }
+
+    return (
         <>
             <header>
                 <div>
@@ -25,6 +55,8 @@ function UserRegister () {
                         type="text"
                         name="username"
                         placeholder="Username"
+                        value={user.username}
+                        onChange={handleChange}
                         />
                     </label>
                     <label>
@@ -32,6 +64,8 @@ function UserRegister () {
                         type="password"
                         name="password"
                         placeholder="Password"
+                        onChange={handleChange}
+                        value={user.password}
                         />
                     </label>
                     <div>
@@ -39,6 +73,7 @@ function UserRegister () {
                         className='submitbutton'
                         type="submit"
                         name="Register"
+                        onClick={register}
                     />
                     </div>
                 </form>
