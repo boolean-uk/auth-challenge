@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+  background-color: rgb(201, 198, 179);
+  height: 100vh;
 }
 
 .App-logo {
@@ -26,6 +34,37 @@
 
 .App-link {
   color: #61dafb;
+}
+.register, .login, .movie {
+  margin-top: 20px;
+  background-color: rgba(128, 128, 128, 0.465);
+  height: 235px;
+  width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.button {
+  font-size: 17px;
+  width: 120px;
+  height: 40px;
+  border-radius: 50px;
+  border: 0;
+  background-color: grey;
+}
+.hidden {
+  display: none;
+}
+input{
+  margin: 3px;
+  font-size: 17px;
+  height: 30px;
+  width: 200px;
+  border-radius: 10px;
+  border: 1px solid rgb(126, 125, 125);
+  background-color: rgba(221, 219, 215, 0.656);
+}
+input::placeholder{
+  color: rgb(0, 0, 0);
 }
 
 @keyframes App-logo-spin {
