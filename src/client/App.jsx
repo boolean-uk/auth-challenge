@@ -1,16 +1,31 @@
 import './App.css';
+import {useSate} from 'react'
+import Form from './components/form';
+import Input from './components/input';
+
 
 const apiUrl = 'http://localhost:4000';
+
+const handleRegister = (event) => {
+
+}
+
+const handleChange = (event) => {
+
+}
 
 function App() {
   return (
     <div className="App">
       <h1>Register</h1>
-      <form className='register'>
-        <input type='text' id='username1' name='username1' placeholder='Username'/>
-        <input type='password' id='pwd1' name='pwd1' placeholder='Password'/>
-        <button>Submit</button>
-      </form>
+      <Form handleSubmit={handleRegister} className={"Register"} inputs = {[
+
+        <Input type={'text'} name={'username'} placeholder={"Username"} handleChange={handleChange}/>,
+
+        <Input type={'password'} name={'password'} placeholder={"Password"} handleChange={handleChange}/>
+        
+      ]}/>
+
 
       <h1>Login</h1>
       <form className='login'>
