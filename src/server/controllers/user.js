@@ -1,5 +1,7 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+const secret = process.env.JWT_SECRET
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
@@ -25,7 +27,30 @@ const createUser = async(req, res) => {
 
 }
 
+const loginUser = async(req, res) => {
+    const {username, password} = req.body
+
+    if (username && password) {
+        const foundUser = await prisma.user.findUnique({
+            where: {
+                username
+            }
+        })
+
+        if (foundUser) {
+            bcrypt.compare(password, foundUser.password, async function(err, passwordsMatch) {
+                if (passwordsMatch) {
+                    
+                    const token = jwt.sign({username}, secret)
+                    return res.json({token})
+                }
+            })
+        }
+    }
+}
+
 
 module.exports = {
-    createUser
+    createUser,
+    loginUser
 }

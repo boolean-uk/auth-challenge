@@ -11,6 +11,7 @@ const apiUrl = 'http://localhost:4000';
 function App() {
   const [user, setUser] = useState({username: '', password: ''})
   // const [registerResponse, setRegisterResponse] = useState('');
+  const [loginResponse, setLoginResponse] = useState('')
 
 
 
@@ -36,7 +37,24 @@ function App() {
   const handleLogin = (event) => {
     event.preventDefault()
 
-    
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(user)
+    }
+
+    fetch('http://localhost:4000/user/login', options)
+    .then(response => response.json())
+    .then(data => {
+      const response = data.token
+      console.log(response)
+      setLoginResponse(response)
+
+      // Save Token
+      localStorage.setItem('Token', response)
+    })
 
   }
   
