@@ -1,5 +1,5 @@
 import './App.css';
-import {useSate} from 'react'
+import {useState} from 'react'
 import Form from './components/form';
 import Input from './components/input';
 import { placeholder } from '@babel/types';
@@ -7,31 +7,63 @@ import { placeholder } from '@babel/types';
 
 const apiUrl = 'http://localhost:4000';
 
-const handleRegister = (event) => {
-
-}
-
-const handleChange = (event) => {
-
-}
 
 function App() {
+  const [user, setUser] = useState({username: '', password: ''})
+  // const [registerResponse, setRegisterResponse] = useState('');
+
+
+
+  const handleRegister = (event) => {
+    event.preventDefault()
+
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(user)
+    }
+
+    fetch('http://localhost:4000/user/register', options)
+    .then(response => response.json())
+   
+
+  
+  }
+
+
+  const handleLogin = (event) => {
+    event.preventDefault()
+
+    
+
+  }
+  
+  const handleChange = (event) => {
+    const {value, name} = event.target
+    setUser({
+      ...user,
+      [name]: value
+    })
+  
+  }
   return (
     <div className="App">
       <h1>Register</h1>
       <Form handleSubmit={handleRegister} className={"Register"} inputs = {[
 
-        <Input type={'text'} name={'username'} placeholder={"Username"} handleChange={handleChange}/>,
+        <Input type={'text'} name={'username'} placeholder={"Username"} handleChange={handleChange} value={user.username}/>,
 
-        <Input type={'password'} name={'password'} placeholder={"Password"} handleChange={handleChange}/>
+        <Input type={'password'} name={'password'} placeholder={"Password"} handleChange={handleChange} value={user.password}/>
         
       ]}/>
 
       <h1>Login</h1>
-      <Form handleSubmit={handleRegister} className={"Login"} inputs = {[
-        <Input type={'text'} name={'username'} placeholder={"Username"} handleChange={handleChange}/>,
+      <Form handleSubmit={handleLogin} className={"Login"} inputs = {[
+        <Input type={'text'} name={'username'} placeholder={"Username"} handleChange={handleChange} value={user.username}/>,
         
-        <Input type={'password'} name={'password'} placeholder={"Password"} handleChange={handleChange}/>
+        <Input type={'password'} name={'password'} placeholder={"Password"} handleChange={handleChange} value={user.password }/>
       ]}/>
 
 
