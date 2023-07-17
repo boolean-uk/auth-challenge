@@ -17,8 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-const userRouter = require('./routers/user');
-app.use('/user', userRouter);
+const loginRouter = require('./routers/login');
+app.use('/user', loginRouter);
+
+const registerRouter = require('./routers/register');
+app.use('/user', registerRouter);
 
 const movieRouter = require('./routers/movie');
 app.use('/movie', movieRouter);

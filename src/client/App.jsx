@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from "react-router-dom"
-// import UserLogin from './Components/UserLogin'
+import UserLogin from './Components/UserLogin'
 import UserRegister from './Components/UserRegister'
 
 const apiUrl = 'http://localhost:4000';
@@ -8,10 +8,10 @@ const apiUrl = 'http://localhost:4000';
 function App() {
   return (
     <Routes>
-        {/* <Route
+        <Route
           path='login'
           element={<UserLogin />}
-        /> */}
+        />
         <Route
           path='/'
           element={<UserRegister />}

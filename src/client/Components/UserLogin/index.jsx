@@ -7,16 +7,8 @@ function UserRegister () {
     return (
 
         <>
-            <header>
-                <div>
-                    <p>Already have an account?</p>
-                </div>
-                <div>
-                    <Link to="login"> <button className='signin'> Sign In </button> </Link>
-                </div>
-            </header>
             <div className='headertext'>
-                <h1>Register Your Account!</h1>
+                <h1>Log In</h1>
             </div>
             <div>
                 <form>
@@ -45,7 +37,7 @@ function UserRegister () {
             </div>
         </>
 
-    )
-}
+     )
+    }
 
 export default UserRegister
