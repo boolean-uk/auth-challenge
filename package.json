@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@prisma/client": "^3.9.2",
+    "@prisma/client": "^5.1.0-dev.7",
     "bcrypt": "^5.0.1",
     "concurrently": "^7.0.0",
     "cors": "^2.8.5",
@@ -32,7 +32,13 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.45.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.15",
-    "prisma": "^3.9.2"
+    "prisma": "^5.1.0-dev.7"
   }
 }
