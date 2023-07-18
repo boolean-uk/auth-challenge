@@ -17,7 +17,6 @@ const register = async (req, res) => {
         username: username,
         password: hashedPassword,
       },
-      // delete: password
     });
     console.log('done', user)
     res.status(201).json({ user: user });
