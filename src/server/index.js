@@ -19,7 +19,7 @@ const loginRouter = require('./routers/login');
 app.use('/login', loginRouter);
 
 const registerRouter = require('./routers/register');
-app.use('/', registerRouter);
+app.use('/register', registerRouter);
 
 const movieRouter = require('./routers/movie');
 app.use('/movie', movieRouter);

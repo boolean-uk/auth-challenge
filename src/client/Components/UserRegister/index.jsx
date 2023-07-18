@@ -8,12 +8,12 @@ function UserRegister () {
     const [user, setUser] = useState({ username: '', password: ''})
     const [registerCompletion, setRegisterCompletion] = useState('')
 
-    const register = (e) => {
+    const register = async (e) => {
         e.preventDefault();
 
         console.log(user)
 
-        const response = fetch('http://localhost:4000/register', {
+        const response = await fetch('http://localhost:4000/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -68,6 +68,12 @@ function UserRegister () {
                         value={user.password}
                         />
                     </label>
+
+                    {registerCompletion.status === 201 && <p>User Created</p>}
+                    {registerCompletion.status === 403 && <p>User Already Exists</p>}
+                    {registerCompletion.status === 500 && <p>Server Error</p>}
+
+
                     <div>
                     <input
                         className='submitbutton'
