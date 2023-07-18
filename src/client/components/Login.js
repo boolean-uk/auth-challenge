@@ -6,6 +6,8 @@ export default function Login() {
     password: "",
   });
 
+  const [loginResponse, setLoginResponse] = useState("")
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -19,7 +21,8 @@ export default function Login() {
       .then((res) => res.json())
       .then((data) => {
         setLoginResponse(data.data.token);
-        localStorage.setItem("token", registerResponse.token);
+        console.log(loginResponse)
+        localStorage.setItem("token", loginResponse.token);
       });
   };
 

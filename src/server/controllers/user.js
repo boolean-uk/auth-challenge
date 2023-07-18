@@ -5,6 +5,11 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.JWT_SECRET;
 const saltRounds = 12;
 
+const createToken = (payload, secret) => {
+  const token = jwt.sign(payload, secret);
+  return token;
+}
+
 const register = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -18,6 +23,8 @@ const register = async (req, res) => {
         password: hashedPassword,
       },
     });
+    const payload = { username, password }
+    createToken(payload, secret)
     console.log("registered:", user);
     res.status(201).json({ user: user, status: "registration successful" });
   } catch (e) {
@@ -45,11 +52,8 @@ const login = async (req, res) => {
     function checkUser(result) {
       if (result) {
         const payload = { username, password };
-        const createToken = (payload, secret) => {
-          const token = jwt.sign(payload, secret);
-          return token;
-        };
         const token = createToken(payload, secret);
+        console.log("login successful");
         return res.send({
           data: { token: token, username: username },
           status: "login successful",
@@ -64,7 +68,6 @@ const login = async (req, res) => {
         checkUser(result);
       });
     }
-    console.log("login successful");
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {

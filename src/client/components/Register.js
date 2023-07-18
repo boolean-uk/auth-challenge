@@ -3,6 +3,8 @@ import { useState } from "react";
 export default function Register() {
   const [user, setUser] = useState({ username: "", password: "" });
 
+  const [registerResponse, setRegisterResponse] = useState("")
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,7 +18,11 @@ export default function Register() {
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
-      });
+      })
+      .then((data) => {
+        setRegisterResponse(data.data.token);
+        localStorage.setItem("token", registerResponse.token);
+      })
   };
 
   const handleChange = (e) => {
