@@ -15,7 +15,11 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    try {
+      
+    } catch (error) {
+      
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
