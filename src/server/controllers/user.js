@@ -18,7 +18,7 @@ const register = async (req, res) => {
         password: hashedPassword,
       },
     });
-    console.log('done', user)
+    console.log("registered:", user);
     res.status(201).json({ user: user });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -32,4 +32,45 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = register;
+const login = async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: "Missing fields in request body" });
+  }
+  try {
+    const foundUser = await prisma.user.findUnique({
+      where: { username: username },
+      select: { password: true },
+    });
+    function checkUser(result) {
+      if (result) {
+        console.log("user exists");
+        const payload = { username, password };
+        const createToken = (payload, secret) => {
+          const token = jwt.sign(payload, secret);
+          return token;
+        };
+        const token = createToken(payload, secret);
+        return res.send({ data: { token: token, username: username } });
+      } else {
+        console.log("invalid user credentials");
+        return res.status(401).send({ error: "invalid username or password" });
+      }
+    }
+    if (foundUser) {
+      bcrypt.compare(password, foundUser.password, function (err, result) {
+        checkUser(result);
+      });
+    }
+    return { foundUser };
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2002") {
+        return res.json({ error: "no user found" });
+      }
+    }
+    res.status(500).json({ error: e.message });
+  }
+};
+
+module.exports = { register, login };
