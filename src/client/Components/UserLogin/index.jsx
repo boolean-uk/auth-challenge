@@ -10,25 +10,25 @@ function UserLogin () {
 
     const login = async (e) => {
         e.preventDefault();
- 
-        setUser({username: username, password: password})
 
-        console.log(user)
+        useEffect(() => {
+            if (loginCompletion.status === 200) {
+            navigate("/movies");
+            }
+        }, [loginCompletion.status]);
 
-        const response = await fetch('http://localhost:4000/register', {
+        const response = await fetch('http://localhost:4000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
               },
             body: JSON.stringify(user)
           })
-
-          console.log(response)
-
-          setRegisterResponse(response)
-
-        
-
+          .then(res => {
+            setLoginCompletion(res)
+           return res.json()
+        })
+          .then((data) => localStorage.setItem("token", data.data))
     };
 
     const handleChange = (e) => {
@@ -62,15 +62,21 @@ function UserLogin () {
                         type="password"
                         name="password"
                         placeholder="Password"
-                        value={user.username}
+                        value={user.password}
                         onChange={handleChange}
                         />
                     </label>
+
+                    {loginCompletion.status === 200 && <p>Login Successful</p>}
+                    {loginCompletion.status === 401 && <p>Username or Password Not Recognised</p>}
+                    {loginCompletion.status === 500 && <p>Server Error</p>}
+
                     <div>
                     <input
                         className='submitbutton'
                         type="submit"
                         name="Login"
+                        onClick={login}
                     />
                     </div>
                 </form>
