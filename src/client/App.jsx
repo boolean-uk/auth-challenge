@@ -15,7 +15,20 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
+    const options = {
+      method: "POST",
+      body: JSON.stringify({ username: username, password: password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+    fetch(`${apiUrl}/user/register`, options)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      console.log('User has registered', data)
+    })
   };
 
   const handleLogin = async ({ username, password }) => {
