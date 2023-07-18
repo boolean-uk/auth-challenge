@@ -6,4 +6,21 @@ const getMovies = async (req, res) => {
   return res.send({ movies })
 }
 
-module.exports = getMovies
+const addMovie = async (req, res) => {
+  const { title, desc, runtime } = req.body
+  console.log(
+    {title},
+    {desc},
+    {runtime}
+  )
+  const movie = await prisma.movie.create({
+    data: {
+      title,
+      description: desc,
+      runtimeMins: Number(runtime)
+    }
+  })
+  return res.status(201).send({movie})
+}
+
+module.exports = { getMovies, addMovie }
