@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 
 const createMovie = async(req, res) => {
     const {title, description, runtimeMins} = req.body
-    console.log(runtimeMins)
     
     const token = req.header('authorization')
 
@@ -20,15 +19,14 @@ const createMovie = async(req, res) => {
                 title,
                 description,
                 runtimeMins: Number(runtimeMins)
-            }
+            }  
         })
 
         res.status(201).json({createdMovie})
 
     } catch (err) {
-        
-        throw new Error("Incorrect token")  
-    }
+        console.log(err)
+    }  
 }
 
 module.exports = {

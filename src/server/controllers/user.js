@@ -11,24 +11,31 @@ const createUser = async(req, res) => {
     if (username && password) {
         bcrypt.genSalt(saltRounds, function (err, salt) {
             bcrypt.hash(password, salt, async function (err, hash) {
+                try {
 
-                const user = await prisma.user.create({
-                    data: {
-                        username,
-                        password: hash
-                    }
-                })
-
-                res.status(201).json({user})
+                    const user = await prisma.user.create({
+                        data: {
+                            username,
+                            password: hash
+                        }
+                    })
+    
+                    res.status(201).json({user})
+                } catch (e) {
+                    const error = "The user already exists"
+                    
+                    res.status(409).send({error})
+                }
                
             })
         }) 
-    }
+    }  
 
 }
 
 const loginUser = async(req, res) => {
     const {username, password} = req.body
+    let error
 
     if (username && password) {
         const foundUser = await prisma.user.findUnique({
@@ -43,8 +50,14 @@ const loginUser = async(req, res) => {
                     
                     const token = jwt.sign({username}, secret)
                     return res.json({token})
+                } else {
+                    error = "incorrect password"
+                    res.json({error})
                 }
             })
+        } else {
+            error = "Username not found"
+            res.json({error})
         }
     }
 }

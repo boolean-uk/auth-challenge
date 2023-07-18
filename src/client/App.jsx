@@ -2,7 +2,6 @@ import './App.css';
 import {useState} from 'react'
 import Form from './components/form';
 import Input from './components/input';
-import { placeholder } from '@babel/types';
 
 
 const apiUrl = 'http://localhost:4000';
@@ -12,12 +11,8 @@ function App() {
   const [user, setUser] = useState({username: '', password: ''})
   const [movieParams, setMovieParams] = useState({title: '', description: '', runtimeMins: ''})
   const [movies, setMovies] = useState([])
-  console.log(movies)
-  // const [registerResponse, setRegisterResponse] = useState('');
-  // const [loginResponse, setLoginResponse] = useState('')
 
-
-
+  
   const handleRegister = (event) => {
     event.preventDefault()
 
@@ -76,7 +71,9 @@ function App() {
     fetch('http://localhost:4000/movie', options)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      const movie = data.createdMovie
+      
+      setMovies(movies => [...movies, movie])
       
     })
 
@@ -85,7 +82,8 @@ function App() {
   
   const handleChange = (event) => {
     const {value, name} = event.target
-    if (name !== 'username' || name !== 'password') {
+   
+    if (name !== 'username' && name !== 'password') {
       setMovieParams({
         ...movieParams,
         [name]: value
@@ -123,9 +121,9 @@ function App() {
 
       <h1>Create a Movie</h1>
       <Form handleSubmit={handleCreateMovie} className={"createMovie"} inputs = {[
-        <Input type={'text'} name={'title'} placeholder={'Title'} handleChange={handleChange}/>,
-        <Input type={'text'} name={'description'} placeholder={'Description'} handleChange={handleChange}/>,
-        <Input type={'number'} name={'num'} placeholder={'Runtime'}/>
+        <Input type={'text'} name={'title'} placeholder={'Title'} handleChange={handleChange} value={movieParams.title}/>,
+        <Input type={'text'} name={'description'} placeholder={'Description'} handleChange={handleChange} value={movieParams.description}/>,
+        <Input type={'number'} name={'runtimeMins'} placeholder={'Runtime'} handleChange={handleChange} value={movieParams.runtimeMins}/>
       ]}/>
   
 
