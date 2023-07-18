@@ -6,10 +6,24 @@ const apiUrl = 'http://localhost:4000'
 export function Login () {
   const loginInitialState = {}
   const [loginState, setLoginState] = useState(loginInitialState)
+  const [loginMessage, setLoginMessage] = useState('')
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault()
     console.log("loginState", loginState)
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify(loginState)
+    }
+    await fetch(apiUrl + '/user/login', options)
+    .then((res) => res.json())
+    .then((res) => {
+      setLoginMessage(res.message)
+    })
   }
 
   const handleLoginChange = (e) => {
@@ -27,6 +41,7 @@ export function Login () {
           <input type="password" placeholder="Password"/>
           <button>Login</button>
         </form>
+      <h4>{loginMessage && <p>{loginMessage}</p>}</h4>
       </section>
   )
 }
