@@ -7,6 +7,7 @@ const apiUrl = 'http://localhost:4000';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -16,14 +17,49 @@ function App() {
 
   const handleRegister = async ({ username, password }) => {
     try {
-      
+      const response = await fetch(`${apiUrl}/user/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        console.log('User created successfully');
+        
+      } else {
+        console.error('User creation failed');
+        
+      }
     } catch (error) {
-      
+      console.error(error);
+     
     }
   };
 
   const handleLogin = async ({ username, password }) => {
+   try {
+    const response = await fetch(`${apiUrl}/user/login`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    if(response.ok){
+      const data = await response.json();
+      const { token } = data;
+      setToken(token)
+      console.log('User logged in')
+    }
+    else{
+      console.log('Failed to login')
+    }
+
+   } catch (error) {
     
+   }
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
