@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 import '../../App.css';
 import './index.css'
 
@@ -7,6 +9,14 @@ function UserRegister () {
 
     const [user, setUser] = useState({ username: '', password: ''})
     const [registerCompletion, setRegisterCompletion] = useState('')
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (registerCompletion.status === 201) {
+        navigate("/login");
+        }
+    }, [registerCompletion.status]);
+
 
     const register = async (e) => {
         e.preventDefault();
