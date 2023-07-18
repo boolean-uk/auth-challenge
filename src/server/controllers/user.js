@@ -19,7 +19,7 @@ const register = async (req, res) => {
       },
     });
     console.log("registered:", user);
-    res.status(201).json({ user: user });
+    res.status(201).json({ user: user, status: "registration successful" });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
@@ -44,14 +44,16 @@ const login = async (req, res) => {
     });
     function checkUser(result) {
       if (result) {
-        console.log("user exists");
         const payload = { username, password };
         const createToken = (payload, secret) => {
           const token = jwt.sign(payload, secret);
           return token;
         };
         const token = createToken(payload, secret);
-        return res.send({ data: { token: token, username: username } });
+        return res.send({
+          data: { token: token, username: username },
+          status: "login successful",
+        });
       } else {
         console.log("invalid user credentials");
         return res.status(401).send({ error: "invalid username or password" });
@@ -62,7 +64,7 @@ const login = async (req, res) => {
         checkUser(result);
       });
     }
-    return { foundUser };
+    console.log("login successful");
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {

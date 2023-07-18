@@ -1,12 +1,15 @@
 import { useState } from "react";
 
-export default function Register() {
-  const [user, setUser] = useState({ username: "", password: "" });
+export default function Login() {
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:4000/user/register", {
+    fetch("http://localhost:4000/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,12 +18,13 @@ export default function Register() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setUser(data);
+        setLoginResponse(data.data.token);
+        localStorage.setItem("token", registerResponse.token);
       });
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { value, name } = e.target;
     setUser({
       ...user,
       [name]: value,
@@ -29,7 +33,7 @@ export default function Register() {
 
   return (
     <>
-      <h1>Register</h1>
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -45,7 +49,7 @@ export default function Register() {
           value={user.password}
           onChange={handleChange}
         ></input>
-        <button type="submit">Register</button>
+        <button type="submit">Log In</button>
       </form>
     </>
   );
