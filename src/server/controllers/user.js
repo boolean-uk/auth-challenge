@@ -16,7 +16,6 @@ const registerUser = async (req, res) => {
                 username: true
             }
         })
-        console.log("this is newUser: ", newUser)
         res.status(201).json({ user: newUser })
     })
 }
@@ -32,7 +31,7 @@ const loginUser = async (req, res) => {
         bcrypt.compare(password, foundUser.password, function(err, result){
             if(result){
                 const token = jwt.sign({username}, secret)
-                res.send({token})
+                res.status(201).send({token})
             } else res.status(401).send('Invalid username or password')
         })
     } else res.status(401).send('Invalid username or password')
