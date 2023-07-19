@@ -29,7 +29,7 @@ const login = async (req, res) => {
     let token = false
     const foundUser = await prisma.user.findUnique({
         where: {
-            username
+            username: username
         }
     })
 
