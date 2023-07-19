@@ -1,12 +1,15 @@
 import '../App.css'
 import React from 'react'
 import { useState } from 'react'
+import { AddMovie } from './AddMovie'
 const apiUrl = 'http://localhost:4000'
 
 export function Login () {
   const loginInitialState = {}
   const [loginState, setLoginState] = useState(loginInitialState)
   const [loginMessage, setLoginMessage] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
 
   const login = async (e) => {
     e.preventDefault()
@@ -23,7 +26,9 @@ export function Login () {
     .then((res) => res.json())
     .then((res) => {
       setLoginMessage(res.message)
+      setIsLoggedIn(res.loginSuccess)
     })
+
   }
 
   const handleLoginChange = (e) => {
@@ -34,6 +39,7 @@ export function Login () {
   }
 
   return (
+    <>
       <section className="login form">
         <h2>Login</h2>
         <form onSubmit={login} onChange={handleLoginChange}>
@@ -41,8 +47,10 @@ export function Login () {
           <input type="password" placeholder="Password"/>
           <button>Login</button>
         </form>
-      <h4>{loginMessage && <p>{loginMessage}</p>}</h4>
+        <h4>{loginMessage && <p>{loginMessage}</p>}</h4>
       </section>
+      {isLoggedIn && <AddMovie />}
+    </>
   )
 }
 

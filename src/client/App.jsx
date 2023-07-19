@@ -8,7 +8,6 @@ export default function App () {
     <div className="App">
       <Register />
       <Login />
-      <AddMovie />
     </div>
   )
 }

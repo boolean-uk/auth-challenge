@@ -32,7 +32,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { username, password } = req.body
 
-  if (!username || !password) return res.status(403).send({message: 'Please enter a valid username and password'})
+  if (!username || !password) return res.status(403).send({message: 'Please enter a valid username and password', loginSuccess: false})
 
   const foundUser = await prisma.user.findUnique({
     where: {
@@ -44,14 +44,14 @@ const login = async (req, res) => {
     bcrypt.compare(password, foundUser.password, function(err, result) {
       console.log({ result })
       if (result) {
-      const token = jwt.sign({username: username}, secret)
+        const token = jwt.sign({username: username}, secret)
 
-      return res.status(201).send({user: { username: foundUser.username, id: foundUser.id, token }, message: 'login is correct'})
+        return res.status(201).send({user: { username: foundUser.username, id: foundUser.id, token }, loginSuccess: result, message: 'login is correct'})
       }
 
     })
   } else {
-    return res.status(401).send({ message: "incorrect username or password" })
+    return res.status(401).send({ message: "incorrect username or password", loginSuccess: result })
   }
 }
 
