@@ -4,7 +4,7 @@ export default function Movie() {
   const [movie, setMovie] = useState({
     title: "",
     description: "",
-    runtimeMins: 0,
+    runtimeMins: "",
   });
 
   const handleSubmit = (e) => {
@@ -13,22 +13,25 @@ export default function Movie() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": localStorage.getItem("token")
       },
       body: JSON.stringify(movie),
     })
       .then((res) => res.json())
       .then((data) => {
         setMovie(data);
+        localStorage.getItem("token")
       });
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({
-      ...user,
+    setMovie({
+      ...movie,
       [name]: value,
     });
   };
+  
+  console.log(movie)
 
   return (
     <>

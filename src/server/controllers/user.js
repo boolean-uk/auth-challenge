@@ -12,9 +12,9 @@ const createToken = (payload, secret) => {
 
 const register = async (req, res) => {
   const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ error: "Missing fields in request body" });
-  }
+  // if (!username || !password) {
+  //   return res.status(400).json({ error: "Missing fields in request body" });
+  // }
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const user = await prisma.user.create({
@@ -24,9 +24,9 @@ const register = async (req, res) => {
       },
     });
     const payload = { username, password }
-    createToken(payload, secret)
+    const token = createToken(payload, secret)
     console.log("registered:", user);
-    res.status(201).json({ user: user, status: "registration successful" });
+    res.status(201).json({ user: user, token: token, status: "registration successful" });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
@@ -41,9 +41,9 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ error: "Missing fields in request body" });
-  }
+  // if (!username || !password) {
+  //   return res.status(400).json({ error: "Missing fields in request body" });
+  // }
   try {
     const foundUser = await prisma.user.findUnique({
       where: { username: username },

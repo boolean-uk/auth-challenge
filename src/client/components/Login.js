@@ -6,11 +6,9 @@ export default function Login() {
     password: "",
   });
 
-  const [loginResponse, setLoginResponse] = useState("")
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(user)
     fetch("http://localhost:4000/user/login", {
       method: "POST",
       headers: {
@@ -20,9 +18,8 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setLoginResponse(data.data.token);
-        console.log(loginResponse)
-        localStorage.setItem("token", loginResponse.token);
+        setUser(data)
+        localStorage.setItem("token", data.data.token)
       });
   };
 
@@ -33,6 +30,7 @@ export default function Login() {
       [name]: value,
     });
   };
+  console.log(user)
 
   return (
     <>

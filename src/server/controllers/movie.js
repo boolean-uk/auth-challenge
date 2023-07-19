@@ -1,26 +1,25 @@
 const { Prisma } = require("@prisma/client");
 const prisma = require("../../utils/prisma");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const secret = process.env.JWT_SECRET;
-const saltRounds = 12;
 
 const createMovie = async (req, res) => {
-  const { title, description, runtimeMins } = req.body
+  const { title, description, runtimeMins } = req.body;
   if (!title || !description || !runtimeMins) {
     return res.status(400).json({ error: "Missing fields in request body" })
   }
 
   try {
-    const createdMovie = await prisma.movie.create({
+    const runtimeMinsNum = Number(runtimeMins)
+    const movie = await prisma.movie.create({
       data: {
         title: title,
         description: description,
-        runtimeMins: runtimeMins
-      }
-    })
-    console.log("created:", createdMovie)
-    res.status(201).json({ movie: createdMovie, status: "createMovie successful"})
+        runtimeMins: runtimeMinsNum,
+      },
+    });
+    console.log("created:", movie);
+    res
+      .status(201)
+      .json({ movie: movie, status: "createMovie successful" });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
@@ -29,6 +28,6 @@ const createMovie = async (req, res) => {
     }
     res.status(500).json({ error: e.message });
   }
-}
+};
 
-module.exports = createMovie
+module.exports = createMovie;
