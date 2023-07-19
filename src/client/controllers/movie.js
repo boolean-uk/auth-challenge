@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react'
 const apiUrl = 'http://localhost:4000'
 
 const Movie = ({ token }) => {
+
   const [movie, setMovie] = useState({
     title: '',
     description: '',
-    runtimeMins: null
+    runtimeMins: undefined
   })
+
   const [movies, setMovies] = useState([])
   const [movieResponse, setMovieResponse] = useState('')
 
@@ -48,14 +50,35 @@ const Movie = ({ token }) => {
       },
       body: JSON.stringify(movie)
     }
-    try {
-      const response = await fetch(`${apiUrl}/movie`, options)
-      const data = await response.json()
-      setMovieResponse(`${movie.title} has been created`)
-      setMovies((prevMovies) => [...prevMovies, data.movie])
-    } catch (error) {
-      console.error('Error:', error)
-    }
+    fetch(`${apiUrl}/movie`, options)
+      .then(function (response) {
+        if (!response.ok) {
+          if (response.status === 400) {
+            throw new Error('Missing fields in request body')
+          } else if (response.status === 403) {
+            return response.json().then(function (data) {
+              throw new Error(data.error)
+            })
+          } else if (response.status === 409) {
+            return response.json().then(function (data) {
+              throw new Error('Movie with this title already exists') 
+            })
+          } else {
+            throw new Error('An unexpected error occurred')
+          }
+        }
+
+        return response.json()
+      })
+      .then(function (data) {
+        setMovieResponse('Movie has been created')
+        setTimeout(() => {
+          setMovieResponse('')
+        }, 5000)
+      })
+      .catch(function (error) {
+        setMovieResponse(`Error: ${error.message}`)
+      })
   }
 
   return (
@@ -109,7 +132,6 @@ const Movie = ({ token }) => {
           </form>
         </div>
       )}
-
       {token && (
         <div>
           <h1>LIST OF MOVIES</h1>

@@ -4,7 +4,16 @@ const prisma = new PrismaClient()
 const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body
   console.log(req.body)
-
+  const findMovie = await prisma.movie.findFirst({
+    where: {
+      title: title
+    }
+  })
+  if (findMovie) {
+    return res.status(409).json({
+      error: 'Missing fields in request body'
+    })
+  }
   if (!title || !description || !runtimeMins) {
     return res.status(400).json({
       error: 'Missing fields in request body'
@@ -13,13 +22,14 @@ const createMovie = async (req, res) => {
   try {
     const createdMovie = await prisma.movie.create({
       data: {
-        title,
-        description,
-        runtimeMins
+        title: title,
+        description: description,
+        runtimeMins: runtimeMins
       }
     })
     res.status(201).json({ movie: createdMovie })
   } catch (e) {
+    console.log(e instanceof PrismaClient.PrismaClientKnownRequestError)
     if (e instanceof PrismaClient.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
         return res

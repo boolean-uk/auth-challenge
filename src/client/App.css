@@ -41,7 +41,7 @@ body{
 .register, .login{
   margin-top: 20px;
   background-color: rgba(128, 128, 128, 0.465);
-  height: 265px;
+  height: 270px;
   width: 500px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -49,8 +49,7 @@ body{
 .movie {
   margin-top: 20px;
   background-color: rgba(128, 128, 128, 0.465);
-  max-height: 350px;
-  height: 275px;
+  height: 290px;
   width: 500px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -148,4 +147,19 @@ input:not(:placeholder-shown) + .input-filled {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
+}
+.checkbox{
+  height: 15px;
+  width: 15px;
+  position: relative;
+  left: 42px;
+  
+}
+.password-container >label {
+  font-size: 13px;
+  position: relative;
+  right:40px;
+}
+.password-container{
+  margin: 5px;
 }

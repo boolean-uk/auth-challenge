@@ -1,34 +1,67 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
-const createUser = async (req, res) => {
-  const { username, password } = req.body
+const saltRounds = 10
+const secret = process.env.JWT_SECRET
 
-  if (!username || !password) {
-    return res.status(400).json({
-      error: 'Missing fields in request body'
-    })
-  }
+const register = async (req, res) => {
   try {
-    const createdUser = await prisma.user.create({
+    const { username, password } = req.body
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Invalid username or password' })
+    }
+    const hash = await bcrypt.hash(password, saltRounds)
+    const newUser = await prisma.user.create({
       data: {
-        username,
-        password
+        username: username,
+        password: hash
       }
     })
-    res.status(201).json({ customer: createdUser })
-  } catch (e) {
-    if (e instanceof PrismaClient.PrismaClientKnownRequestError) {
-      if (e.code === 'P2002') {
-        return res
-          .status(409)
-          .json({ error: 'A user with the provided username already exists' })
-      }
+    res.status(201).json({ user: newUser })
+  } catch (error) {
+    if (error.code === 'P2002') {
+      console.log(error)
+      res.status(409).json({ error: error.message })
+    } else {
+      res.status(500).json({ error })
     }
-
-    res.status(500).json({ error: e.message })
   }
 }
+
+const login = async (req, res) => {
+  try {
+    const { username, password } = req.body
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Missing fields in request body' })
+    }
+    const foundUser = await prisma.user.findUnique({
+      where: {
+        username
+      }
+    })
+
+    if (!foundUser) {
+      return res.status(401).json({ error: 'Invalid username or password' })
+    }
+
+    bcrypt.compare(password, foundUser.password, (errro, result) => {
+      if (!result) {
+        return res.status(401).json({ error: 'Invalid username or password' })
+      }
+
+      const token = jwt.sign({ username }, secret)
+
+      return res.status(201).json({ token })
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
 module.exports = {
-  createUser
+  register,
+  login
 }
