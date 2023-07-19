@@ -8,7 +8,7 @@ const saltRounds = 10;
 
 const register = async (req, res) => {
     const { username, password } = req.body;
-
+    
     bcrypt.hash(password, saltRounds, async (err, hash) => {
         const newUser = await prisma.user.create({
             data: {
@@ -26,7 +26,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-    let token = false
     const foundUser = await prisma.user.findUnique({
         where: {
             username: username
@@ -36,16 +35,15 @@ const login = async (req, res) => {
     if(foundUser) {
         bcrypt.compare(password, foundUser.password, async (err, result) => {
             if(result) {
-                token = jwt.sign({username}, jwtSecret)
+                const token = jwt.sign({username}, jwtSecret)
                 res.status(201).send({ token })
             } else {
-                res.status(401).send('Invalid username or password')
+                res.status(401).send({ error: "Invalid username or password" })
             }
         })
     } else {
-        res.status(401).send('Invalid username or password')
+        res.status(401).send({ error: "Invalid username or password"})
     }
-
 };
 
 module.exports = {

@@ -41,7 +41,7 @@ function App() {
       }),
     });
 
-    const data = await res.json();
+    const data =  await res.json();
     localStorage.setItem("accessToken", data.token);
     console.log("Login complete")
   };
