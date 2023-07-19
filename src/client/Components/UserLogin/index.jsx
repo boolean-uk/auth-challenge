@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../App.css';
 import './index.css'
 
@@ -7,17 +8,19 @@ function UserLogin () {
 
     const [user, setUser] = useState({ username: '', password: ''})
     const [loginCompletion, setLoginCompletion] = useState('')
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loginCompletion.status === 200) {
+        navigate("/movies");
+        }
+    }, [loginCompletion.status]);
+
 
     const login = async (e) => {
         e.preventDefault();
 
-        useEffect(() => {
-            if (loginCompletion.status === 200) {
-            navigate("/movies");
-            }
-        }, [loginCompletion.status]);
-
-        const response = await fetch('http://localhost:4000/login', {
+        await fetch('http://localhost:4000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
