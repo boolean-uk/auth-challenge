@@ -43,6 +43,7 @@ const loginUser = async(req, res) => {
                 username
             }
         })
+        
 
         if (foundUser) {
             bcrypt.compare(password, foundUser.password, async function(err, passwordsMatch) {
@@ -52,12 +53,12 @@ const loginUser = async(req, res) => {
                     return res.json({token})
                 } else {
                     error = "incorrect password"
-                    res.json({error})
+                    res.status(409).send({error})
                 }
             })
         } else {
             error = "Username not found"
-            res.json({error})
+            res.status(409).send({error})
         }
     }
 }
