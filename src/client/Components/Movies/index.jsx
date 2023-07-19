@@ -4,8 +4,13 @@ import { useEffect } from 'react';
 
 function Movies () {
     const [movies, setMovies] = useState([])
-    const [movieInput, setMovieInput] = useState({ title: '', description: '', runtime: '' })
+    const [movieInput, setMovieInput] = useState({ title: '', description: '', runtime: undefined })
 
+    useEffect(() => {
+        fetch(`http://localhost:4000/movies`)
+          .then((res) => res.json())
+          .then((res) => setMovies(res.data));
+      }, []);
 
     const createMovie = async (e) => {
         e.preventDefault()
@@ -65,7 +70,7 @@ function Movies () {
                 </label>
                 <label>
                     <input
-                    type="text"
+                    type="number"
                     name="runtime"
                     placeholder="Run Time"
                     value={movieInput.runtime}
@@ -84,23 +89,30 @@ function Movies () {
                 </div>
             </form>
         </div>
-        <div>
-            <ul>
+        <section className='moviecontainer'>
+                    <div>
+                        <strong>Movie Title</strong>
+                    </div>
+                    <div>
+                    <strong>Movie Description</strong>
+                    </div>
+                    <div>
+                        <strong>Movie Duration (Mins)</strong>
+                    </div>
                 {movies.map((movie) => (
                     <>
-                    <li>
+                    <div>
                         {movie.title}
-                    </li>
-                    <li>
+                    </div>
+                    <div>
                         {movie.description}
-                    </li>
-                    <li>
-                        {movie.runtime}
-                    </li>
+                    </div>
+                    <div>
+                        {movie.runtimeMins}
+                    </div>
                 </>  
                 ))}
-            </ul>
-        </div>
+        </section>
     </>
 
 

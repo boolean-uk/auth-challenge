@@ -14,6 +14,9 @@ const createMovie = async (req, res) => {
     // destructures the request body
     const { title, description, runtime } = req.body
 
+
+    console.log(req.body)
+
     try {
         const token = req.headers.authorization.split(" ")[1];
         jwt.verify(token, secret);
@@ -26,7 +29,7 @@ const createMovie = async (req, res) => {
         data: { 
             title: title,
             description: description,
-            runtime: runtime
+            runtimeMins: Number(runtime)
          },
       });
       res.json({ data: createdMovie });

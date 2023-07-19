@@ -22,7 +22,7 @@ const registerRouter = require('./routers/register');
 app.use('/register', registerRouter);
 
 const movieRouter = require('./routers/movie');
-app.use('/movie', movieRouter);
+app.use('/movies', movieRouter);
 
 
 

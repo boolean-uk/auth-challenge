@@ -1,0 +1,15 @@
+.moviecontainer {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.2fr;
+    align-items: center;
+    justify-items: center;
+    margin-left: 500px;
+    margin-right: 500px;
+
+}
+
+.moviecontainer > div {
+    justify-content:center;
+    align-items: center;
+    padding: 6px;
+}
