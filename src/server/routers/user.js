@@ -18,7 +18,6 @@ router.post('/register', async (req, res) => {
         password: hash
       }
     })
-    delete newUser.password
     res.status(201).json({ user: newUser })
   } catch (error) {
     if (error.code === 'P2002') {
