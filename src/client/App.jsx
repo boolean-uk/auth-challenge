@@ -12,7 +12,7 @@ function App() {
     fetch(`${apiUrl}/movie`)
     .then((res) => res.json())
     .then((res) => setMovies(res.data));
-  }, []);
+  }, [movies]);
 
   const register = async ({ username, password }) => {
     const res = await fetch(`${apiUrl}/user/register`, {
@@ -62,9 +62,8 @@ function App() {
       }),
     });
 
-    const movie = res.json();
+    const movie = await res.json()
     console.log('Added movie')
-
     setMovies([...movies, movie])
   };
 

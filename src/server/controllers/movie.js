@@ -32,7 +32,7 @@ const createMovie = async (req, res) => {
             runtimeMins
         }
     })
-    res.status(201).send({createdMovie: createMovie})
+    res.status(201).send({createdMovie: createdMovie})
 };
 
 module.exports = {
