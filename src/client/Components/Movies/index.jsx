@@ -94,7 +94,7 @@ function Movies () {
                         <strong>Movie Title</strong>
                     </div>
                     <div>
-                    <strong>Movie Description</strong>
+                        <strong>Movie Description</strong>
                     </div>
                     <div>
                         <strong>Movie Duration (Mins)</strong>
