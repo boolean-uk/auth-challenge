@@ -20,6 +20,12 @@ const createMovie = async (req, res) => {
     res.status(201).send({createdMovie: newMovie})
 }
 
+const getAllMovies = async (req, res) => {
+    const allMovies = await prisma.movie.findMany()
+    res.send({allMovies})
+}
+
 module.exports = {
-    createMovie
+    createMovie,
+    getAllMovies
 }

@@ -1,85 +1,27 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import { Login, Register } from './components';
 
 const apiUrl = 'http://localhost:4000';
-const InitialNewUser = {
-  username: '',
-  password: ''
-}
-const InitialUserLogIn = {
-  username: '',
-  password: ''
-}
+
 const moviesState = {
-  movieList: [],
   title: '',
   description: '',
   runtimeMins: 0,
 }
 function App() {
-  const [newUser, setNewUser] = useState(InitialNewUser)
-  const [logInUser, setLogInUser] = useState(InitialUserLogIn)
   const [token, setToken] = useState('')
   const [movies, setMovies] = useState(moviesState)
+  const [movieList, setMovieList] = useState([])
 
-
-  const handleRegisterInfo = (e) => {
-    const { name } = e.target
-    setNewUser({...newUser, [name]: e.target.value})
-  }
-
-  const handleRegister = (e) => {
-    e.preventDefault()
-
-    const user = {
-      username: newUser.username,
-      password: newUser.password
-    }
-
-      const options = {
-        method: "post",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(user)
-    }
-  
-    fetch(`${apiUrl}/user/register`, options)
-    .then(function (response) {
-        return response.json()
-    })
-    e.target.reset()
-  }
-
-  const handleLoginInfo = (e) => {
-    const {name} = e.target
-    setLogInUser({...logInUser, [name]: e.target.value})
-  }
-
-  const handleLogin = (e) => {
-    e.preventDefault()
-
-    const logInDetails = {
-      username: logInUser.username,
-      password: logInUser.password
-    }
-
-    const options = {
-      method: "post",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(logInDetails)
-    }
-    fetch(`${apiUrl}/user/login`, options)
-    .then(function (response) {
-        return response.json()
-    })
+  useEffect(() => {
+    fetch(`${apiUrl}/movie`)
+    .then(res => res.json())
     .then(data => {
-      setToken(data.token)
+      setMovieList(data.allMovies)
     })
-    e.target.reset()
-  }
+  }, [() => createMovie])
+
   const handleMovies = (e) => {
     const {name} = e.target
     setMovies({...movies, [name]: e.target.value})
@@ -102,31 +44,12 @@ function App() {
     }
     fetch(`${apiUrl}/movie`, options)
     .then(res => res.json())
-    .then(data => {
-      const moviesArr = movies.movieList
-      moviesArr.push(data.createdMovie)
-      setMovies({...movies, movieList: moviesArr})
-      console.log(movies.movieList)
-    })
     e.target.reset()
   }
   return (
     <div className="App">
-
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
-          <input placeholder='Username' type="text" name='username' onChange={handleRegisterInfo}/>
-          <input type="password" placeholder='Password' name='password' onChange={handleRegisterInfo}/>
-          <input type="submit"/>
-      </form>
-
-
-      <h2>Log In</h2>
-      <form onSubmit={handleLogin}>
-          <input type="text" name='username' placeholder='Username' onChange={handleLoginInfo}/>
-          <input type="password" placeholder='Password' name='password' onChange={handleLoginInfo}/>
-        <input type="submit" />
-      </form>
+      <Register apiUrl={apiUrl} />
+      <Login setToken={setToken} apiUrl={apiUrl} />
 
 
       <h2>Create a movie</h2>
@@ -139,7 +62,7 @@ function App() {
 
       <h2>Movie List</h2>
       {
-        movies.movieList.map((movie, idx) => {
+        movieList.map((movie, idx) => {
           return <div key={idx}>
             <h3>{movie.title}</h3>
             <p>Description: {movie.description}</p>
