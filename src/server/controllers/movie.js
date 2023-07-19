@@ -30,4 +30,10 @@ const createMovie = async (req, res) => {
   }
 };
 
-module.exports = createMovie;
+const getAllMovies = async (req, res) => {
+    const movies = await prisma.movie.findMany()
+    res.json({ data: movies })
+    console.log('movies:', movies)
+}
+
+module.exports = {createMovie, getAllMovies};

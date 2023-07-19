@@ -30,7 +30,6 @@ export default function Login() {
       [name]: value,
     });
   };
-  console.log(user)
 
   return (
     <>
