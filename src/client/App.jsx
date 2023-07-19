@@ -3,6 +3,7 @@ import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
 
+
 const apiUrl = 'http://localhost:4000';
 
 function App() {
@@ -27,16 +28,36 @@ function App() {
       return response.json()
     })
     .then((data) => {
-      console.log('User has registered', data)
+      console.log("User has registered", data)
     })
   };
 
   const handleLogin = async ({ username, password }) => {
-    
+    fetch('http://localhost:4000/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    })
+      .then(res => res.json())
+      .then((data) => {
+        console.log('LOGIN', data)
+        localStorage.setItem('token', data.data)
+      })
   };
-  
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
+    fetch('http://localhost:4000/movie', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    })
+      .then(res => res.json())
+      .then((data) => setMovies(data.token))
+
   }
 
   return (

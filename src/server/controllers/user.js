@@ -23,22 +23,27 @@ const register = async (req, res) => {
     res.status(400).json({ error: e.message });
   }
 };
+
 const login = async (req, res) => {
   const { username, password } = req.body;
 
-  const foundUser = null;
+  const foundUser = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+  });
 
   if (!foundUser) {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const passwordsMatch = false;
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
   if (!passwordsMatch) {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const token = null;
+  const token = jwt.sign(username, jwtSecret);
 
   res.json({ data: token });
 };
