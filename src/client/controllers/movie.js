@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 const apiUrl = 'http://localhost:4000'
 
 const Movie = ({ token }) => {
-
   const [movie, setMovie] = useState({
     title: '',
     description: '',
@@ -22,23 +21,27 @@ const Movie = ({ token }) => {
     }))
   }
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/movie`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        const data = await response.json()
-        setMovies(data.movies)
-      } catch (error) {
-        console.error('Error:', error)
+  useEffect(
+    () => {
+      const fetchMovies = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/movie`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          const data = await response.json()
+          setMovies(data.movies)
+        } catch (error) {
+          console.error('Error:', error)
+        }
       }
-    }
 
-    fetchMovies()
-  }, [token, movies])
+      fetchMovies()
+    },
+    [token],
+    [movies]
+  )
 
   const createMovie = async (e) => {
     e.preventDefault()
@@ -61,7 +64,7 @@ const Movie = ({ token }) => {
             })
           } else if (response.status === 409) {
             return response.json().then(function (data) {
-              throw new Error('Movie with this title already exists') 
+              throw new Error('Movie with this title already exists')
             })
           } else {
             throw new Error('An unexpected error occurred')

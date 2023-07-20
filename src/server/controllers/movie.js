@@ -42,8 +42,10 @@ const createMovie = async (req, res) => {
   }
 }
 const getAll = async (req, res) => {
-  const allMovies = await prisma.movie.findMany({})
-  res.status(200).json({ movies: allMovies })
+  try {
+    const allMovies = await prisma.movie.findMany({})
+    res.status(200).json({ movies: allMovies })
+  } catch (error) {}
 }
 module.exports = {
   createMovie,
