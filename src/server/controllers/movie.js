@@ -1,18 +1,42 @@
-// TODO: Remove this
-const testMovie = {
-	title: 'Dodgeball',
-	description: 'The best movie',
-	runtime: 60,
-}
-const testMovie2 = {
-	title: 'Matrix',
-	description: 'The best',
-	runtime: 60,
-}
+const { Prisma } = require('@prisma/client')
+const prisma = require('../utils/prisma')
+
 const getMovies = async (req, res) => {
-	res.status(200).json({ movies: [testMovie, testMovie2] })
+	const movies = await prisma.movie.findMany({
+		orderBy: {
+			id: 'asc',
+		},
+	})
+	return res.status(200).json({ movies: movies })
+}
+
+const createMovie = async (req, res) => {
+	const { title, description, runtimeMins } = req.body
+
+	if (!title || !description || !runtimeMins) {
+		return res.status(400).json({
+			error: 'Missing fields in request body',
+		})
+	}
+	try {
+		const createdMovie = await prisma.movie.create({
+			data: {
+				title,
+				description,
+				runtimeMins,
+			},
+		})
+		res.status(201).json({ movie: createdMovie })
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			if (e.code === 'P2002') {
+				return res.status(409).json({ error: 'Unique constraint failed' })
+			}
+		}
+	}
 }
 
 module.exports = {
 	getMovies,
+	createMovie,
 }

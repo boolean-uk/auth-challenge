@@ -10,18 +10,24 @@ function App() {
 		password: '',
 		token: '',
 	}
+	const newMovie = {
+		title: '',
+		description: '',
+		runtimeMins: '',
+	}
 
 	const [movies, setMovies] = useState([])
+	const [movie, setMovie] = useState([newMovie])
+
 	const [user, setUser] = useState(newUser)
 	const [saveUser, setSaveUser] = useState(newUser)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
 		const movieList = getMovies()
-		console.log('list', movieList)
 	}, [])
 
-	function handleChange(e) {
+	function handleUserChange(e) {
 		e.preventDefault()
 		const inputName = e.target.name
 		const inputValue = e.target.value
@@ -46,9 +52,26 @@ function App() {
 				return res.json()
 			})
 			.then((data) => {
-				//	console.log('data', data.movies)
 				setMovies(data.movies)
 			})
+	}
+
+	function handleMovieTitleChange(e) {
+		e.preventDefault()
+		const value = e.target.value
+		setMovie({ ...movie, title: value })
+	}
+
+	function handleMovieDescrChange(e) {
+		e.preventDefault()
+		const value = e.target.value
+		setMovie({ ...movie, description: value })
+	}
+
+	function handleMovieRuntimeChange(e) {
+		e.preventDefault()
+		const value = e.target.value
+		setMovie({ ...movie, runtimeMins: value })
 	}
 
 	function handleSubmit(e) {
@@ -78,6 +101,10 @@ function App() {
 				}
 			})
 	}
+	function handleCreateMovie(e) {
+		e.preventDefault()
+		console.log('movie', movie)
+	}
 	return (
 		<div className="App">
 			<form>
@@ -88,7 +115,7 @@ function App() {
 						name="username"
 						placeholder="Username"
 						value={user.username}
-						onChange={handleChange}
+						onChange={handleUserChange}
 					/>
 				</label>
 				<label>
@@ -97,7 +124,7 @@ function App() {
 						name="password"
 						placeholder="Password"
 						value={user.password}
-						onChange={handleChange}
+						onChange={handleUserChange}
 					/>
 				</label>
 				<input
@@ -114,7 +141,7 @@ function App() {
 						name="user"
 						placeholder="Username"
 						value={user.username}
-						onChange={handleChange}
+						onChange={handleUserChange}
 					/>
 				</label>
 				<label>
@@ -123,7 +150,7 @@ function App() {
 						name="passw"
 						placeholder="Password"
 						value={user.password}
-						onChange={handleChange}
+						onChange={handleUserChange}
 					/>
 				</label>
 				<input
@@ -135,28 +162,46 @@ function App() {
 
 				<h1>Create movie</h1>
 				<label>
-					<input type="text" name="title" placeholder="Title" />
+					<input
+						type="text"
+						name="title"
+						placeholder="Title"
+						value={movie.title}
+						onChange={handleMovieTitleChange}
+					/>
 				</label>
 				<label>
-					<input type="text" name="description" placeholder="Description" />
+					<input
+						type="text"
+						name="description"
+						placeholder="Description"
+						value={movie.description}
+						onChange={handleMovieDescrChange}
+					/>
 				</label>
 				<label>
-					<input type="text" name="minutes" placeholder="Minutes" />
+					<input
+						type="text"
+						name="minutes"
+						placeholder="Minutes"
+						value={movie.runtimeMins}
+						onChange={handleMovieRuntimeChange}
+					/>
 				</label>
 				<input
 					type="submit"
 					name="submit"
 					value={'Submit'}
-					onClick={handleSubmit}
+					onClick={handleCreateMovie}
 				/>
 			</form>
 			<h1>Movie List</h1>
 			<ul>
 				{movies.map((movie) => (
-					<li>
+					<li key={movie.id}>
 						<h3>{movie.title}</h3>
 						<p>Description: {movie.description}</p>
-						<p>Runtime: {movie.runtime}</p>
+						<p>Runtime: {movie.runtimeMins}</p>
 					</li>
 				))}
 			</ul>
