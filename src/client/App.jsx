@@ -15,16 +15,102 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
-  };
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      });
+  
+      if (response.status === 200) {
+        alert('User registered successfully!');
+      } else if (response.status === 400) {
+        const errorData = await response.json();
+        if (errorData.error === 'Username already exists.') {
+          alert('An account with the same username already exists.');
+        } else {
+          alert(`Error: ${errorData.error}`);
+        }
+      } else {
+        alert('Error occurred.');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('Error occurred.');
+    }
+  };  
+
 
   const handleLogin = async ({ username, password }) => {
-    
+    try {
+      const response = await fetch(`${apiUrl}/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      })
+      const data = await response.json();
+      if (response.status != 200) {
+        throw new Error (data.error)
+      }
+      const token = data.data
+      localStorage.setItem('token', token);
+      alert('User logged in successfully');
+    } catch (error) {
+      console.error('Error ', error);
+      alert(`Error occurred ${error}`);
+  
+    }
+  };
+
+  
+  const handleCreateMovie = ({ title, description, runtimeMins }) => {
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      alert('Please log in before creating a movie.');
+      return;
+    }
+  
+    fetch(`${apiUrl}/movie`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title: title,
+        description: description,
+        runtimeMins: runtimeMins
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error occurred while creating the movie.');
+        }
+      })
+      .then(responseData => {
+        const createdMovie = responseData.data; 
+        setMovies([...movies, createdMovie]); 
+        alert('Movie created successfully!');
+      })
+      .catch(error => {
+        console.error('Error occured during movie creation:', error);
+        alert(error.message);
+      });
   };
   
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-  }
 
   return (
     <div className="App">
