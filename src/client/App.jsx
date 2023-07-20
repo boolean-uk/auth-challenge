@@ -13,6 +13,8 @@ function App() {
     fetch(`${apiUrl}/movie`)
     .then((res) => res.json())
     .then((res) => setMovies(res.data));
+
+    setUpdate(false)
   }, [update]);
 
   const register = async ({ username, password }) => {
@@ -81,6 +83,7 @@ function App() {
       <h1>Movie list</h1>
       <ul>
         {movies.map((movie) => {
+          console.log('1')
           return (  
             <li key={movie.id}>
               <h3>{movie.title}</h3>
