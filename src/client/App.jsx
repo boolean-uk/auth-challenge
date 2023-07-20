@@ -8,7 +8,8 @@ const apiUrl = 'http://localhost:4000';
 
 
 function App() {
-  const [user, setUser] = useState({username: '', password: ''})
+  const [user, setUser] = useState({username: '', password: '', usernameLogin: '', passwordLogin: ''})
+
   const [movieParams, setMovieParams] = useState({title: '', description: '', runtimeMins: ''})
   const [movies, setMovies] = useState([])
 
@@ -91,6 +92,7 @@ function App() {
 
     }
 
+
     setUser({
       ...user,  
       [name]: value
@@ -113,9 +115,9 @@ function App() {
 
       <h1>Login</h1>
       <Form handleSubmit={handleLogin} className={"Login"} inputs = {[
-        <Input type={'text'} name={'username'} placeholder={"Username"} handleChange={handleChange} value={user.username}/>,
+        <Input type={'text'} name={'usernameLogin'} placeholder={"Username"} handleChange={handleChange} value={user.usernameLogin}/>,
         
-        <Input type={'password'} name={'password'} placeholder={"Password"} handleChange={handleChange} value={user.password }/>
+        <Input type={'password'} name={'passwordLogin'} placeholder={"Password"} handleChange={handleChange} value={user.passwordLogin }/>
       ]}/>
 
 
