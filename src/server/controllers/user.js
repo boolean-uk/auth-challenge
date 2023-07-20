@@ -20,7 +20,8 @@ const createUser = async(req, res) => {
                         }
                     })
     
-                    res.status(201).json({user})
+                    res.status(201).json({user: user.username,
+                    registerStatus: 'User created!'})
                 } catch (e) {
                     const error = "The user already exists"
                     
