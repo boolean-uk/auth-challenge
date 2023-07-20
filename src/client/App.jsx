@@ -56,7 +56,7 @@ function App() {
       body: JSON.stringify({ title, description, runtimeMins })
     })
       .then(res => res.json())
-      .then((data) => setMovies(data.token))
+      .then((data) => setMovies(data.data))
 
   }
 
@@ -70,7 +70,7 @@ function App() {
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
-
+      
       <h1>Movie list</h1>
       <ul>
         {movies.map(movie => {
