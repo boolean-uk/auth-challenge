@@ -6,7 +6,7 @@ import './App.css'
 
 const App = () => {
   
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState(localStorage.getItem('Token'))
   const [user, setUser] = useState({ username: '', password: '' })
 
   const handleSetToken = (newToken) => {
