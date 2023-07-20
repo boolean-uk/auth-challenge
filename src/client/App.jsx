@@ -7,12 +7,13 @@ const apiUrl = "http://localhost:4000";
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [update, setUpdate] = useState(false)
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
     .then((res) => res.json())
     .then((res) => setMovies(res.data));
-  }, [movies]);
+  }, [update]);
 
   const register = async ({ username, password }) => {
     const res = await fetch(`${apiUrl}/user/register`, {
@@ -65,6 +66,7 @@ function App() {
     const movie = await res.json()
     console.log('Added movie')
     setMovies([...movies, movie])
+    setUpdate(true)
   };
 
   return (
@@ -79,7 +81,7 @@ function App() {
       <h1>Movie list</h1>
       <ul>
         {movies.map((movie) => {
-          return (
+          return (  
             <li key={movie.id}>
               <h3>{movie.title}</h3>
               <p>Description: {movie.description}</p>
