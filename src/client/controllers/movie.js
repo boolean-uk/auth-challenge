@@ -38,7 +38,7 @@ const Movie = ({ token }) => {
     }
 
     fetchMovies()
-  }, [token])
+  }, [token, movies])
 
   const createMovie = async (e) => {
     e.preventDefault()
