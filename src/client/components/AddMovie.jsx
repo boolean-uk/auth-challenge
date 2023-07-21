@@ -1,12 +1,16 @@
 import '../App.css'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 const apiUrl = 'http://localhost:4000'
 
 export function AddMovie () {
   const movieInitialState = {}
   const [movieState, setMovieState] = useState(movieInitialState)
   const [movieList, setMovieList] = useState([{title:'Nothing yet'}])
+
+  useEffect(() => {
+    getAllMovies()
+  }, [])
 
   const createMovie = async (e) => {
     e.preventDefault()
@@ -19,7 +23,6 @@ export function AddMovie () {
       body: JSON.stringify(movieState)
     }
     const res = await fetch(apiUrl + '/movie', options)
-    getAllMovies()
   }
 
   const handleMovieChange = (e) => {
@@ -31,15 +34,14 @@ export function AddMovie () {
   }
 
   const getAllMovies = async () => {
+    console.log("Starting GET for all movies")
     const movieList = await fetch(apiUrl + '/movie')
       .then((res) => res.json())
       .then((res) => {
         console.log(res)
-        setMovieList(res.movies)
+        res.movies && setMovieList(res.movies)
       })
   }
-
-  getAllMovies()
 
   return (
       <section className="movie form">

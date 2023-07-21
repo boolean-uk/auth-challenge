@@ -13,14 +13,22 @@ const addMovie = async (req, res) => {
     {desc},
     {runtime}
   )
-  const movie = await prisma.movie.create({
-    data: {
-      title,
-      description: desc,
-      runtimeMins: Number(runtime)
-    }
-  })
-  return res.status(201).send({movie})
+  const requestBodyIsComplete = (title && desc && runtime) ? true : false
+
+  if (requestBodyIsComplete) {
+    const movie = await prisma.movie.create({
+      data: {
+        title,
+        description: desc,
+        runtimeMins: Number(runtime)
+      }
+    })
+    return res.status(201).send({movie})
+  } else {
+    return res.status(403)
+  }
+
+
 }
 
 module.exports = { getMovies, addMovie }
