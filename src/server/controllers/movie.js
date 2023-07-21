@@ -7,22 +7,29 @@ const jwtSecret = 'mysecret';
 const getAllMovies = async (req, res) => {
     const movies = await prisma.movie.findMany();
 
-    res.json({ data: movies });
+    res.json({ movies });
 };
 
 const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
     try {
-        const token = null;
-        // todo verify the token
-    } catch (e) {
+        const token = req.header("authorization");
+        jwt.verify(token.jwtSecret)
+
+    } catch (error) {
         return res.status(401).json({ error: 'Invalid token provided.' })
     }
 
-    const createdMovie = null;
+    const movie = await prisma.movie.create({
+        data: {
+            title,
+            description,
+            runtimeMins
+        }
+    });
 
-    res.json({ data: createdMovie });
+    res.json({ movie });
 };
 
 module.exports = {
