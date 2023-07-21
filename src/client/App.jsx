@@ -1,8 +1,7 @@
 import "./App.css";
-import Register from "/Users/sjb/BOOLEAN/BACKEND/auth-challenge/src/components/Register.js";
-import Login from "/Users/sjb/BOOLEAN/BACKEND/auth-challenge/src/components/Login.js"
-import Movie from "/Users/sjb/BOOLEAN/BACKEND/auth-challenge/src/components/Movie.js"
-
+import Register from "../components/Register.js";
+import Login from "../components/Login.js"
+import Movie from "../components/Movie.js"
 
 function App() {
 
@@ -12,9 +11,6 @@ function App() {
       <Login />
       <Movie />
       <h1>Movie List</h1>
-      <ul><li>Dodgeball</li>
-      <li>Doom</li>
-      </ul>
     </div>
   );
 }

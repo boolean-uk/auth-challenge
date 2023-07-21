@@ -35,19 +35,18 @@ export default function createMovie() {
       body: JSON.stringify(movie),
     };
     console.log(authToken);
-    console.log("Find Movie", movie)
+    console.log("Movie to create:", movie);
 
     fetch(`${apiUrl}/movie`, options)
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
-        setMovieResponse(`${movie.title} has been created`).catch(function (
-          error
-        ) {
-          console.log("CATCH ERROR", error);
-          
-        });
+        console.log(data)
+        setMovieResponse(`${movie.title} has been created`);
+      })
+      .catch(function (error) {
+        console.log("CATCH ERROR", error);
       });
   }
   return (
