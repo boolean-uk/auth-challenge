@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 export default function Movie() {
-
   const [movie, setMovie] = useState({
     title: "",
     description: "",
@@ -18,6 +17,9 @@ export default function Movie() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!localStorage.getItem("token")) {
+      return console.log("you need to be logged in to create a movie");
+    }
     try {
       fetch("http://localhost:4000/movie", {
         method: "POST",
@@ -29,24 +31,22 @@ export default function Movie() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log('data.movie', data.movie)
-          setMovies(
-            [... movies, 
-            data.movie]);
+          console.log("data.movie", data.movie);
+          setMovies([...movies, data.movie]);
         });
-      } catch (error) {
-        console.log(e);
-      }
-    };
-    
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setMovie({
-        ...movie,
-        [name]: value,
-      });
-    };
-  
+    } catch (error) {
+      console.log(e);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setMovie({
+      ...movie,
+      [name]: value,
+    });
+  };
+
   return (
     <>
       <h1>Create Movie</h1>
@@ -74,7 +74,7 @@ export default function Movie() {
         ></input>
         <button type="submit">Create Movie</button>
       </form>
-      
+
       <h1>Movie List</h1>
       <ul>
         {movies.map((movie) => {

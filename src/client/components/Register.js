@@ -16,7 +16,7 @@ export default function Register() {
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
-        localStorage.setItem("token", user.data.token);
+        localStorage.setItem("token", data.token);
       })
   };
 
