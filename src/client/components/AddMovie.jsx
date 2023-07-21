@@ -6,6 +6,7 @@ const apiUrl = 'http://localhost:4000'
 export function AddMovie () {
   const movieInitialState = {}
   const [movieState, setMovieState] = useState(movieInitialState)
+  const [movieList, setMovieList] = useState([{title:'Nothing yet'}])
 
   const createMovie = async (e) => {
     e.preventDefault()
@@ -18,7 +19,7 @@ export function AddMovie () {
       body: JSON.stringify(movieState)
     }
     const res = await fetch(apiUrl + '/movie', options)
-    console.log(res)
+    getAllMovies()
   }
 
   const handleMovieChange = (e) => {
@@ -29,6 +30,17 @@ export function AddMovie () {
     setMovieState({ title, desc, runtime })
   }
 
+  const getAllMovies = async () => {
+    const movieList = await fetch(apiUrl + '/movie')
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+        setMovieList(res.movies)
+      })
+  }
+
+  getAllMovies()
+
   return (
       <section className="movie form">
         <h2>Add a movie</h2>
@@ -38,6 +50,12 @@ export function AddMovie () {
           <input placeholder="Runtime"/>
           <button>Submit</button>
         </form>
+      {movieList && movieList.map((item) => {
+        console.log(item)
+        return (
+          <p key={item.id}>{item.title}</p>
+        )
+      })}
       </section>
   )
 }
