@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then((res) => res.json())
-      .then((res) => setMovies(res.data));
+      .then((res) => setMovies(res.data))
   }, []);
 
   const handleRegister = async ({ username, password }) => {
@@ -81,7 +81,7 @@ function App() {
       const data = response.json();
 
       Object.keys(data)[0] !== "error"
-        ? (setMovies([...movies, data]),setMovieResponse(`${data.title} added`))
+        ? setMovieResponse(`${data.title} added`)
         : setMovieResponse(data.error)
     } catch (error) {
       console.error("Error:", error);
