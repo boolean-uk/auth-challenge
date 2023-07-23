@@ -14,8 +14,8 @@ const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
     try {
-        const token = req.header("authorization");
-        jwt.verify(token.jwtSecret)
+        const token = req.headers.authorization;
+        jwt.verify(token, jwtSecret)
 
     } catch (error) {
         return res.status(401).json({ error: 'Invalid token provided.' })

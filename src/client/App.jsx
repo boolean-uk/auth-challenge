@@ -6,7 +6,6 @@ import UserForm from "./components/UserForm";
 const apiUrl = "http://localhost:4000";
 
 function App() {
-  const [user, setUser] = useState({ username: "", password: "" });
   const [movies, setMovies] = useState([]);
   const [registerResponse, setRegisterResponse] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
@@ -15,56 +14,63 @@ function App() {
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then((res) => res.json())
-      .then((res) => setMovies(res.data))
-  }, []);
+      .then((res) => setMovies(res.movies));
+  }, [movies]);
 
   const handleRegister = async ({ username, password }) => {
-    setUser({ username, password });
-
+    console.log("handleRegister called");
+  
     const options = {
       method: "POST",
-      body: JSON.stringify(user),
+      body: JSON.stringify({ username, password }),
       headers: {
         "content-type": "application/json",
       },
     };
-
+  
     try {
       const response = await fetch(`${apiUrl}/user/register`, options);
-      const data = response.json();
-
-      Object.keys(data)[0] !== "error"
-        ? setRegisterResponse(data.user.username)
-        : setRegisterResponse("Username already exists");
+      const data = await response.json();
+      console.log(data)
+  
+      if ("error" in data) {
+        setRegisterResponse("Username already exists");
+      } else {
+        setRegisterResponse(data.user.username);
+      }
     } catch (error) {
       console.error("Error:", error);
       setRegisterResponse("Error occurred during registration");
     }
-  };
+  };  
 
   const handleLogin = async ({ username, password }) => {
-    setUser({username, password})
-    const options = {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "content-type": "application/json",
-      },
-    };
-
     try {
+      const options = {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+        headers: {
+          "content-type": "application/json",
+        },
+      };
+  
       const response = await fetch(`${apiUrl}/user/login`, options);
-      const data = response.json();
-
-      Object.keys(data)[0] !== "error"
-        ? (setLoginResponse("Login successful"),
-          localStorage.setItem("token", data.token))
-        : setLoginResponse(data.error);
+      const data = await response.json();
+  
+      if ("error" in data) {
+        setLoginResponse(data.error);
+      } else {
+        localStorage.setItem("token", data.data);
+        setLoginResponse("Login successful");
+      }
     } catch (error) {
       console.error("Error:", error);
       setLoginResponse("Error occurred during login");
     }
   };
+  
+  
+  
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     const options = {
@@ -72,21 +78,22 @@ function App() {
       body: JSON.stringify({ title, description, runtimeMins }),
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+        authorization: localStorage.getItem("token"),
       },
     };
-
+  
     try {
       const response = await fetch(`${apiUrl}/movie`, options);
-      const data = response.json();
-
+      const data = await response.json();
+  
       Object.keys(data)[0] !== "error"
-        ? setMovieResponse(`${data.title} added`)
-        : setMovieResponse(data.error)
+        ? setMovieResponse(`${data.movie.title} added`)
+        : setMovieResponse(data.error);
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  
 
   return (
     <div className="App">

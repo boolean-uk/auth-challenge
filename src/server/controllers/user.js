@@ -9,22 +9,33 @@ const saltRounds = 10;
 const register = async (req, res) => {
   const { username, password } = req.body;
 
-  if (username && password) {
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-      bcrypt.hash(password, salt, async function (err, hash) {
-        const user = await prisma.user.create({
-          data: {
-            username,
-            password: hash,
-          },
-        });
-        res.json({ user });
-      });
-    });
-  } else {
-    return res.json({ error });
+  if (!username || !password) {
+    return res.json({ error: "Username and password are required." });
   }
+
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  if (existingUser) {
+    return res.json({ error: "Username already exists." });
+  }
+
+  bcrypt.genSalt(saltRounds, function (err, salt) {
+    bcrypt.hash(password, salt, async function (err, hash) {
+      const newUser = await prisma.user.create({
+        data: {
+          username,
+          password: hash,
+        },
+      });
+      res.json({ user: newUser });
+    });
+  });
 };
+
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -39,19 +50,18 @@ const login = async (req, res) => {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const passwordsMatch = bcrypt.compare(
+  const passwordsMatch = await bcrypt.compare(
     password,
-    foundUser.password,
-    async function (error, result) {
-      result ? true : false;
-    }
+    foundUser.password
   );
 
   if (!passwordsMatch) {
     return res.status(401).json({ error: "Invalid username or password." });
   }
 
-  const token = jwt.sign({username}, jwtSecret);
+  const token = jwt.sign({ username }, jwtSecret);
+
+  console.log("Generated Token:", token); // Add this line for debugging
 
   res.json({ data: token });
 };
