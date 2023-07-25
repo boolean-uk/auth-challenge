@@ -17,8 +17,7 @@ function App() {
 	}
 
 	const [movies, setMovies] = useState([])
-	const [movie, setMovie] = useState([newMovie])
-
+	const [movie, setMovie] = useState(newMovie)
 	const [user, setUser] = useState(newUser)
 	const [saveUser, setSaveUser] = useState(newUser)
 	const [error, setError] = useState('')
@@ -103,6 +102,7 @@ function App() {
 	}
 	function handleCreateMovie(e) {
 		e.preventDefault()
+		setMovies([...movies, movie])
 		console.log('movie', movie)
 	}
 	return (
