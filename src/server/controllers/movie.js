@@ -25,7 +25,7 @@ const addMovie = async (req, res) => {
     })
     return res.status(201).send({movie})
   } else {
-    return res.status(403)
+    return res.status(403).send()
   }
 
 

@@ -6,6 +6,17 @@ h2 {
   margin-bottom: 10px;
 }
 
+.movie-list {
+  display: grid;
+  justify-content: center;
+}
+
+.movie-card {
+  border: 4px solid black;
+  width: 300px;
+  border-radius: 7px;
+}
+
 .form {
   margin: auto;
   justify-self: center;

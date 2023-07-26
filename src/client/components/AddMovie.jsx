@@ -23,6 +23,7 @@ export function AddMovie () {
       body: JSON.stringify(movieState)
     }
     const res = await fetch(apiUrl + '/movie', options)
+    getAllMovies()
   }
 
   const handleMovieChange = (e) => {
@@ -55,7 +56,14 @@ export function AddMovie () {
       {movieList && movieList.map((item) => {
         console.log(item)
         return (
-          <p key={item.id}>{item.title}</p>
+          <div key={item.id} className="movie-list">
+          {console.log(item)}
+            <p className="movie-card">
+              <p>Title: {item.title}</p><hr />
+              <p>Description: {item.description}</p><hr />
+              <p>Runtime: {item.runtimeMins}</p>
+            </p>
+          </div>
         )
       })}
       </section>
