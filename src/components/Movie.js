@@ -7,7 +7,7 @@ export default function createMovie() {
   const [movie, setMovie] = useState({
     title: "",
     description: "",
-    runtimeMins: 0,
+    runtimeMins: null,
   });
   const [movieResponse, setMovieResponse] = useState("");
 
@@ -42,7 +42,7 @@ export default function createMovie() {
         return response.json();
       })
       .then(function (data) {
-        console.log(data)
+        console.log(data)  
         setMovieResponse(`${movie.title} has been created`);
       })
       .catch(function (error) {
