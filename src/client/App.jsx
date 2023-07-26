@@ -15,7 +15,16 @@ function App() {
     fetch(`${apiUrl}/movie`)
       .then((res) => res.json())
       .then((res) => setMovies(res.movies));
-  }, [movies]);
+  }, []);
+
+  useEffect(() => {
+    if (movieResponse.includes("added")) {
+      fetch(`${apiUrl}/movie`)
+        .then((res) => res.json())
+        .then((res) => setMovies(res.movies));
+    }
+  }, [movieResponse]);
+  
 
   const handleRegister = async ({ username, password }) => {
     console.log("handleRegister called");
@@ -68,8 +77,6 @@ function App() {
       setLoginResponse("Error occurred during login");
     }
   };
-  
-  
   
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
