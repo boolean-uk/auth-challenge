@@ -41,17 +41,19 @@ const login = async (req, res) => {
   })
 
   if (foundUser) {
-    bcrypt.compare(password, foundUser.password, function(err, result) {
-      console.log({ result })
-      if (result) {
+    bcrypt.compare(password, foundUser.password, function(err, passwordsMatch) {
+      console.log({ passwordsMatch })
+      if (passwordsMatch) {
         const token = jwt.sign({username: username}, secret)
 
-        return res.status(201).send({user: { username: foundUser.username, id: foundUser.id, token }, loginSuccess: result, message: 'login is correct'})
+        return res.status(201).send({user: { username: foundUser.username, id: foundUser.id, token }, loginSuccess: passwordsMatch, message: 'login is correct'})
+      } else {
+        return res.status(401).send({ message: "incorrect username or password", loginSuccess: passwordsMatch })
       }
 
     })
   } else {
-    return res.status(401).send({ message: "incorrect username or password", loginSuccess: result })
+    return res.status(401).send({ message: "incorrect username or password", loginSuccess: false })
   }
 }
 

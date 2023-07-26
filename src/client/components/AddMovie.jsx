@@ -15,10 +15,12 @@ export function AddMovie () {
   const createMovie = async (e) => {
     e.preventDefault()
     console.log("movieState", movieState)
+    const token = localStorage.getItem("token")
     const options = {
       method: 'POST',
       headers: {
-        'Content-Type': "application/json"
+        'Content-Type': "application/json",
+        "authorization": token
       },
       body: JSON.stringify(movieState)
     }
@@ -54,10 +56,8 @@ export function AddMovie () {
           <button>Submit</button>
         </form>
       {movieList && movieList.map((item) => {
-        console.log(item)
         return (
           <div key={item.id} className="movie-list">
-          {console.log(item)}
             <p className="movie-card">
               <p>Title: {item.title}</p><hr />
               <p>Description: {item.description}</p><hr />

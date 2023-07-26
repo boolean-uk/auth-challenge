@@ -1,6 +1,6 @@
 import '../App.css'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AddMovie } from './AddMovie'
 const apiUrl = 'http://localhost:4000'
 
@@ -10,6 +10,10 @@ export function Login () {
   const [loginMessage, setLoginMessage] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) setIsLoggedIn(true)
+  }, [])
 
   const login = async (e) => {
     e.preventDefault()
@@ -27,8 +31,9 @@ export function Login () {
     .then((res) => {
       setLoginMessage(res.message)
       setIsLoggedIn(res.loginSuccess)
+      const token = res.user.token
+      localStorage.setItem("token", token)
     })
-
   }
 
   const handleLoginChange = (e) => {

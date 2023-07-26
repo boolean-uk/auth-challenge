@@ -8,11 +8,8 @@ const getMovies = async (req, res) => {
 
 const addMovie = async (req, res) => {
   const { title, desc, runtime } = req.body
-  console.log(
-    {title},
-    {desc},
-    {runtime}
-  )
+  const token = req.header("authorization")
+
   const requestBodyIsComplete = (title && desc && runtime) ? true : false
 
   if (requestBodyIsComplete) {
@@ -27,7 +24,6 @@ const addMovie = async (req, res) => {
   } else {
     return res.status(403).send()
   }
-
 
 }
 
