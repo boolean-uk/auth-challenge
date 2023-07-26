@@ -65,7 +65,7 @@ export function AddMovie () {
             </p>
           </div>
         )
-      })}
+      }).reverse()}
       </section>
   )
 }
