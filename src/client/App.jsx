@@ -2,6 +2,7 @@ import "./App.css";
 import Register from "../components/Register.js";
 import Login from "../components/Login.js"
 import Movie from "../components/Movie.js"
+import MovieList from "../components/MovieList";
 
 function App() {
 
@@ -10,7 +11,7 @@ function App() {
       <Register />
       <Login />
       <Movie />
-      <h1>Movie List</h1>
+      <MovieList />
     </div>
   );
 }
