@@ -22,9 +22,11 @@ const createUser = async(req, res) => {
     
                     res.status(201).json({user: user.username,
                     registerStatus: 'User created!'})
+                    
+                    
                 } catch (e) {
                     const error = "The user already exists"
-                    
+                    console.log(error)
                     res.status(409).send({error})
                 }
                
@@ -35,30 +37,33 @@ const createUser = async(req, res) => {
 }
 
 const loginUser = async(req, res) => {
-    const {username, password} = req.body
+    const {usernameLogin, passwordLogin} = req.body
     let error
 
-    if (username && password) {
+    if (usernameLogin && passwordLogin) {
         const foundUser = await prisma.user.findUnique({
             where: {
-                username
+                username: usernameLogin
             }
         })
         
 
         if (foundUser) {
-            bcrypt.compare(password, foundUser.password, async function(err, passwordsMatch) {
+            bcrypt.compare(passwordLogin, foundUser.password, async function(err, passwordsMatch) {
                 if (passwordsMatch) {
                     
-                    const token = jwt.sign({username}, secret)
+                    const token = jwt.sign({usernameLogin}, secret)
+                    // console.log('Login complete')
                     return res.json({token})
                 } else {
                     error = "incorrect password"
+                    // console.log(error)
                     res.status(409).send({error})
                 }
             })
         } else {
             error = "Username not found"
+            // console.log(error)
             res.status(409).send({error})
         }
     }

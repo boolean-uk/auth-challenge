@@ -44,6 +44,8 @@ function App() {
       body: JSON.stringify(user)
     }
 
+    // console.log(user)
+
     fetch('http://localhost:4000/user/login', options)
     .then(response => response.json())
     .then(data => {
