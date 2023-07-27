@@ -8,21 +8,14 @@ const cors = require('cors')
 // Set up express
 const app = express()
 app.disable('x-powered-by')
-app.use(
-	cors({
-		origin: '*',
-		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-		preflightContinue: true,
-		optionsSuccessStatus: 204,
-	})
-)
+app.use(cors())
 // Tell express to use a JSON parser middleware
 app.use(express.json())
 // Tell express to use a URL Encoding middleware
 app.use(express.urlencoded({ extended: true }))
 
-// const userRouter = require('./routers/user');
-// app.use('/user', userRouter);
+const userRouter = require('./routers/user')
+app.use('/user', userRouter)
 
 const movieRouter = require('./routers/movie')
 app.use('/movie', movieRouter)

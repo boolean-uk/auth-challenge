@@ -30,20 +30,16 @@ function App() {
 		e.preventDefault()
 		const inputName = e.target.name
 		const inputValue = e.target.value
-		console.log('inputName', inputName)
-		console.log('inputValue', inputValue)
 
 		if (inputName === 'username') {
 			setUser({ ...user, username: inputValue })
-			console.log('user1', user)
 		} else {
 			setUser({ ...user, password: inputValue })
-			console.log('user2', user)
 		}
 	}
 
 	function getMovies() {
-		fetch(`${apiUrl}/movie/`, {
+		fetch(`${apiUrl}/movie`, {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' },
 		})
@@ -72,48 +68,61 @@ function App() {
 		const value = e.target.value
 		setMovieInput({ ...movieInput, runtimeMins: value })
 	}
-
-	function handleSubmit(e) {
+	function handleRegister(e) {
 		e.preventDefault()
 
-		const inputName = e.target.name
-
-		fetch(`${apiUrl}/user`, {
+		fetch(`${apiUrl}/user/register`, {
 			method: 'POST',
 			body: JSON.stringify(user),
 			headers: { 'Content-Type': 'application/json' },
 		})
-			.then((res) => {
-				res.json()
-				if (res.status === 404) {
-					setError('Invalid username or password')
-				} else {
-					return 'Error'
-				}
+			.then((response) => response.json())
+			.then((response) => {
+				setSaveUser({ ...saveUser, token: data.token })
 			})
-			.then((data) => {
-				if (inputName === 'login') {
-					setSaveUser({ ...saveUser, token: data.token })
-					localStorage.setItem('token', `${saveUser.token}`)
-				} else {
-					setSaveUser({ ...saveUser, username: data.username })
-				}
+			.catch((err) => {
+				console.error(err)
+			})
+	}
+	function handleLogin(e) {
+		e.preventDefault()
+
+		fetch(`${apiUrl}/user/login`, {
+			method: 'POST',
+			body: JSON.stringify(user),
+			headers: { 'Content-Type': 'application/json' },
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				setSaveUser({ ...saveUser, token: data.token })
+				localStorage.setItem('token', `${saveUser.token}`)
+			})
+			.catch((err) => {
+				console.error(err)
 			})
 	}
 
 	function handleCreateMovie(e) {
 		e.preventDefault()
-
+		const tokenItem = localStorage.getItem('token')
 		fetch(`${apiUrl}/movie`, {
 			method: 'POST',
-			body: JSON.stringify(movieInput),
+			body: JSON.stringify({
+				...movieInput,
+				runtimeMins: Number(movieInput.runtimeMins),
+			}),
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${tokenItem}`,
 			},
 		})
 			.then((response) => response.json())
-			.then((response) => console.log(response))
-			.catch((err) => console.error(err))
+			.then((response) => {
+				setMovieList([...movieList, response.movie])
+			})
+			.catch((err) => {
+				console.error(err)
+			})
 	}
 
 	return (
@@ -142,7 +151,7 @@ function App() {
 					type="submit"
 					name="submit"
 					value={'Submit'}
-					onClick={handleSubmit}
+					onClick={handleRegister}
 				/>
 
 				<h1>Login</h1>
@@ -168,7 +177,7 @@ function App() {
 					type="submit"
 					name="submit"
 					value={'Submit'}
-					onClick={handleSubmit}
+					onClick={handleLogin}
 				/>
 
 				<h1>Create movie</h1>

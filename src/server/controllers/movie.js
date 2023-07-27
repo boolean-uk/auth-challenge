@@ -13,7 +13,7 @@ const getMovies = async (req, res) => {
 
 const createMovie = async (req, res) => {
 	const { title, description, runtimeMins } = req.body
-
+	console.log('req', req.get('Authorization'))
 	if (!title || !description || !runtimeMins) {
 		return res.status(400).json({
 			error: 'Missing fields in request body',
@@ -33,6 +33,8 @@ const createMovie = async (req, res) => {
 			if (e.code === 'P2002') {
 				return res.status(409).json({ error: 'Unique constraint failed' })
 			}
+		} else {
+			return res.status(500).json({ error: e })
 		}
 	}
 }
