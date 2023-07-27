@@ -1,5 +1,6 @@
 const { Prisma } = require('@prisma/client')
 const prisma = require('../utils/prisma')
+// const jwt = require('jsonwebtoken')
 
 const getMovies = async (req, res) => {
 	const movies = await prisma.movie.findMany({
@@ -26,7 +27,7 @@ const createMovie = async (req, res) => {
 				runtimeMins,
 			},
 		})
-		res.status(201).json({ movie: createdMovie })
+		res.status(200).json({ movie: createdMovie })
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			if (e.code === 'P2002') {

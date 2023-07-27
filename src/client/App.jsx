@@ -5,21 +5,21 @@ const apiUrl = 'http://localhost:4000'
 // This is where the api are in the backend
 
 function App() {
-	const newUser = {
+	const initialUserInput = {
 		username: '',
 		password: '',
 		token: '',
 	}
-	const newMovie = {
+	const initialMovieInput = {
 		title: '',
 		description: '',
 		runtimeMins: '',
 	}
 
-	const [movies, setMovies] = useState([])
-	const [movie, setMovie] = useState(newMovie)
-	const [user, setUser] = useState(newUser)
-	const [saveUser, setSaveUser] = useState(newUser)
+	const [movieList, setMovieList] = useState([])
+	const [movieInput, setMovieInput] = useState(initialMovieInput)
+	const [user, setUser] = useState(initialUserInput)
+	const [saveUser, setSaveUser] = useState(initialUserInput)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
@@ -51,26 +51,26 @@ function App() {
 				return res.json()
 			})
 			.then((data) => {
-				setMovies(data.movies)
+				setMovieList(data.movies)
 			})
 	}
 
 	function handleMovieTitleChange(e) {
 		e.preventDefault()
 		const value = e.target.value
-		setMovie({ ...movie, title: value })
+		setMovieInput({ ...movieInput, title: value })
 	}
 
 	function handleMovieDescrChange(e) {
 		e.preventDefault()
 		const value = e.target.value
-		setMovie({ ...movie, description: value })
+		setMovieInput({ ...movieInput, description: value })
 	}
 
 	function handleMovieRuntimeChange(e) {
 		e.preventDefault()
 		const value = e.target.value
-		setMovie({ ...movie, runtimeMins: value })
+		setMovieInput({ ...movieInput, runtimeMins: value })
 	}
 
 	function handleSubmit(e) {
@@ -100,11 +100,22 @@ function App() {
 				}
 			})
 	}
+
 	function handleCreateMovie(e) {
 		e.preventDefault()
-		setMovies([...movies, movie])
-		console.log('movie', movie)
+
+		fetch(`${apiUrl}/movie`, {
+			method: 'POST',
+			body: JSON.stringify(movieInput),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((response) => console.log(response))
+			.catch((err) => console.error(err))
 	}
+
 	return (
 		<div className="App">
 			<form>
@@ -166,7 +177,7 @@ function App() {
 						type="text"
 						name="title"
 						placeholder="Title"
-						value={movie.title}
+						value={movieInput.title}
 						onChange={handleMovieTitleChange}
 					/>
 				</label>
@@ -175,7 +186,7 @@ function App() {
 						type="text"
 						name="description"
 						placeholder="Description"
-						value={movie.description}
+						value={movieInput.description}
 						onChange={handleMovieDescrChange}
 					/>
 				</label>
@@ -184,7 +195,7 @@ function App() {
 						type="text"
 						name="minutes"
 						placeholder="Minutes"
-						value={movie.runtimeMins}
+						value={movieInput.runtimeMins}
 						onChange={handleMovieRuntimeChange}
 					/>
 				</label>
@@ -197,7 +208,7 @@ function App() {
 			</form>
 			<h1>Movie List</h1>
 			<ul>
-				{movies.map((movie) => (
+				{movieList.map((movie) => (
 					<li key={movie.id}>
 						<h3>{movie.title}</h3>
 						<p>Description: {movie.description}</p>

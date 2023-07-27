@@ -8,7 +8,14 @@ const cors = require('cors')
 // Set up express
 const app = express()
 app.disable('x-powered-by')
-app.use(cors())
+app.use(
+	cors({
+		origin: '*',
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		preflightContinue: true,
+		optionsSuccessStatus: 204,
+	})
+)
 // Tell express to use a JSON parser middleware
 app.use(express.json())
 // Tell express to use a URL Encoding middleware
