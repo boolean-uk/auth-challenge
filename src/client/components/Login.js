@@ -32,6 +32,7 @@ export default function Login ({setToken, apiUrl}) {
             return response.json()
         })
         .then(data => {
+          localStorage.setItem('Token', data.token)
           setToken(data.token)
         })
         e.target.reset()

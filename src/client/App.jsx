@@ -10,25 +10,18 @@ const moviesState = {
   runtimeMins: 0,
 }
 function App() {
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState(localStorage.getItem('Token'))
   const [movies, setMovies] = useState(moviesState)
   const [movieList, setMovieList] = useState([])
-
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-    .then(res => res.json())
-    .then(data => {
-      setMovieList(data.allMovies)
-    })
-  }, [() => createMovie])
-
+  const [infiniteStopper, setInfiniteStopper] = useState(0)
+  
   const handleMovies = (e) => {
     const {name} = e.target
     setMovies({...movies, [name]: e.target.value})
   }
+  
   const createMovie = (e) => {
     e.preventDefault()
-
     const movieDetails = {
       title: movies.title,
       description: movies.description,
@@ -37,15 +30,27 @@ function App() {
     const options = {
       method: "post",
       headers: {
-          "authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+        "authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(movieDetails)
     }
     fetch(`${apiUrl}/movie`, options)
     .then(res => res.json())
+    .then(() => {
+      setInfiniteStopper(infiniteStopper + 1)
+    })
     e.target.reset()
   }
+
+  useEffect(() => {
+    fetch(`${apiUrl}/movie`)
+    .then(res => res.json())
+    .then(data => {
+      setMovieList(data.allMovies)
+    })
+  }, [infiniteStopper])
+
   return (
     <div className="App">
       <Register apiUrl={apiUrl} />
