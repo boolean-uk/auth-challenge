@@ -20,19 +20,25 @@ const createMovie = async (req, res) => {
 			error: 'Missing fields in request body',
 		})
 	}
+
 	try {
-		const createdMovie = await prisma.movie.create({
-			data: {
-				title,
-				description,
-				runtimeMins,
-			},
-		})
-		res.status(200).json({ movie: createdMovie })
+		const token = req.headers.authorization.split(' ')[1]
+		const decodedToken = jwt.verify(token, secretKey)
+
+		if (decodedToken) {
+			const createdMovie = await prisma.movie.create({
+				data: {
+					title,
+					description,
+					runtimeMins,
+				},
+			})
+			res.status(200).json({ movie: createdMovie })
+		}
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			if (e.code === 'P2002') {
-				return res.json({ error: 'Cannot create movie.' })
+				return console.log(res.json({ error: 'Cannot create movie.' }))
 			}
 		} else {
 			return res.status(500).json({ error: e.message })

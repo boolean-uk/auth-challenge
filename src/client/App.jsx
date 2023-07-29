@@ -48,6 +48,7 @@ function App() {
 		setLoginUser({ ...loginUser, [inputName]: inputValue })
 		console.log('Login value', inputName, inputValue)
 	}
+	// Need to clear input after submission
 	function handleRegister(e) {
 		e.preventDefault()
 
@@ -117,7 +118,9 @@ function App() {
 
 	function handleCreateMovie(e) {
 		e.preventDefault()
+
 		const tokenItem = localStorage.getItem('token')
+
 		fetch(`${apiUrl}/movie`, {
 			method: 'POST',
 			body: JSON.stringify({
