@@ -26,6 +26,7 @@ function App() {
 		const movieList = getMovies()
 	}, [])
 
+	// User
 	function handleUserChange(e) {
 		e.preventDefault()
 		const inputName = e.target.name
@@ -38,36 +39,6 @@ function App() {
 		}
 	}
 
-	function getMovies() {
-		fetch(`${apiUrl}/movie`, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json' },
-		})
-			.then((res) => {
-				return res.json()
-			})
-			.then((data) => {
-				setMovieList(data.movies)
-			})
-	}
-
-	function handleMovieTitleChange(e) {
-		e.preventDefault()
-		const value = e.target.value
-		setMovieInput({ ...movieInput, title: value })
-	}
-
-	function handleMovieDescrChange(e) {
-		e.preventDefault()
-		const value = e.target.value
-		setMovieInput({ ...movieInput, description: value })
-	}
-
-	function handleMovieRuntimeChange(e) {
-		e.preventDefault()
-		const value = e.target.value
-		setMovieInput({ ...movieInput, runtimeMins: value })
-	}
 	function handleRegister(e) {
 		e.preventDefault()
 
@@ -100,6 +71,38 @@ function App() {
 			.catch((err) => {
 				console.error(err)
 			})
+	}
+
+	// Movies
+	function getMovies() {
+		fetch(`${apiUrl}/movie`, {
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json' },
+		})
+			.then((res) => {
+				return res.json()
+			})
+			.then((data) => {
+				setMovieList(data.movies)
+			})
+	}
+
+	function handleMovieTitleChange(e) {
+		e.preventDefault()
+		const value = e.target.value
+		setMovieInput({ ...movieInput, title: value })
+	}
+
+	function handleMovieDescrChange(e) {
+		e.preventDefault()
+		const value = e.target.value
+		setMovieInput({ ...movieInput, description: value })
+	}
+
+	function handleMovieRuntimeChange(e) {
+		e.preventDefault()
+		const value = e.target.value
+		setMovieInput({ ...movieInput, runtimeMins: value })
 	}
 
 	function handleCreateMovie(e) {

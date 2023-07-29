@@ -3,6 +3,8 @@ const prisma = require('../utils/prisma')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+const secretKey = process.env.JWT_SECRET
+
 const register = async (req, res) => {
 	const { username, password } = req.body
 
@@ -52,11 +54,10 @@ const login = async (req, res) => {
 			const matchPassw = await bcrypt.compare(password, result.password)
 
 			if (matchPassw) {
-				const token = jwt.sign({ username }, process.env.JWT_SECRET)
+				const token = jwt.sign({ username }, secretKey)
+				console.log('key', secretKey)
 				res.send({ token })
 			} else res.status(401).send('Invalid username or password')
-		} else {
-			res.status(401).send('Invalid username or password')
 		}
 	} catch (e) {
 		return res.status(500).json({ error: e })
