@@ -27,10 +27,12 @@ const register = async (req, res) => {
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			if (e.code === 'P2002') {
-				return res.status(409).json({ error: 'Unique constraint failed' })
+				return res
+					.status(409)
+					.json({ error: 'Already exists, try with another email or password' })
 			}
 		} else {
-			return res.status(500).json({ error: e })
+			return res.status(500).json({ error: e.message })
 		}
 	}
 }
@@ -45,13 +47,16 @@ const login = async (req, res) => {
 	}
 
 	try {
-		const result = await prisma.user.findUnique({
+		const foundUser = await prisma.user.findUnique({
 			where: {
 				username,
 			},
+			select: {
+				password: true,
+			},
 		})
-		if (result) {
-			const matchPassw = await bcrypt.compare(password, result.password)
+		if (foundUser) {
+			const matchPassw = await bcrypt.compare(password, foundUser.password)
 
 			if (matchPassw) {
 				const token = jwt.sign({ username }, secretKey)

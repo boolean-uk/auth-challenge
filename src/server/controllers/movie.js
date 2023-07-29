@@ -1,6 +1,7 @@
 const { Prisma } = require('@prisma/client')
 const prisma = require('../utils/prisma')
-// const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
+const secretKey = process.env.JWT_SECRET
 
 const getMovies = async (req, res) => {
 	const movies = await prisma.movie.findMany({
@@ -13,7 +14,7 @@ const getMovies = async (req, res) => {
 
 const createMovie = async (req, res) => {
 	const { title, description, runtimeMins } = req.body
-	console.log('req', req.get('Authorization'))
+
 	if (!title || !description || !runtimeMins) {
 		return res.status(400).json({
 			error: 'Missing fields in request body',
@@ -31,10 +32,10 @@ const createMovie = async (req, res) => {
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			if (e.code === 'P2002') {
-				return res.status(409).json({ error: 'Unique constraint failed' })
+				return res.json({ error: 'Cannot create movie.' })
 			}
 		} else {
-			return res.status(500).json({ error: e })
+			return res.status(500).json({ error: e.message })
 		}
 	}
 }

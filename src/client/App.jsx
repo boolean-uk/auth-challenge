@@ -10,16 +10,19 @@ function App() {
 		password: '',
 		token: '',
 	}
+	// const [user, setUser] = useState(initialUserInput)
+	// const [saveUser, setSaveUser] = useState(initialUserInput)
+	const [registerUser, setRegisterUser] = useState(initialUserInput)
+	const [loginUser, setLoginUser] = useState(initialUserInput)
+
 	const initialMovieInput = {
 		title: '',
 		description: '',
 		runtimeMins: '',
 	}
-
 	const [movieList, setMovieList] = useState([])
 	const [movieInput, setMovieInput] = useState(initialMovieInput)
-	const [user, setUser] = useState(initialUserInput)
-	const [saveUser, setSaveUser] = useState(initialUserInput)
+
 	// const [error, setError] = useState('')
 
 	useEffect(() => {
@@ -27,45 +30,52 @@ function App() {
 	}, [])
 
 	// User
-	function handleUserChange(e) {
+
+	function handleRegisterChange(e) {
 		e.preventDefault()
 		const inputName = e.target.name
 		const inputValue = e.target.value
 
-		if (inputName === 'username') {
-			setUser({ ...user, username: inputValue })
-		} else {
-			setUser({ ...user, password: inputValue })
-		}
+		setRegisterUser({ ...registerUser, [inputName]: inputValue })
+		console.log('Register value', inputName, inputValue)
 	}
 
+	function handleLoginChange(e) {
+		e.preventDefault()
+		const inputName = e.target.name
+		const inputValue = e.target.value
+
+		setLoginUser({ ...loginUser, [inputName]: inputValue })
+		console.log('Login value', inputName, inputValue)
+	}
 	function handleRegister(e) {
 		e.preventDefault()
 
 		fetch(`${apiUrl}/user/register`, {
 			method: 'POST',
-			body: JSON.stringify(user),
+			body: JSON.stringify(registerUser),
 			headers: { 'Content-Type': 'application/json' },
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				setSaveUser({ ...saveUser, token: data.token })
+				setRegisterUser({ ...registerUser, token: data.token })
 			})
 			.catch((err) => {
 				console.error(err)
 			})
 	}
+
 	function handleLogin(e) {
 		e.preventDefault()
 
 		fetch(`${apiUrl}/user/login`, {
 			method: 'POST',
-			body: JSON.stringify(user),
+			body: JSON.stringify(loginUser),
 			headers: { 'Content-Type': 'application/json' },
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				setSaveUser({ ...saveUser, token: data.token })
+				setLoginUser({ ...loginUser, token: data.token })
 				localStorage.setItem('token', data.token)
 			})
 			.catch((err) => {
@@ -137,8 +147,9 @@ function App() {
 						type="text"
 						name="username"
 						placeholder="Username"
-						value={user.username}
-						onChange={handleUserChange}
+						value={registerUser.username}
+						onChange={handleRegisterChange}
+						autoComplete="off"
 					/>
 				</label>
 				<label>
@@ -146,8 +157,9 @@ function App() {
 						type="password"
 						name="password"
 						placeholder="Password"
-						value={user.password}
-						onChange={handleUserChange}
+						value={registerUser.password}
+						onChange={handleRegisterChange}
+						autoComplete="off"
 					/>
 				</label>
 				<input
@@ -161,19 +173,21 @@ function App() {
 				<label>
 					<input
 						type="text"
-						name="user"
+						name="username"
 						placeholder="Username"
-						value={user.username}
-						onChange={handleUserChange}
+						value={loginUser.username}
+						onChange={handleLoginChange}
+						autoComplete="off"
 					/>
 				</label>
 				<label>
 					<input
 						type="password"
-						name="passw"
+						name="password"
 						placeholder="Password"
-						value={user.password}
-						onChange={handleUserChange}
+						value={loginUser.password}
+						onChange={handleLoginChange}
+						autoComplete="off"
 					/>
 				</label>
 				<input
