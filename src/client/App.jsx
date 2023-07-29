@@ -20,7 +20,7 @@ function App() {
 	const [movieInput, setMovieInput] = useState(initialMovieInput)
 	const [user, setUser] = useState(initialUserInput)
 	const [saveUser, setSaveUser] = useState(initialUserInput)
-	const [error, setError] = useState('')
+	// const [error, setError] = useState('')
 
 	useEffect(() => {
 		const movieList = getMovies()
@@ -48,7 +48,7 @@ function App() {
 			headers: { 'Content-Type': 'application/json' },
 		})
 			.then((response) => response.json())
-			.then((response) => {
+			.then((data) => {
 				setSaveUser({ ...saveUser, token: data.token })
 			})
 			.catch((err) => {
@@ -64,9 +64,9 @@ function App() {
 			headers: { 'Content-Type': 'application/json' },
 		})
 			.then((response) => response.json())
-			.then((response) => {
+			.then((data) => {
 				setSaveUser({ ...saveUser, token: data.token })
-				localStorage.setItem('token', `${saveUser.token}`)
+				localStorage.setItem('token', data.token)
 			})
 			.catch((err) => {
 				console.error(err)

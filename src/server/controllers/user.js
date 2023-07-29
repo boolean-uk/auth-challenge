@@ -55,7 +55,6 @@ const login = async (req, res) => {
 
 			if (matchPassw) {
 				const token = jwt.sign({ username }, secretKey)
-				console.log('key', secretKey)
 				res.send({ token })
 			} else res.status(401).send('Invalid username or password')
 		}
