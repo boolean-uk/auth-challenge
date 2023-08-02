@@ -28,14 +28,14 @@ const registerUser = async (req, res) => {
         password: password,
     }
 
-    const newToken = await createToken(user)
+
 
     bcrypt.hash(password, 10, async function(err, hash) {
         const newUser = await prisma.user.create({
             data:{
                 username: username,
                 password: hash,
-                token: newToken
+
             },
             select: {
                 username: true
@@ -70,4 +70,4 @@ const loginUser = async (req, res) => {
 
 }
 
-module.exports = {registerUser, loginUser}
+module.exports = {registerUser, loginUser, secret}
