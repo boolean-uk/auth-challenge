@@ -36,6 +36,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setMovies(data);
+        console.log(data)
         console.log(movies);
       });
   }, []);
@@ -101,10 +102,10 @@ function App() {
   }
 
   function handleMovie(e) {
-    // e.preventDefault();
+    e.preventDefault();
 
     const authToken = localStorage.getItem("Token")
-
+    try {
     fetch("http://localhost:4000/movie", {
       method: "POST",
       body: JSON.stringify(movie),
@@ -113,9 +114,10 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setMovies((prevMovies) => [...prevMovies, data]);
+        setMovies([...movies, data.movie]);
       });
-  }
+  } catch(err) {console.error}
+}
 
   return (
     <div className="App">
