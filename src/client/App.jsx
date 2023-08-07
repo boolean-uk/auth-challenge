@@ -4,17 +4,21 @@ import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
 
 const apiUrl = 'http://localhost:4000';
+const jwtSecret = 'mysecret';
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState();
+  console.log('setToken', token); 
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
       .then(res => setMovies(res.data));
   }, []);
+  
 
+  
   const handleRegister = async ({ username, password }) => {
     try {
       const response = await fetch(`${apiUrl}/user/register`, {
@@ -24,7 +28,7 @@ function App() {
         },
         body: JSON.stringify({ username, password }),
       });
-
+      
       if (response.ok) {
         console.log('User created successfully');
         
@@ -34,37 +38,66 @@ function App() {
       }
     } catch (error) {
       console.error(error);
-     
+      
     }
   };
-
+  
   const handleLogin = async ({ username, password }) => {
-   try {
-    const response = await fetch(`${apiUrl}/user/login`,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if(response.ok){
-      const data = await response.json();
-      const { token } = data;
-      setToken(token)
-      console.log('User logged in')
+    try {
+      const response = await fetch(`${apiUrl}/user/login`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if(response.ok){
+        const data = await response.json();
+        const receivedToken = data;
+        setToken(receivedToken); 
+        console.log('User logged in', receivedToken);
+        
+      }
+      else{
+        console.log('Failed to login')
+      }
+            
+    } catch (error) {
+      
     }
-    else{
-      console.log('Failed to login')
-    }
-
-   } catch (error) {
-    
-   }
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    
-  }
+    try {
+      if (!token) {
+        console.error('No valid token found.');
+        return;
+      };
+            
+      const response = await fetch(`${apiUrl}/movie`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token.data}`,
+        },
+        
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+      console.log("token error", response)
+      console.log('setToken', token); 
+      
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Movie created successfully:', data);
+      } else {
+        const errorData = await response.json();
+        console.error('Movie creation failed:', errorData.error);
+      }
+    } catch (error) {
+      console.error('Error occurred during movie creation:', error);
+    }
+  };
 
   return (
     <div className="App">

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+
 const jwtSecret = 'mysecret';
 
 const getAllMovies = async (req, res) => {
@@ -14,11 +15,13 @@ const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
     try {
+
       const token = req.headers.authorization.split(' ')[1];
+      console.log('Token:', token);
       const decodedToken = jwt.verify(token, jwtSecret);
   
       if (decodedToken) {
-        // Create the movie in the database
+      
         const createdMovie = await prisma.movie.create({
           data: {
             title,
@@ -27,7 +30,7 @@ const createMovie = async (req, res) => {
           },
         });
   
-        return res.json({ data: createdMovie });
+        return res.json({ movie: createdMovie });
       } else {
         return res.status(401).json({ error: 'Invalid token provided.' });
       }

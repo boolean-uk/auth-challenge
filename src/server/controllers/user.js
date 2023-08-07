@@ -45,8 +45,8 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({username},jwtSecret,{ expiresIn: '1h' });
-    console.log('Generated token:', token);
     res.json({ data: token });
+    console.log('Generated token:', token);
 };
 
 module.exports = {
