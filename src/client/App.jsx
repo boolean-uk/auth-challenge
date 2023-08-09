@@ -17,8 +17,10 @@ function App() {
       .then(res => setMovies(res.data));
   }, []);
   
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
-  
   const handleRegister = async ({ username, password }) => {
     try {
       const response = await fetch(`${apiUrl}/user/register`, {
@@ -66,6 +68,18 @@ function App() {
       
     }
   };
+
+  const fetchMovies = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/movie`);
+      if (response.ok) {
+        const data = await response.json();
+        setMovies(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    }
+  };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     try {
@@ -83,13 +97,10 @@ function App() {
         
         body: JSON.stringify({ title, description, runtimeMins }),
       });
-      console.log("token error", response)
-      console.log('setToken', token); 
-      
-      
       if (response.ok) {
         const data = await response.json();
         console.log('Movie created successfully:', data);
+        fetchMovies();
       } else {
         const errorData = await response.json();
         console.error('Movie creation failed:', errorData.error);
