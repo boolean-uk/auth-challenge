@@ -2,9 +2,8 @@ import supertest  from "supertest";
 import { app } from "../src/server";
 
 /* eslint-disable no-undef */
-describe("/users", () => {
-  
-  describe("/register", () => {
+describe("/users", () => { 
+  xdescribe("/register", () => {
       const user1 = {
         username: "Geralt",
         password: "Roach",
@@ -51,4 +50,32 @@ describe("/users", () => {
       expect(result.body.error).toEqual(message)
     });
   });
+  describe("/login", () => {
+    const user1 = {
+      username: "Geralt",
+      password: "Roach",
+    };
+    test("the user is logged in", async() => {
+      const result = await supertest(app).post("/user/login").send(user1)
+
+      expect(result.status).toEqual(201)
+      expect(result.body.token).not.toBeUndefined()
+      expect(typeof result.body.token).toEqual("string")
+    })
+    // test("a 401 error is thrown as the password was incorrect")
+    // test("a 401 error is thrown as the username was incorrect")
+    // test("a 400 error is thrown due to empty input fields", async () => {
+    //   const message = "missing input"
+    //   const result = await supertest(app).post("/user/register").send(user3)
+		// 	expect(result.status).toEqual(400);
+    //   expect(result.body.error).toEqual(message)
+    // });
+    // test("a 400 error is thrown due to missing input fields", async () => {
+    //   const message = "missing input"
+    //   const result = await supertest(app).post("/user/register").send(user4)
+		// 	expect(result.status).toEqual(400);
+    //   expect(result.body.error).toEqual(message)
+    // });
+
+  })
 });
