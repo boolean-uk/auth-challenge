@@ -1,0 +1,3 @@
+const validateInput = () => {}
+
+export { validateInput }
