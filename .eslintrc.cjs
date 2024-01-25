@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    jest: true,
   },
   extends: [
     "eslint:recommended",
@@ -25,7 +26,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react"],
+  plugins: ["react", "jest"],
   rules: {
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
