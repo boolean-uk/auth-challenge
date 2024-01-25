@@ -15,7 +15,7 @@ function App() {
       .then(res => res.json())
       .then(res => setMovies(res.data));
   }, []);
-  
+
   const handleRegister = async ({ username, password }) => {
     try {
       const { data } = await axios.post(`${apiUrl}/user/register`, {
@@ -26,12 +26,22 @@ function App() {
       console.log(data.data)
     }
     catch (err) {
-      console.log(err.response.data)
+      console.log(err.response.data.error)
     }
   };
 
   const handleLogin = async ({ username, password }) => {
-
+    try {
+      const { data } = await axios.post(`${apiUrl}/user/login`, {
+        headers: { 'Content-Type': 'application/json' },
+        username,
+        password
+      })
+      console.log(data)
+    }
+    catch (err) {
+      console.log(err.response.data)
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
