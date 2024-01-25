@@ -15,6 +15,10 @@ const getAllMovies = async (req, res) => {
 const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body;
 
+  if (!title || !description || !runtimeMins) {
+    return res.status(406).json({ error: "All fields are required" });
+  }
+
   try {
     const tokenHeader = req.headers.authorization;
 
