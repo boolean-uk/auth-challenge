@@ -28,7 +28,7 @@ const login = async (req, res) => {
     const foundUser = await findUserDb(username)
     if (!foundUser) return res.status(401).json({ error: 'Invalid username or password.' })
 
-    const passwordsMatch = bcrypt.compare(password, foundUser.password)
+    const passwordsMatch = await bcrypt.compare(password, foundUser.password)
     if (!passwordsMatch) return res.status(401).json({ error: 'Invalid username or password.' })
 
     const token = jwt.sign({ username }, secret)

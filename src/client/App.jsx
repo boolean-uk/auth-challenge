@@ -46,10 +46,8 @@ function App() {
       const { token, message } = data
       localStorage.setItem('token', token)
       setLoginMessage(message)
-      console.log(data)
     }
     catch (err) {
-      console.log(err.response)
       setLoginMessage(err.response.data.error)
     }
   };
