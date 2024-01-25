@@ -1,5 +1,6 @@
-import { registerDb } from "../domains/user.js";
-import { hashPassword } from "../utils/hash-password.js";
+import { findUserDb, registerDb } from "../domains/user.js";
+import { hashPassword, comparePassword } from "../utils/hash-password.js";
+import jwt from "jsonwebtoken"
 
 const register = async (req, res) => {
   const { username, password } = req.body;
@@ -17,4 +18,31 @@ const register = async (req, res) => {
   }
 };
 
-export { register };
+const login = async (req, res) => {
+  const { username, password } = req.body
+
+  const foundUser = await findUserDb(username)
+  if (!foundUser) {
+    res.status(401).json('incorrect username/password')
+    return
+  }
+  
+  try {
+    await comparePassword(password, foundUser.password)
+  } catch (e) {
+    res.status(401).json('incorrect username/password')
+    return
+  }
+
+  const token = jwt.sign(username, process.env.SECRET)
+  const response = { token }
+  // unecessary addition?
+  response.message = "login successful"
+
+  res.status(201).json({ response })
+}
+
+export { 
+  register, 
+  login
+ };
