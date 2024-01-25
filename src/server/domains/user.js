@@ -5,4 +5,15 @@ const registerDb = async (username, password) =>
         data: { username, password }
     })
 
-export { registerDb }
+const findUserDb = async (username) => 
+    await prisma.user.findUnique({
+        where: {
+            username
+        }
+    })
+
+
+export { 
+    registerDb, 
+    findUserDb
+}
