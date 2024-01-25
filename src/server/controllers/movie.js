@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { getAllMoviesDb, createMovieDb } from '../domains/movie.js';
+import { getAllMoviesDb, createMovieDb, checkTitleExistsDb } from '../domains/movie.js';
 const secret = process.env.JWT_SECRET
 
 const getAllMovies = async (req, res) => {
@@ -8,7 +8,10 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
-    const { title, description, runtimeMins } = req.body;
+    const { title, description, runtimeMins } = req.body
+
+    const titleExists = await checkTitleExistsDb(title)
+    if (titleExists) return res.status(409).json({ error: `${title} is already stored in the database`})
 
     try {
         const token = req.headers.authorization.slice(7)

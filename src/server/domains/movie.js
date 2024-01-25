@@ -3,6 +3,12 @@ const prisma = new PrismaClient();
 
 const getAllMoviesDb = async () => await prisma.movie.findMany()
 
+const checkTitleExistsDb = async (title) => await prisma.movie.findUnique({
+    where: {
+        title
+    }
+})
+
 const createMovieDb = async (title, description, runtimeMins) => await prisma.movie.create({
     data: {
         title,
@@ -11,4 +17,4 @@ const createMovieDb = async (title, description, runtimeMins) => await prisma.mo
     }
 })
 
-export { getAllMoviesDb, createMovieDb }
+export { getAllMoviesDb, createMovieDb, checkTitleExistsDb }
