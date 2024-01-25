@@ -62,7 +62,34 @@ function App() {
     }
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found, please log in.');
+      }
+
+      const response = await fetch(`${apiUrl}/movie`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMovies(prevMovies => [...prevMovies, data.data]);
+        console.log(data, token)
+      } else {
+        throw new Error(data.message || 'Failed to create movie');
+      }
+    } catch (error) {
+      console.error('An error occurred during movie creation:', error.message);
+    }
+  };
 
   return (
     <div className="App">
