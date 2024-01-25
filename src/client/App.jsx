@@ -48,17 +48,47 @@ function App() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const { token } = await response.json();
 
-      const { data } = await response.json();
-      localStorage.setItem('token', data);
+      localStorage.setItem("token", token);
 
-      console.log("User logged in:", username);
+      console.log("User logged in:", username, localStorage.getItem("token"));
     } catch (error) {
       console.error("Error during user login:", error);
     }
-  }
+  };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("No token found in local storage. Please log in.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:4000/movie`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorData.error}`
+        );
+      }
+
+      const { data: createdMovie } = await response.json();
+      setMovies((prevMovies) => [...prevMovies, createdMovie]);
+      console.log("Movie created:", createdMovie);
+    } catch (error) {
+      console.error("Error during movie creation:", error);
+    }
+  };
 
   return (
     <div className="App">
