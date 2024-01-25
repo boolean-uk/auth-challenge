@@ -38,7 +38,29 @@ function App() {
     }
   };
 
-  const handleLogin = async ({ username, password }) => {};
+  const handleLogin = async ({ username, password }) => {
+    try {
+      const response = await fetch(`http://localhost:4000/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Login successful", data);
+        localStorage.setItem("token", data.token);
+        console.log("User logged in:", username, localStorage.getItem("token"));
+      } else {
+        throw new Error(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("An error occurred during login:", error.message);
+    }
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
