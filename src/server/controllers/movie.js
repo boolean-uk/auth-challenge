@@ -18,7 +18,12 @@ const createMovie = async (req, res) => {
     }
 
     const createdMovie = await createMovieDb(title, description, runtimeMins)
-    res.json({ data: createdMovie });
+    const newMovieDetails = { 
+        title: createdMovie.title, 
+        description: createdMovie.description, 
+        runtimeMins: createdMovie.runtimeMins
+    }
+    res.json({ movie: newMovieDetails });
 };
 
 export {

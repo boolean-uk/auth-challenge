@@ -64,11 +64,11 @@ function App() {
         }
       }
       )
-      console.log(data)
-      setMovies(data.data)
+      const { movie } = data
+      setMovies([...movies, movie])
     }
     catch (err) {
-      console.log(err.response.data)
+      console.log(err)
     }
   }
 
