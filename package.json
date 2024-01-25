@@ -7,8 +7,8 @@
     "dev": "concurrently \"vite\" \"nodemon src/server/index.js\"",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview", 
-    "test": "npx jest"
+    "preview": "vite preview",
+    "test": "jest"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
@@ -32,6 +32,7 @@
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "prisma": "^5.7.1",
+    "supertest": "^6.3.4",
     "vite": "^5.0.8"
   }
 }
