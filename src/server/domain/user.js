@@ -1,10 +1,14 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const registerUserDB = async (username, hash) => {
-
-}
+const registerUserDB = async (username, hash) =>
+    await prisma.user.create({
+        data: {
+            username,
+            password: hash,
+        },
+    });
 
 module.exports = {
-    registerUserDB
-}
+    registerUserDB,
+};
