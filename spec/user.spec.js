@@ -58,8 +58,9 @@ describe("/user", () => {
     test("the user is logged in", async() => {
       const result = await supertest(app).post("/user/login").send(user1)
       expect(result.status).toEqual(201)
-      expect(result.body.token).not.toBeUndefined()
-      expect(typeof result.body.token).toEqual("string")
+      expect(result.body.response.token).not.toBeUndefined()
+      expect(typeof result.body.response.token).toEqual("string")
+      expect(result.body.response.message).toEqual("login successful")
     })
     // test("a 401 error is thrown as the password was incorrect")
     // test("a 401 error is thrown as the username was incorrect")
