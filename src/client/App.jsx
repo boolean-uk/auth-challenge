@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
+import axios from 'axios';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -34,7 +35,17 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-
+    try {
+      const { data } = await axios.post(`${apiUrl}/user/login`, {
+        headers: { 'Content-Type': 'application/json'},
+        username,
+        password
+      })
+      console.log(data)
+    }
+    catch (err) {
+      console.log(err)
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
