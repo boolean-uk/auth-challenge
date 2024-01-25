@@ -1,39 +1,58 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const jwtSecret = 'mysecret';
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
+
+const jwtSecret = "mysecret";
+
+import { createUserDB } from "../domain/user.js";
+import { findUserDB } from "../domain/user.js";
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const createdUser = null;
+  if (!username || !password) {
+    return res
+      .status(406)
+      .json({ error: "Both username and password required" });
+  }
 
-    res.json({ data: createdUser });
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const createdUser = await createUserDB(username, hashedPassword);
+
+    res.status(201).json({ data: createdUser });
+  } catch (error) {
+    if (error.code === "2002");
+    {
+      return res.status(401).json({ error: "Username already exists" });
+    }
+  }
+  res.status(500).json({ error: error.message });
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const foundUser = null;
+  const foundUser = await findUserDB(username);
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-
-    const passwordsMatch = false;
+  if (!foundUser) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
+  try {
+    const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
     if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+      return res.status(401).json({ error: "Invalid username or password." });
     }
 
-    const token = null;
+    const token = jwt.sign({ username: foundUser.username }, jwtSecret);
 
     res.json({ data: token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-export {
-    register,
-    login
-};
+export { register, login };
