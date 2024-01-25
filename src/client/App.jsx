@@ -15,36 +15,18 @@ function App() {
       .then(res => res.json())
       .then(res => setMovies(res.data));
   }, []);
-
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
-
+  
   const handleRegister = async ({ username, password }) => {
     try {
-      const { data } = await axios.post(`${apiUrl}/user/login`, {
-        headers: { 'Content-Type': 'application/json'},
+      const { data } = await axios.post(`${apiUrl}/user/register`, {
+        headers: { 'Content-Type': 'application/json' },
         username,
         password
       })
-      console.log(data)
+      console.log(data.data)
     }
     catch (err) {
-      console.log(err)
+      console.log(err.response.data)
     }
   };
 

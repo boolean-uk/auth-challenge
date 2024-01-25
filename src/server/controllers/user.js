@@ -1,16 +1,23 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import { findUserDb, createUserDb } from '../domains/user.js';
 
 const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
     const { username, password } = req.body;
 
-    const createdUser = null;
+    const isUsernameUnique = await findUserDb(username)
+    if (isUsernameUnique) return res.status(409).json({ error: `Username ${username} has already been taken, please try a different username`})
 
-    res.json({ data: createdUser });
+    const hashedPassword = await bcrypt.hash(password, 12)
+    try {
+        const createdUser = await createUserDb(username, hashedPassword)
+        return res.status(201).json({ data: createdUser })
+    }
+    catch (err) {
+        return res.status(500).json({ error: 'Server error, please try again'})
+    }
 };
 
 const login = async (req, res) => {
