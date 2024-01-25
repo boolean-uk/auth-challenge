@@ -11,6 +11,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [registerMessage, setRegisterMessage] = useState('')
   const [loginMessage, setLoginMessage] = useState('')
+  const [createMovieMessage, setCreateMovieMessage] = useState('')
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -67,11 +68,12 @@ function App() {
         }
       }
       )
-      const { movie } = data
+      const { movie, message } = data
       setMovies([...movies, movie])
+      setCreateMovieMessage(message)
     }
     catch (err) {
-      console.log(err)
+      setCreateMovieMessage(err.response.data.error)
     }
   }
 
@@ -87,6 +89,7 @@ function App() {
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
+      {createMovieMessage && <p>{createMovieMessage}</p>}
 
       <h1>Movie list</h1>
       <ul>
