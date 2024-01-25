@@ -21,13 +21,8 @@ const createMovie = async (req, res) => {
     }
 
     const createdMovie = await createMovieDb(title, description, runtimeMins)
-    const newMovieDetails = { 
-        title: createdMovie.title, 
-        description: createdMovie.description, 
-        runtimeMins: createdMovie.runtimeMins
-    }
     res.json({ 
-        movie: newMovieDetails,
+        movie: createdMovie,
         message: `${title} has successfully been added to the movie list!`
     });
 };

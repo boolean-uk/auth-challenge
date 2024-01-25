@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
-import axios from 'axios';
+import Logout from './components/Logout';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -79,6 +80,7 @@ function App() {
 
   return (
     <div className="App">
+      <Logout />
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
       {registerMessage && <p>{registerMessage}</p>}
