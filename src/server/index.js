@@ -5,11 +5,13 @@ config();
 // Import express and cors
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 
 // Set up express
 const app = express();
 app.disable("x-powered-by");
 app.use(cors());
+app.use(morgan());
 // Tell express to use a JSON parser middleware
 app.use(express.json());
 // Tell express to use a URL Encoding middleware
