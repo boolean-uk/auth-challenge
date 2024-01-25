@@ -1,16 +1,23 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const { registerUserDB } = require('../domain/user.js')
-const jwtSecret = 'mysecret';
+import registerUserDB from '../domain/user.js';
+const jwtSecret = "mysecret";
 
 const register = async (req, res) => {
     const { username, password } = req.body;
-    const hash = bcrypt.hash(password, 12)
 
-    const createdUser = await registerUserDB(username, hash)
+    if (!password || !username) {
+        return res.status(409).json({error: "Please enter username or password"});
+    }
+    try {
+        const hash = bcrypt.hash(password, 12);
+        const createdUser = await registerUserDB(username, hash);
+        res.status(201).json({ data: createdUser });
 
-    res.json({ data: createdUser });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 const login = async (req, res) => {
@@ -19,13 +26,13 @@ const login = async (req, res) => {
     const foundUser = null;
 
     if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+        return res.status(401).json({ error: "Invalid username or password." });
     }
 
     const passwordsMatch = false;
 
     if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+        return res.status(401).json({ error: "Invalid username or password." });
     }
 
     const token = null;
@@ -33,7 +40,4 @@ const login = async (req, res) => {
     res.json({ data: token });
 };
 
-export {
-    register,
-    login
-};
+export { register, login };
