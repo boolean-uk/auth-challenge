@@ -19,10 +19,12 @@ function App() {
   const handleRegister = async ({ username, password }) => {
     try {
       const { data } = await axios.post(`${apiUrl}/user/register`, {
-        headers: { 'Content-Type': 'application/json' },
         username,
         password
-      })
+      }, {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
       console.log(data.data)
     }
     catch (err) {
@@ -33,10 +35,12 @@ function App() {
   const handleLogin = async ({ username, password }) => {
     try {
       const { data } = await axios.post(`${apiUrl}/user/login`, {
-        headers: { 'Content-Type': 'application/json' },
         username,
         password
-      })
+      }, {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
       localStorage.setItem('token', data.token)
       console.log(data.token)
     }
@@ -50,16 +54,18 @@ function App() {
 
     try {
       const { data } = await axios.post(`${apiUrl}/movie`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         title,
         description,
         runtimeMins
-      })
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }
+      )
       console.log(data)
-      setMovies(data.movies)
+      setMovies(data.data)
     }
     catch (err) {
       console.log(err.response.data)
