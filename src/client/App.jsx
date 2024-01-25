@@ -37,7 +37,8 @@ function App() {
         username,
         password
       })
-      console.log(data)
+      localStorage.setItem('token', data.token)
+      console.log(data.token)
     }
     catch (err) {
       console.log(err.response.data)
