@@ -30,5 +30,6 @@ app.get("*", (req, res) => {
 // Start our API server
 const port = process.env.VITE_PORT;
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`\n Server is running on http://localhost:${port}\n`);
 });
