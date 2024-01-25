@@ -11,11 +11,13 @@ const register = async (req, res) => {
         return res.status(409).json({error: "Please enter username or password"});
     }
     try {
-        const hash = bcrypt.hash(password, 12);
+        const hash = await bcrypt.hash(password, 12);
+        console.log(hash)
         const createdUser = await registerUserDB(username, hash);
         res.status(201).json({ data: createdUser });
 
     } catch (err) {
+        console.log(err.message)
         res.status(500).json({ error: err.message });
     }
 };
