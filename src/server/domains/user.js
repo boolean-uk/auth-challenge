@@ -1,5 +1,8 @@
-import prisma from '../utils/prisma.js'
+import { prisma } from '../utils/prisma.js'
 
-const registerDb = async () => {}
+const registerDb = async (username, password) => 
+    await prisma.user.create({
+        data: { username, password }
+    })
 
 export { registerDb }
