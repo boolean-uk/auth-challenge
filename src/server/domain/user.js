@@ -9,6 +9,4 @@ const registerUserDB = async (username, hash) =>
         },
     });
 
-module.exports = {
-    registerUserDB,
-};
+export default registerUserDB

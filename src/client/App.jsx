@@ -9,6 +9,7 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
 
+
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
@@ -38,7 +39,7 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
-
+      
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
