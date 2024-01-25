@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
 
+const { registerUserDB } = require('../domain/user.js')
 const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
     const { username, password } = req.body;
+    const hash = bcrypt.hash(password, 12)
 
-    const createdUser = null;
+    const createdUser = await registerUserDB(username, hash)
 
     res.json({ data: createdUser });
 };
