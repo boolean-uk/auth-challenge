@@ -25,6 +25,12 @@
   cursor: pointer;
 }
 
+.logout-message {
+  position: fixed;
+  right: 260px;
+  top: 100px;
+}
+
 .delete-movies-btn {
   width: 200px;
   height: 40px;

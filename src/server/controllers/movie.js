@@ -17,7 +17,7 @@ const createMovie = async (req, res) => {
         const token = req.headers.authorization.slice(7)
         jwt.verify(token, secret)
     } catch {
-        return res.status(401).json({ error: 'Invalid token provided.' })
+        return res.status(401).json({ error: 'Invalid token provided, you must be signed in to delete movies.' })
     }
 
     const createdMovie = await createMovieDb(title, description, runtimeMins)

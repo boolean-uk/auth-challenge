@@ -12,6 +12,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [registerMessage, setRegisterMessage] = useState('')
   const [loginMessage, setLoginMessage] = useState('')
+  const [logoutMessage, setLogoutMessage] = useState('')
   const [createMovieMessage, setCreateMovieMessage] = useState('')
   const [deleteAllMoviesMessage, setDeleteAllMoviesMessage] = useState('')
 
@@ -99,7 +100,9 @@ function App() {
 
   return (
     <div className="App">
-      <Logout />
+      <Logout setLogoutMessage={setLogoutMessage} />
+      {logoutMessage && <p className='logout-message'>{logoutMessage}</p>}
+
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
       {registerMessage && <p>{registerMessage}</p>}
