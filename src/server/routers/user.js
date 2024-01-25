@@ -6,7 +6,7 @@ import { validateInput } from "../middlewares/input-validation.js";
 
 router.post("/register", (req, res, next) => {
     if (!validateInput(req)) {
-        res.status(400).json({error:'400 missing input'})
+        res.status(400).json({error:'missing input'})
         return
     } 
     next()
