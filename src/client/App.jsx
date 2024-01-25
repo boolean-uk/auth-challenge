@@ -46,7 +46,24 @@ function App() {
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const token = localStorage.getItem('token')
 
+    try {
+      const { data } = await axios.post(`${apiUrl}/movie`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        title,
+        description,
+        runtimeMins
+      })
+      console.log(data)
+      setMovies(data.movies)
+    }
+    catch (err) {
+      console.log(err.response.data)
+    }
   }
 
   return (
