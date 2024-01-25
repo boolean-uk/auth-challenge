@@ -13,6 +13,7 @@ function App() {
   const [registerMessage, setRegisterMessage] = useState('')
   const [loginMessage, setLoginMessage] = useState('')
   const [createMovieMessage, setCreateMovieMessage] = useState('')
+  const [deleteAllMoviesMessage, setDeleteAllMoviesMessage] = useState('')
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -78,6 +79,24 @@ function App() {
     }
   }
 
+  const deleteAllMovies = async () => {
+    const token = localStorage.getItem('token')
+
+    try {
+      const { data } = await axios.delete(`${apiUrl}/movie`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      setMovies([])
+      setDeleteAllMoviesMessage(data.message)
+    }
+    catch (err) {
+      setDeleteAllMoviesMessage(err.response.data.eror)
+    }
+  }
+
   return (
     <div className="App">
       <Logout />
@@ -94,6 +113,9 @@ function App() {
       {createMovieMessage && <p>{createMovieMessage}</p>}
 
       <h1>Movie list</h1>
+      <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
+      {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
+
       <ul>
         {movies.map(movie => {
           return (

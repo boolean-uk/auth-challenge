@@ -25,6 +25,23 @@
   cursor: pointer;
 }
 
+.delete-movies-btn {
+  width: 200px;
+  height: 40px;
+  background-color: #2600ff;
+  color: #ffffff;
+  font-size: 16px;
+  border: none;
+  border-radius: 9999px;
+}
+
+.delete-movies-btn:hover {
+  transform: scale(1.02);
+  background-color: #2600ff9f;
+  cursor: pointer;
+  border: none;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

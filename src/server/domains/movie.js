@@ -17,4 +17,6 @@ const createMovieDb = async (title, description, runtimeMins) => await prisma.mo
     }
 })
 
-export { getAllMoviesDb, createMovieDb, checkTitleExistsDb }
+const deleteAllMoviesDb = async () => await prisma.movie.deleteMany({})
+
+export { getAllMoviesDb, createMovieDb, checkTitleExistsDb, deleteAllMoviesDb }
