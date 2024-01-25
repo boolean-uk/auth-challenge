@@ -12,7 +12,10 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12)
     try {
         const createdUser = await createUserDb(username, hashedPassword)
-        return res.status(201).json({ data: createdUser })
+        return res.status(201).json({ 
+            data: createdUser,
+            message: `Thank you, ${username}, your registration is now complete.`
+        })
     }
     catch (err) {
         return res.status(500).json({ error: 'Server error, please try again'})
@@ -29,7 +32,10 @@ const login = async (req, res) => {
     if (!passwordsMatch) return res.status(401).json({ error: 'Invalid username or password.' })
 
     const token = jwt.sign({ username }, secret)
-    res.json({ token });
+    res.json({ 
+        token,
+        message: `You have successfully logged in as ${username}`
+    });
 };
 
 export {

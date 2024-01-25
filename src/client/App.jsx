@@ -9,6 +9,8 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [registerMessage, setRegisterMessage] = useState('')
+  const [loginMessage, setLoginMessage] = useState('')
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -25,10 +27,10 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      console.log(data.data)
+      setRegisterMessage(data.message)
     }
     catch (err) {
-      console.log(err.response.data.error)
+      setRegisterMessage(err.response.data.error)
     }
   };
 
@@ -41,11 +43,14 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      localStorage.setItem('token', data.token)
-      console.log(data.token)
+      const { token, message } = data
+      localStorage.setItem('token', token)
+      setLoginMessage(message)
+      console.log(data)
     }
     catch (err) {
-      console.log(err.response.data)
+      console.log(err.response)
+      setLoginMessage(err.response.data.error)
     }
   };
 
@@ -76,9 +81,11 @@ function App() {
     <div className="App">
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
+      {registerMessage && <p>{registerMessage}</p>}
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
+      {loginMessage && <p>{loginMessage}</p>}
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
