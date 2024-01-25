@@ -12,7 +12,7 @@ const register = async (req, res) => {
     }
     try {
         const hash = await bcrypt.hash(password, 12);
-        console.log(hash)
+        const token = jwt.sign(username, jwtSecret)
         const createdUser = await registerUserDB(username, hash);
         res.status(201).json({ data: createdUser });
 
@@ -38,7 +38,6 @@ const login = async (req, res) => {
     }
 
     const token = null;
-
     res.json({ data: token });
 };
 
