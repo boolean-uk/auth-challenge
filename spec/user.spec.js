@@ -2,7 +2,7 @@ import supertest  from "supertest";
 import { app } from "../src/server";
 
 /* eslint-disable no-undef */
-describe("/users", () => { 
+describe("/user", () => { 
   xdescribe("/register", () => {
       const user1 = {
         username: "Geralt",
@@ -57,7 +57,6 @@ describe("/users", () => {
     };
     test("the user is logged in", async() => {
       const result = await supertest(app).post("/user/login").send(user1)
-
       expect(result.status).toEqual(201)
       expect(result.body.token).not.toBeUndefined()
       expect(typeof result.body.token).toEqual("string")

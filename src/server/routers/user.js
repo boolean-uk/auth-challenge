@@ -14,4 +14,14 @@ router.post("/register", (req, res, next) => {
     register(req, res)
 });
 
+router.post("/login", (req, res, next) => {
+    if (!validateInput(req)) {
+        res.status(400).json({error:'missing input'})
+        return
+    } 
+    next()
+}, (req, res)=> {
+    login(req, res)
+});
+
 export default router;
