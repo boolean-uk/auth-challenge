@@ -4,7 +4,7 @@ import supertest  from "supertest";
 import { app } from "../src/server";
 
 /* eslint-disable no-undef */
-xdescribe("/user", () => { 
+describe("/user", () => { 
   describe("/register", () => {
       const endpoint = "/user/register"
       const user1 = {
