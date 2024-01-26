@@ -60,29 +60,31 @@ function MovieList({ apiUrl }) {
       }
 
     return (
-        <>
+        <section className="movie-list--container grid">
             <Logout />
-            <div>
+            <div className="movie-list--create-movie">
               <h1>Create a movie</h1>
               <MovieForm handleSubmit={handleCreateMovie} />
               {createMovieMessage && <p>{createMovieMessage}</p>}
             </div>
-            <h1>Movie list</h1>
-            <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
-            {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
-    
-            <ul>
-            {movies.map(movie => {
-                return (
-                <li key={movie.id}>
-                    <h3>{movie.title}</h3>
-                    <p>Description: {movie.description}</p>
-                    <p>Runtime: {movie.runtimeMins}</p>
-                </li>
-                );
-            })}
-            </ul>
-        </>
+            <div className="movie-list--movies-container">
+              <h1>Movie list</h1>
+              <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
+              {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
+      
+              <ul>
+              {movies.map(movie => {
+                  return (
+                  <li key={movie.id}>
+                      <h3>{movie.title}</h3>
+                      <p>Description: {movie.description}</p>
+                      <p>Runtime: {movie.runtimeMins}</p>
+                  </li>
+                  );
+              })}
+              </ul>
+            </div>
+        </section>
     )
 }
 
