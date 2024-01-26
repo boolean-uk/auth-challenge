@@ -1,20 +1,6 @@
-import { useEffect, useState } from "react"
 import { Movie } from "./Movie"
 
-const MovieList = ({ apiUrl })  => {
-    const [movies, setMovies] = useState(undefined)
-
-    const getMovies = () => {
-        const options = {
-            method: "GET",
-            headers: {"constent-type":"application/json"}
-        }
-        fetch(`${apiUrl}/movie`, options)
-        .then(res => res.json())
-        .then(setMovies)
-    }
-
-    useEffect(getMovies, [])
+const MovieList = ({ movies })  => {
 
     return(
         <>
