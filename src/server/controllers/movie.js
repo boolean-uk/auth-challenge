@@ -5,21 +5,21 @@ import jwt from "jsonwebtoken"
 const createMovie = async(req, res) => {
     const { title, description, runtimeMins } = req.body
     const token = req.headers.authorization
-
+    
     if (!token) {
         res.status(401).json({error: "missing authentication"})
         return
     }
-
+    
     try{
         jwt.verify(token, process.env.SECRET)
     } catch (e) {
         res.status(403).json({error: "unauthorised"})
         return
     }
-
+    
     try {
-        const movie = await createMovieDb(title, description, runtimeMins)
+        const movie = await createMovieDb(title, description, Number(runtimeMins))
         res.status(201).json({ movie })
         return
     } catch (e) {
