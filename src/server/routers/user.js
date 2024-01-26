@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 
 import { login, register } from "../controllers/user.js";
-import { validateInput } from "../middlewares/input-validation.js";
+import { validateInput } from "../middlewares/user-input-validation.js";
 
 router.post("/register", (req, res, next) => {
     if (!validateInput(req)) {
@@ -10,9 +10,9 @@ router.post("/register", (req, res, next) => {
         return
     } 
     next()
-}, (req, res)=> {
-    register(req, res)
-});
+}, 
+    register
+);
 
 router.post("/login", (req, res, next) => {
     if (!validateInput(req)) {
@@ -20,8 +20,8 @@ router.post("/login", (req, res, next) => {
         return
     } 
     next()
-}, (req, res)=> {
-    login(req, res)
-});
+}, 
+    login
+);
 
 export default router;
