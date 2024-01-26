@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  FormErrorMessage,
+  FormHelperText,
+} from "@chakra-ui/react";
 
 const userLocalStorage = () => {
   const storedUser = localStorage.getItem("user");
@@ -11,16 +19,21 @@ const userLocalStorage = () => {
   }
 };
 
-export default function UserForm({ handleSubmit, error }) {
+export default function UserForm({ handleSubmit, error, setError }) {
   const [user, setUser] = useState(() => userLocalStorage());
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSubmitDecorator = (e) => {
+  const handleSubmitDecorator = async (e) => {
     e.preventDefault();
-    handleSubmit(user);
-    setUser({ username: "", password: "" });
+    try {
+      await handleSubmit(user);
+      setUser({ username: "", password: "" });
+      setError(null);
+    } catch (error) {
+      // setError(error.message);
+    }
   };
 
   const handleChange = (e) => {
@@ -40,23 +53,28 @@ export default function UserForm({ handleSubmit, error }) {
   return (
     <>
       <form onSubmit={handleSubmitDecorator}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={user.username}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={user.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Submit</button>
+        <FormControl id="user-form" isRequired>
+          <FormLabel htmlFor="username">Username</FormLabel>
+          <Input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={user.username}
+            onChange={handleChange}
+          />
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={user.password}
+            onChange={handleChange}
+          />
+          <Button type="submit">Submit</Button>
+          {error && <p>{error}</p>}
+        </FormControl>
       </form>
-      {error && <p>{error}</p>}
+
       <p>
         {isRegisterPage
           ? `Already have an account? `

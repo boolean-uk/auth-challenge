@@ -4,51 +4,13 @@ import { Box } from "@chakra-ui/react";
 
 import "./App.css";
 import MovieForm from "./components/MovieForm";
-import UserForm from "./components/UserForm";
-
+import RegisterPage from "./components/RegisterPage";
+import LoginPage from "./components/LoginPage";
+import DashboardPage from "./components/DashboardPage";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
-// function RegisterPage({ handleRegister, error }) {
-//   return (
-//     <Box>
-//       <h1>Register</h1>
-//       <UserForm handleSubmit={handleRegister} error={error} />
-//     </Box>
-//   );
-// }
-
-function LoginPage({ handleLogin, error }) {
-  return (
-    <Box>
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} error={error} />
-    </Box>
-  );
-}
-
-function DashboardPage({ movies, handleCreateMovie, error }) {
-  return (
-    <Box>
-      <h1>Create a movie</h1>
-      <Link to="/login">Log out</Link>
-      <MovieForm handleSubmit={handleCreateMovie} error={error} />
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
-    </Box>
-  );
-}
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -132,7 +94,7 @@ function App() {
         <Route
           path="/register"
           element={
-            <RegisterPage handleRegister={handleRegister} error={error} />
+            <RegisterPage handleRegister={handleRegister} error={error} setError={setError}/>
           }
         />
         <Route
