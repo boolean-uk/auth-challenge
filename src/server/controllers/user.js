@@ -23,17 +23,16 @@ const login = async (req, res) => {
 
   const foundUser = await findUserDb(username)
   if (!foundUser) {
-    res.status(401).json('incorrect username/password')
+    res.status(401).json({ error:'incorrect username/password' })
     return
   }
   
-  try {
-    await comparePassword(password, foundUser.password)
-  } catch (e) {
-    res.status(401).json('incorrect username/password')
+  const isCorrectPassword = await comparePassword(password, foundUser.password) 
+  if (!isCorrectPassword){
+    res.status(401).json({ error:'incorrect username/password' })
     return
   }
-
+  
   const token = jwt.sign(username, process.env.SECRET)
   const response = { token }
   // unecessary addition?
