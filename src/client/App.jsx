@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
   /**
@@ -34,16 +34,29 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
+    try {
+      const res = await fetch(`${apiUrl}/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP error!Status Code: ${res.status}`);
+      }
+      const data = await res.json();
+      console.log(`Status Code: ${res.status}`, data);
+      }
+      catch (error) {
+        console.log(error.message)
+      }
+      
+    }
 
-  };
+  const handleLogin = async ({ username, password }) => {};
 
-  const handleLogin = async ({ username, password }) => {
-
-  };
-
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
-  }
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
   return (
     <div className="App">
@@ -58,7 +71,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
