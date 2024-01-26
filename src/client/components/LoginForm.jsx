@@ -7,14 +7,17 @@ const DEFAULT_FORM = {
 
 const LoginForm = ({ apiUrl }) => {
     const [form, setForm] = useState(DEFAULT_FORM)
-    const [message, setMessage] = useState({})
+    const [message, setMessage] = useState("")
     
     const updateForm = (e) => setForm({...form, [e.target.name]: e.target.value})
 
     const addToLocalStorage = ({ response }) => {
-        const { message, token } = response
-        message && setMessage( message)
-        token && localStorage.setItem("token", token)
+        if(response) {
+            const { message, token } = response
+    
+            message && setMessage( message)
+            token && localStorage.setItem("token", token)
+        }
     }
 
     const login = (e) => {
