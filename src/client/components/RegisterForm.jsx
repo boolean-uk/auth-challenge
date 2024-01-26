@@ -5,7 +5,7 @@ const DEFAULT_FORM = {
     password: ""
 }
 
-const LoginForm = ({ apiUrl }) => {
+const RegisterForm = ({ apiUrl }) => {
     
     const [form, setForm] = useState(DEFAULT_FORM)
     const [message, setMessage] = useState({})
@@ -64,4 +64,4 @@ const LoginForm = ({ apiUrl }) => {
     )
 }
 
-export { LoginForm }
+export { RegisterForm }
