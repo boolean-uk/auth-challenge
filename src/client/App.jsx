@@ -64,8 +64,6 @@ function App() {
   return (
     <div className="App">
 
-      <Home apiUrl={apiUrl} />
-
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
       {createMovieMessage && <p>{createMovieMessage}</p>}
@@ -87,14 +85,11 @@ function App() {
       </ul>
 
       <Routes>
-        {/* <Route
+        <Route
           path='/'
-          element={
-            
-          }
+          element={<Home apiUrl={apiUrl} />}
         >
-
-        </Route> */}
+        </Route>
         <Route
           path='/movie-list'
           element={<div>hi</div>}
