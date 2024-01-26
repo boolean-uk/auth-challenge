@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 // Error handlers
 import errorCreator from './errorCreator.js'
 
@@ -14,4 +16,14 @@ const checkUserExist = async (username) => {
   return foundUser
 }
 
-export { checkUserExist }
+const checkPassword = async (providedPassword, storedPassword) => {
+  const checkedPassword = await bcrypt.compare(providedPassword, storedPassword)
+
+  if (!checkedPassword) {
+    throw errorCreator('Invalid username or password', 401)
+  }
+
+  return checkPassword
+}
+
+export { checkUserExist, checkPassword }
