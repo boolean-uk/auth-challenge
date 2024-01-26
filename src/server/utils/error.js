@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import * as Types from "./types.d";
+import * as Types from "./types.d.js";
 
 /**
  * @param {Error} error
