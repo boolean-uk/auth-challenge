@@ -5,4 +5,10 @@ const createMovieDb = async (title, description, runtimeMins) =>
     data: { title, description, runtimeMins },
   });
 
-export { createMovieDb };
+const getMoviesDb = async() => 
+  await prisma.movie.findMany()
+
+export { 
+  createMovieDb, 
+  getMoviesDb
+ };

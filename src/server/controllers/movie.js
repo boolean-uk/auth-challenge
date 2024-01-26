@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js"
-import { createMovieDb } from "../domains/movie.js"
+import { createMovieDb, getMoviesDb } from "../domains/movie.js"
 import jwt from "jsonwebtoken"
 
 const createMovie = async(req, res) => {
@@ -31,4 +31,13 @@ const createMovie = async(req, res) => {
     }
 }
 
-export { createMovie }
+const getMovies = async(req, res) => {
+    const movies = await getMoviesDb()
+    res.json({ movies })
+    return
+}
+
+export { 
+    createMovie, 
+    getMovies
+ }

@@ -1,5 +1,5 @@
 import express from "express";
-import { createMovie } from "../controllers/movie.js";
+import { createMovie, getMovies } from "../controllers/movie.js";
 import { validateInput } from "../middlewares/movie-input-validation.js";
 
 const router = express.Router();
@@ -15,5 +15,7 @@ router.post(
   },
   createMovie
 );
+
+router.get("/",getMovies);
 
 export default router;
