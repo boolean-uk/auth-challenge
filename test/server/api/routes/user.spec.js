@@ -58,6 +58,15 @@ describe("User Endpoint", () => {
       const requestMissingUsername = {
         password: "builder",
       };
+      const addedField = {
+        username: "bob",
+        password: "builder",
+        title: "builder",
+      };
+      const incorrectTypes = {
+        username: 123,
+        password: 456,
+      };
 
       const responseMissingAll = await supertest(app)
         .post("/user/register")
@@ -68,6 +77,12 @@ describe("User Endpoint", () => {
       const responseMissingUsername = await supertest(app)
         .post("/user/register")
         .send(requestMissingUsername);
+      const responseAddedField = await supertest(app)
+        .post("/user/register")
+        .send(addedField);
+      const responseIncorrectTypes = await supertest(app)
+        .post("/user/register")
+        .send(incorrectTypes);
 
       const expectedMissingAll = {
         error: {
@@ -97,13 +112,34 @@ describe("User Endpoint", () => {
           },
         },
       };
+      const expectedAddedField = {
+        error: {
+          code: 400,
+          formErrors: ["Unrecognized key(s) in object: 'title'"],
+          fieldErrors: {},
+        },
+      };
+      const expectedIncorrectTypes = {
+        error: {
+          formErrors: [],
+          fieldErrors: {
+            username: ["Expected string, received number"],
+            password: ["Expected string, received number"],
+          },
+          code: 400,
+        },
+      };
 
       expect(responseMissingAll.status).toEqual(400);
       expect(responseMissingPassword.status).toEqual(400);
       expect(responseMissingUsername.status).toEqual(400);
+      expect(responseAddedField.status).toEqual(400);
+      expect(responseIncorrectTypes.status).toEqual(400);
       expect(responseMissingAll.body).toEqual(expectedMissingAll);
       expect(responseMissingPassword.body).toEqual(expectedMissingPassword);
       expect(responseMissingUsername.body).toEqual(expectedMissingUsername);
+      expect(responseAddedField.body).toEqual(expectedAddedField);
+      expect(responseIncorrectTypes.body).toEqual(expectedIncorrectTypes);
     });
   });
 });
