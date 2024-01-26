@@ -8,13 +8,14 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  // const [shouldFetchMovies, setShouldFetchMovies] = useState(false)
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
       .then(res => setMovies(res.data))
+    
   }, []);
-
 
   const handleRegister = async ({ username, password }) => {
     const data = { username, password }
@@ -45,6 +46,7 @@ function App() {
     const userData = await fetch(`${apiUrl}/user/login`, options)
     const newLogin = await userData.json()
     const userToken = newLogin.data
+    console.log(userToken)
 
     localStorage.setItem("token", userToken)
   };
@@ -56,18 +58,14 @@ function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(data)
     }
 
     const newMovieData = await fetch(`${apiUrl}/movie`, options)
     const newMovie = await newMovieData.json()
-    setMovies([...movies, newMovie])
-
-    await fetch(`${apiUrl}/movie`)
-    .then(res => res.json())
-    .then(res => setMovies(res.data));
+    setMovies([...movies, newMovie.data])
   }
 
 
