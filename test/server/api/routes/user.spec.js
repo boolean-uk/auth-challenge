@@ -51,25 +51,25 @@ describe("User Endpoint", () => {
     });
 
     it("will return code 400 when request is malformed", async () => {
-      const request1 = {};
-      const request2 = {
+      const requestMissingAll = {};
+      const requestMissingPassword = {
         username: "bob",
       };
-      const request3 = {
+      const requestMissingUsername = {
         password: "builder",
       };
 
-      const response1 = await supertest(app)
+      const responseMissingAll = await supertest(app)
         .post("/user/register")
-        .send(request1);
-      const response2 = await supertest(app)
+        .send(requestMissingAll);
+      const responseMissingPassword = await supertest(app)
         .post("/user/register")
-        .send(request2);
-      const response3 = await supertest(app)
+        .send(requestMissingPassword);
+      const responseMissingUsername = await supertest(app)
         .post("/user/register")
-        .send(request3);
+        .send(requestMissingUsername);
 
-      const expected1 = {
+      const expectedMissingAll = {
         error: {
           code: 400,
           formErrors: [],
@@ -79,7 +79,7 @@ describe("User Endpoint", () => {
           },
         },
       };
-      const expected2 = {
+      const expectedMissingPassword = {
         error: {
           code: 400,
           formErrors: [],
@@ -88,7 +88,7 @@ describe("User Endpoint", () => {
           },
         },
       };
-      const expected3 = {
+      const expectedMissingUsername = {
         error: {
           code: 400,
           formErrors: [],
@@ -98,12 +98,12 @@ describe("User Endpoint", () => {
         },
       };
 
-      expect(response1.status).toEqual(400);
-      expect(response2.status).toEqual(400);
-      expect(response3.status).toEqual(400);
-      expect(response1.body).toEqual(expected1);
-      expect(response2.body).toEqual(expected2);
-      expect(response3.body).toEqual(expected3);
+      expect(responseMissingAll.status).toEqual(400);
+      expect(responseMissingPassword.status).toEqual(400);
+      expect(responseMissingUsername.status).toEqual(400);
+      expect(responseMissingAll.body).toEqual(expectedMissingAll);
+      expect(responseMissingPassword.body).toEqual(expectedMissingPassword);
+      expect(responseMissingUsername.body).toEqual(expectedMissingUsername);
     });
   });
 });
