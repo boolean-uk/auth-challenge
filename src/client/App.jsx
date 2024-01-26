@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './App.css';
+import { useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
 import Logout from './components/Logout';
+import './App.css';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -15,6 +18,8 @@ function App() {
   const [logoutMessage, setLogoutMessage] = useState('')
   const [createMovieMessage, setCreateMovieMessage] = useState('')
   const [deleteAllMoviesMessage, setDeleteAllMoviesMessage] = useState('')
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -50,6 +55,7 @@ function App() {
       const { token, message } = data
       localStorage.setItem('token', token)
       setLoginMessage(message)
+      navigate('/movie-list')
     }
     catch (err) {
       setLoginMessage(err.response.data.error)
@@ -100,6 +106,7 @@ function App() {
 
   return (
     <div className="App">
+
       <Logout setLogoutMessage={setLogoutMessage} />
       {logoutMessage && <p className='logout-message'>{logoutMessage}</p>}
 
@@ -130,6 +137,22 @@ function App() {
           );
         })}
       </ul>
+
+      <Routes>
+        {/* <Route
+          path='/'
+          element={
+            
+          }
+        >
+
+        </Route> */}
+        <Route
+          path='/movie-list'
+          element={<div>hi</div>}
+        >
+        </Route>
+      </Routes>
     </div>
   );
 }
