@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Logout from "./Logout"
 import MovieForm from "./MovieForm";
 
+import '../styles/movie-list.css'
+
 function MovieList({ apiUrl }) {
 
     const [movies, setMovies] = useState([]);
@@ -60,11 +62,11 @@ function MovieList({ apiUrl }) {
     return (
         <>
             <Logout />
-
-            <h1>Create a movie</h1>
-            <MovieForm handleSubmit={handleCreateMovie} />
-            {createMovieMessage && <p>{createMovieMessage}</p>}
-    
+            <div>
+              <h1>Create a movie</h1>
+              <MovieForm handleSubmit={handleCreateMovie} />
+              {createMovieMessage && <p>{createMovieMessage}</p>}
+            </div>
             <h1>Movie list</h1>
             <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
             {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}

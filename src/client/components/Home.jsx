@@ -49,12 +49,12 @@ function Home({ apiUrl }) {
 
     return (
         <section className="home--container grid">
-            <div className="home--register-container grid">
+            <div className="home--form-container home--register-container grid">
                 <h1>Register</h1>
                 <UserForm handleSubmit={handleRegister} />
                 {registerMessage && <p>{registerMessage}</p>}
             </div>
-            <div className="home--login-container grid">
+            <div className="home--form-container home--login-container grid">
                 <h1>Login</h1>
                 <UserForm handleSubmit={handleLogin} />
                 {loginMessage && <p>{loginMessage}</p>}

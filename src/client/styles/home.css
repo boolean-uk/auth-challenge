@@ -5,16 +5,16 @@
     padding: 100px;
 }
 
-.home--register-container {
+.home--form-container {
     grid-template-rows: repeat(2, auto) 60px;
     border-radius: 8px;
-    background: linear-gradient(325deg, #021c7a 22.81%, #2453ff 99.29%);
     padding: 20px 50px;
 }
 
+.home--register-container {
+    background: linear-gradient(325deg, #021c7a 22.81%, #2453ff 99.29%);
+}
+
 .home--login-container {
-    grid-template-rows: repeat(2, auto) 60px;
-    border-radius: 8px;
     background: linear-gradient(135deg, #021c7a 19.25%, #2453ff 100.00%);
-    padding: 20px 50px;
 }
