@@ -10,7 +10,7 @@ const checkUserExist = async (username) => {
   const foundUser = await getUserByUserNameDb(username)
 
   if (foundUser) {
-    throw errorCreator('User with provided username is already exist', 403)
+    throw errorCreator('User with provided username is already exist', 409)
   }
 
   return foundUser

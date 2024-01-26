@@ -1,5 +1,9 @@
-import express from 'express';
+import express from 'express'
+const router = express.Router()
 
-const router = express.Router();
+// Controllers
+import { createMovie } from '../controllers/movie.js'
 
-export default router;
+router.post('/', createMovie)
+
+export default router
