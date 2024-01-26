@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
-import Logout from './components/Logout';
 import './App.css';
 
 const port = import.meta.env.VITE_PORT;
@@ -13,54 +10,14 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [registerMessage, setRegisterMessage] = useState('')
-  const [loginMessage, setLoginMessage] = useState('')
-  const [logoutMessage, setLogoutMessage] = useState('')
   const [createMovieMessage, setCreateMovieMessage] = useState('')
   const [deleteAllMoviesMessage, setDeleteAllMoviesMessage] = useState('')
-
-  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
       .then(res => setMovies(res.data));
   }, []);
-
-  const handleRegister = async ({ username, password }) => {
-    try {
-      const { data } = await axios.post(`${apiUrl}/user/register`, {
-        username,
-        password
-      }, {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-      setRegisterMessage(data.message)
-    }
-    catch (err) {
-      setRegisterMessage(err.response.data.error)
-    }
-  };
-
-  const handleLogin = async ({ username, password }) => {
-    try {
-      const { data } = await axios.post(`${apiUrl}/user/login`, {
-        username,
-        password
-      }, {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-      const { token, message } = data
-      localStorage.setItem('token', token)
-      setLoginMessage(message)
-      navigate('/movie-list')
-    }
-    catch (err) {
-      setLoginMessage(err.response.data.error)
-    }
-  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     const token = localStorage.getItem('token')
@@ -107,16 +64,7 @@ function App() {
   return (
     <div className="App">
 
-      <Logout setLogoutMessage={setLogoutMessage} />
-      {logoutMessage && <p className='logout-message'>{logoutMessage}</p>}
-
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
-      {registerMessage && <p>{registerMessage}</p>}
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
-      {loginMessage && <p>{loginMessage}</p>}
+      <Home apiUrl={apiUrl} />
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
