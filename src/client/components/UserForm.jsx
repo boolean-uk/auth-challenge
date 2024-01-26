@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const userLocalStorage = () => {
   const storedUser = localStorage.getItem("user");
@@ -12,6 +13,10 @@ const userLocalStorage = () => {
 
 export default function UserForm({ handleSubmit, error }) {
   const [user, setUser] = useState(() => userLocalStorage());
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleSubmitDecorator = (e) => {
     e.preventDefault();
     handleSubmit(user);
@@ -29,6 +34,8 @@ export default function UserForm({ handleSubmit, error }) {
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
+
+  const isRegisterPage = location.pathname === "/register";
 
   return (
     <>
@@ -50,6 +57,14 @@ export default function UserForm({ handleSubmit, error }) {
         <button type="submit">Submit</button>
       </form>
       {error && <p>{error}</p>}
+      <p>
+        {isRegisterPage
+          ? `Already have an account? `
+          : `Don't have an account? `}
+        <Link to={isRegisterPage ? "/login" : "/register"}>
+          {isRegisterPage ? "Log In" : "Register"}
+        </Link>
+      </p>
     </>
   );
 }

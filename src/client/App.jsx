@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
@@ -7,9 +7,51 @@ import UserForm from "./components/UserForm";
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
+function RegisterPage({ handleRegister, error }) {
+  return (
+    <>
+      <h1>Register</h1>
+      <UserForm handleSubmit={handleRegister} error={error} />
+    </>
+  );
+}
+
+function LoginPage({ handleLogin, error }) {
+  return (
+    <>
+      <h1>Login</h1>
+      <UserForm handleSubmit={handleLogin} error={error} />
+    </>
+  );
+}
+
+function DashboardPage({ movies }) {
+  return (
+    <>
+      <h1>Create a movie</h1>
+      <Link to="/login">Log out</Link>
+      <MovieForm />
+      <h1>Movie list</h1>
+      <ul>
+        {movies.map((movie) => {
+          return (
+            <li key={movie.id}>
+              <h3>{movie.title}</h3>
+              <p>Description: {movie.description}</p>
+              <p>Runtime: {movie.runtimeMins}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+
 function App() {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -25,14 +67,12 @@ function App() {
     };
     const response = await fetch(`${apiUrl}/user/register`, option);
     if (response.ok) {
-      const result = await response.json();
+      await response.json();
       localStorage.clear();
       setError(null);
-      console.log(result.data);
     } else {
       const result = await response.json();
       setError(result.error);
-      console.log(result.error);
     }
   };
 
@@ -48,13 +88,13 @@ function App() {
       setError(null);
       localStorage.setItem("userToken", result.data.token);
       localStorage.removeItem("user");
+      navigate("dashboard");
     } else {
       const result = await response.json();
       setError(result.error);
       console.log(result.error);
     }
   };
-  console.log(movies);
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     const userToken = localStorage.getItem("userToken");
@@ -82,30 +122,55 @@ function App() {
       setError(result.error);
     }
   };
+  {
+    /* <h1>Register</h1>
+  <UserForm handleSubmit={handleRegister} error={error} /> */
+  }
+
+  // <h1>Login</h1>
+  // <UserForm handleSubmit={handleLogin} error={error} />
+
+  // <h1>Create a movie</h1>
+  // <MovieForm handleSubmit={handleCreateMovie} error={error} />
+
+  // <h1>Movie list</h1>
+  // <ul>
+  //   {movies.map((movie) => {
+  //     return (
+  //       <li key={movie.id}>
+  //         <h3>{movie.title}</h3>
+  //         <p>Description: {movie.description}</p>
+  //         <p>Runtime: {movie.runtimeMins}</p>
+  //       </li>
+  //     );
+  //   })}
+  // </ul>
 
   return (
     <div className="App">
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} error={error} />
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} error={error} />
-
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} error={error} />
-
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <Routes>
+        <Route
+          path="/register"
+          element={
+            <RegisterPage handleRegister={handleRegister} error={error} />
+          }
+        />
+        <Route
+          path="/login"
+          element={<LoginPage handleLogin={handleLogin} error={error} />}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <DashboardPage
+              movies={movies}
+              handleCreateMovie={handleCreateMovie}
+              error={error}
+            />
+          }
+        />
+        <Route path="/" element={<Navigate to="/register" />} />
+      </Routes>
     </div>
   );
 }
