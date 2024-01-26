@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client'
+import  userDatabase  from '../../domain/UserDb.js';
+
 const prisma = new PrismaClient();
 
 const jwtSecret = 'mysecret';
@@ -8,9 +10,15 @@ const jwtSecret = 'mysecret';
 const register = async (req, res) => {
     const { username, password } = req.body;
 
-    const createdUser = null;
+    const hashedPassword = await bcrypt.hash(password, 12)
 
-    res.json({ data: createdUser });
+    const createdUser = await userDatabase(username, hashedPassword);
+
+    delete createdUser.password
+    res.json({ data: createdUser});
+
+    
+
 };
 
 const login = async (req, res) => {
