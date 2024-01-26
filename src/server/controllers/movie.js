@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-import { createMovieDB } from "../domain/movie.js";
+import { createMovieDB, findMovieDB } from "../domain/movie.js";
 
 const jwtSecret = "mysecret";
 
@@ -19,6 +19,11 @@ const createMovie = async (req, res) => {
     return res.status(406).json({ error: "All fields are required" });
   }
 
+  const existingMovie = await findMovieDB(title);
+  if (existingMovie) {
+    res.status(409).json({ error: "Movie with such title already exists" });
+  }
+
   try {
     const tokenHeader = req.headers.authorization;
 
@@ -31,7 +36,7 @@ const createMovie = async (req, res) => {
 
   const createdMovie = await createMovieDB(title, description, runtimeMins);
 
-  res.json({ data: createdMovie });
+  res.status(201).json({ data: createdMovie });
 };
 
 export { getAllMovies, createMovie };

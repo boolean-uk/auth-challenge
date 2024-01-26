@@ -10,3 +10,11 @@ export const createMovieDB = async (title, description, runtimeMins) => {
     },
   });
 };
+
+export const findMovieDB = async (title) => {
+  return await prisma.movie.findUnique({
+    where: {
+      title: title,
+    },
+  });
+};

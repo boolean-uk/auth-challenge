@@ -15,6 +15,7 @@ export default function UserForm({ handleSubmit, error }) {
   const handleSubmitDecorator = (e) => {
     e.preventDefault();
     handleSubmit(user);
+    setUser({ username: "", password: "" });
   };
 
   const handleChange = (e) => {

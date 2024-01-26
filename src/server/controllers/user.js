@@ -50,7 +50,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ username: foundUser.username }, jwtSecret);
 
-    res.json({ data: token });
+    res.json({ data: { username, token } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
