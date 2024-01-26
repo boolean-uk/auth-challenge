@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js"
 import { createMovieDb } from "../domains/movie.js"
 import jwt from "jsonwebtoken"
 
@@ -6,20 +7,28 @@ const createMovie = async(req, res) => {
     const token = req.headers.authorization
 
     if (!token) {
-        res.status(401).json({error: "user not signed in"})
+        res.status(401).json({error: "missing authentication"})
         return
     }
 
     try{
         jwt.verify(token, process.env.SECRET)
     } catch (e) {
-        console.log(e)
-        res.status(403).json({error: "access denied"})
+        res.status(403).json({error: "unauthorised"})
         return
     }
 
-    const movie = await createMovieDb(title, description, runtimeMins)
-    res.status(201).json({ movie })
+    try {
+        const movie = await createMovieDb(title, description, runtimeMins)
+        res.status(201).json({ movie })
+        return
+    } catch (e) {
+        if (e instanceof PrismaClientKnownRequestError) {
+            if (e.code === "P2002") {
+                res.status(409).json({error: "title already in use"})
+            }
+        }
+    }
 }
 
 export { createMovie }
