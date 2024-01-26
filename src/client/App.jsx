@@ -65,13 +65,27 @@ function App() {
     const userData = await fetch(`${apiUrl}/user/login`, options)
     const newLogin = await userData.json()
     const userToken = newLogin.data
-  
+
     localStorage.setItem("token", userToken)
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const data = { title, description, runtimeMins }
 
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data)
+    }
+
+    const newMovieData = await fetch(`${apiUrl}/movie`, options)
+    const newMovie = await newMovieData.json()
+    return console.log(newMovie)
   }
+
 
   return (
     <div className="App">
