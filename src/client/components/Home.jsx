@@ -3,6 +3,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import UserForm from "./UserForm"
 
+import '../styles/home.css'
+
 function Home({ apiUrl }) {
 
     const navigate = useNavigate()
@@ -46,15 +48,18 @@ function Home({ apiUrl }) {
       };
 
     return (
-        <>
-            <h1>Register</h1>
-            <UserForm handleSubmit={handleRegister} />
-            {registerMessage && <p>{registerMessage}</p>}
-
-            <h1>Login</h1>
-            <UserForm handleSubmit={handleLogin} />
-            {loginMessage && <p>{loginMessage}</p>}
-        </>
+        <section className="home--container grid">
+            <div className="home--register-container grid">
+                <h1>Register</h1>
+                <UserForm handleSubmit={handleRegister} />
+                {registerMessage && <p>{registerMessage}</p>}
+            </div>
+            <div className="home--login-container grid">
+                <h1>Login</h1>
+                <UserForm handleSubmit={handleLogin} />
+                {loginMessage && <p>{loginMessage}</p>}
+            </div>
+        </section>
     )
 }
 
