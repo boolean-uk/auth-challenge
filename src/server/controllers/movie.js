@@ -5,7 +5,6 @@ import {createMovieDB, getMoviesDB } from '../domain/movie.js'
 
 const getAllMovies = async (req, res) => {
     const movies = await getMoviesDB()
-    console.log(movies)
     res.json({ data: movies });
 };
 

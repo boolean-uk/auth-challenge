@@ -9,30 +9,12 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
 
-
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then(res => setMovies(res.data))
   }, []);
 
-  /**
-   * HINTS! 
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
 
   const handleRegister = async ({ username, password }) => {
     const data = { username, password }
@@ -44,13 +26,11 @@ function App() {
     }
 
     const registerUserData = await fetch(`${apiUrl}/user/register`, options)
-    const newUser = await registerUserData.json()
-    return console.log(newUser.data.username)
-
+    await registerUserData.json()
+    return
   };
 
   const handleLogin = async ({ username, password }) => {
-
     const data = {
       username,
       password,
@@ -83,8 +63,11 @@ function App() {
 
     const newMovieData = await fetch(`${apiUrl}/movie`, options)
     const newMovie = await newMovieData.json()
-    console.log(movies)
-    return setMovies(newMovie)
+    setMovies([...movies, newMovie])
+
+    await fetch(`${apiUrl}/movie`)
+    .then(res => res.json())
+    .then(res => setMovies(res.data));
   }
 
 
