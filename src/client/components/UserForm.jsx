@@ -1,8 +1,4 @@
 import { useState } from "react";
-const port = import.meta.env.VITE_PORT;
-const url = 'http://localhost:';
-
-console.log(`${url}${port}/user/register`)
 
 export default function UserForm({ handleSubmit }) {
     const [user, setUser] = useState({ username: '', password: '' });
@@ -10,7 +6,7 @@ export default function UserForm({ handleSubmit }) {
     const handleSubmitDecorator = (e) => {
         e.preventDefault();
         handleSubmit(user);
-        createNewUser()
+        
     };
 
     const handleChange = (e) => {
@@ -22,26 +18,8 @@ export default function UserForm({ handleSubmit }) {
         });
     };
 
-    const createNewUser = async () => {
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user),
-        };
-    
-        try {
-            const response = await fetch(`${url}${port}/user/register`, options);
-    
-            if (response.ok) {
-                const newUser = await response.json(); 
-                console.log('Here is the user', newUser);
-            } else {
-                console.log('Error occurred while trying to post:', response.status, response.statusText);
-            }
-        } catch (err) {
-            console.error('Error during fetch:', err);
-        }
-    };
+
+
     
     return (
         <form onSubmit={handleSubmitDecorator}>

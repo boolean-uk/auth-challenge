@@ -33,12 +33,44 @@ function App() {
    *   }
    * */
 
+
+
   const handleRegister = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({username,password}),
+    };
+
+        try {
+            const response = await fetch(`${apiUrl}/user/register`, options);
+    
+            if (response.ok) {
+                const newUser = await response.json(); 
+                console.log('Here is the user', newUser);
+            } else {
+                console.log('Error occurred while trying to post:', response.status, response.statusText);
+            }
+        } catch (err) {
+            console.error('Error during fetch:', err);
+        }
 
   };
 
   const handleLogin = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({username,password}),
+    };
 
+    const logUser = await fetch(`${apiUrl}/user/login`, options);
+    if(logUser.ok){
+      const userToken = await logUser.json()
+      localStorage.setItem('newToken', JSON.stringify(userToken))
+    }else{
+      return 'username or password not found'
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
