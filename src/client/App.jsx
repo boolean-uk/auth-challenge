@@ -83,7 +83,8 @@ function App() {
 
     const newMovieData = await fetch(`${apiUrl}/movie`, options)
     const newMovie = await newMovieData.json()
-    return console.log(newMovie)
+    console.log(newMovie)
+    return setMovies(newMovie)
   }
 
 
