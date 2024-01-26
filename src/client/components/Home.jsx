@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Logout from "./Logout"
 import UserForm from "./UserForm"
 
 function Home({ apiUrl }) {
@@ -10,7 +9,6 @@ function Home({ apiUrl }) {
 
     const [registerMessage, setRegisterMessage] = useState('')
     const [loginMessage, setLoginMessage] = useState('')
-    const [logoutMessage, setLogoutMessage] = useState('')
 
     const handleRegister = async ({ username, password }) => {
         try {
@@ -49,9 +47,6 @@ function Home({ apiUrl }) {
 
     return (
         <>
-            <Logout setLogoutMessage={setLogoutMessage} />
-            {logoutMessage && <p className='logout-message'>{logoutMessage}</p>}
-
             <h1>Register</h1>
             <UserForm handleSubmit={handleRegister} />
             {registerMessage && <p>{registerMessage}</p>}

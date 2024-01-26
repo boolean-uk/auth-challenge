@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import Logout from "./Logout"
 import MovieForm from "./MovieForm";
 
 function MovieList({ apiUrl }) {
@@ -13,7 +13,7 @@ function MovieList({ apiUrl }) {
         fetch(`${apiUrl}/movie`)
           .then(res => res.json())
           .then(res => setMovies(res.data));
-      }, []);
+      }, [apiUrl]);
 
     const handleCreateMovie = async ({ title, description, runtimeMins }) => {
         const token = localStorage.getItem('token')
@@ -59,6 +59,8 @@ function MovieList({ apiUrl }) {
 
     return (
         <>
+            <Logout />
+
             <h1>Create a movie</h1>
             <MovieForm handleSubmit={handleCreateMovie} />
             {createMovieMessage && <p>{createMovieMessage}</p>}

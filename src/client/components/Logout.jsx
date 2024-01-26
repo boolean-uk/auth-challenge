@@ -1,10 +1,14 @@
-function Logout({ setLogoutMessage }) {
+import { useNavigate } from "react-router-dom"
+
+function Logout() {
+
+  const navigate = useNavigate()
 
     const handleSubmit = () => {
       const token = localStorage.getItem('token')
       if (token) {
         localStorage.clear()
-        setLogoutMessage('You have successfully logged out')
+        navigate('/')
       }
     }
 

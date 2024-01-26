@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import MovieList from './components/MovieList';
-import MovieForm from './components/MovieForm';
 import './App.css';
 
 const port = import.meta.env.VITE_PORT;
