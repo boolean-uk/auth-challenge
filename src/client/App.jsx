@@ -35,17 +35,17 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-        const data = {username, password}
+    const data = { username, password }
 
-        const options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        }
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }
 
-        const registerUserData = await fetch(`${apiUrl}/user/register`, options)
-        const newUser = await registerUserData.json()
-        return console.log(newUser.data.username)
+    const registerUserData = await fetch(`${apiUrl}/user/register`, options)
+    const newUser = await registerUserData.json()
+    return console.log(newUser.data.username)
 
   };
 
@@ -56,19 +56,17 @@ function App() {
       password,
     }
 
-    
-    
-      const options = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }
 
-      fetch(`${apiUrl}/login/login`, options)
-        .then(res => res.json())
-        // .then(data =>)
-    
-    
+    const userData = await fetch(`${apiUrl}/user/login`, options)
+    const newLogin = await userData.json()
+    const userToken = newLogin.data
+  
+    localStorage.setItem("token", userToken)
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
