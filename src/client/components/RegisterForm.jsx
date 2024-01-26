@@ -33,7 +33,7 @@ const RegisterForm = ({ apiUrl }) => {
     return(
         <>
             <form onSubmit={registerUser} >
-                <h2>login</h2>
+                <h2>Register</h2>
                 <label> 
                     <h3>username</h3>
                     <input 
