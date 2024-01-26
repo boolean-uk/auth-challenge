@@ -10,6 +10,7 @@ export default function MovieForm({ handleSubmit, error }) {
   const handleSubmitDecorator = (e) => {
     e.preventDefault();
     handleSubmit(movie);
+
   };
 
   const handleChange = (e) => {
