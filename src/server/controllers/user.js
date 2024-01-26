@@ -17,24 +17,20 @@ const register = async (req, res) => {
         res.status(201).json({ data: createdUser });
 
     } catch (err) {
-        console.log(err.message)
+        // console.log(err.message)
         res.status(500).json({ error: err.message });
     }
 };
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-    console.log(username)
-
     const foundUser = await findUser(username)
-    console.log("FOUND USER", foundUser)
 
     if (!foundUser) {
         return res.status(401).json({ error: "Invalid username or password." });
     }
 
     const passwordsMatch = await bcrypt.compare(password, foundUser.password)
-    console.log(passwordsMatch)
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: "Invalid username or password." });

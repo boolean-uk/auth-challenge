@@ -17,7 +17,7 @@ function App() {
   }, []);
 
   /**
-   * HINTS!
+   * HINTS! 
    * 1. This handle___ functions below use async/await to handle promises, but the
    * useEffect above is using .then to handle them. Both are valid approaches, but
    * we should ideally use one or the other. Pick whichever you prefer.
@@ -83,7 +83,7 @@ function App() {
 
     const newMovieData = await fetch(`${apiUrl}/movie`, options)
     const newMovie = await newMovieData.json()
-    console.log(newMovie)
+    console.log(movies)
     return setMovies(newMovie)
   }
 
