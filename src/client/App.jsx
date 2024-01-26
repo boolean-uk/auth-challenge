@@ -15,24 +15,6 @@ function App() {
       .then((res) => setMovies(res.data));
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
-
   const handleRegister = async ({ username, password }) => {
     try {
       const res = await fetch(`${apiUrl}/user/register`, {
@@ -47,14 +29,25 @@ function App() {
       }
       const data = await res.json();
       console.log(`Status Code: ${res.status}`, data);
-      }
-      catch (error) {
-        console.log(error.message)
-      }
-      
+    } catch (error) {
+      console.log(error.message);
     }
+  };
 
-  const handleLogin = async ({ username, password }) => {};
+  const handleLogin = async ({ username, password }) => {
+    const data = { username, password };
+
+    const userData = await fetch(`${apiUrl}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const userLoginData = await userData.json();
+    const userToken = userLoginData.data;
+    localStorage.setItem("token", userToken);
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
