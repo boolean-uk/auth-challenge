@@ -1,13 +1,11 @@
 import jwt from 'jsonwebtoken';
 const jwtSecret = 'mysecret';
 
-import { PrismaClient } from '@prisma/client'
-import createMovieDB from '../domain/movie.js'
-const prisma = new PrismaClient();
+import {createMovieDB, getMoviesDB } from '../domain/movie.js'
 
 const getAllMovies = async (req, res) => {
-    const movies = await prisma.movie.findMany();
-
+    const movies = await getMoviesDB()
+    console.log(movies)
     res.json({ data: movies });
 };
 
