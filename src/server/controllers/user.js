@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import registerUserDB from '../domain/user.js';
+import { registerUserDB, findUser } from '../domain/user.js';
 const jwtSecret = "mysecret";
 
 const register = async (req, res) => {
@@ -12,7 +12,7 @@ const register = async (req, res) => {
     }
     try {
         const hash = await bcrypt.hash(password, 12);
-        const token = jwt.sign(username, jwtSecret)
+        
         const createdUser = await registerUserDB(username, hash);
         res.status(201).json({ data: createdUser });
 
@@ -24,21 +24,24 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password } = req.body;
+    console.log(username)
 
-    const foundUser = null;
+    const foundUser = await findUser(username)
+    console.log("FOUND USER", foundUser)
 
     if (!foundUser) {
         return res.status(401).json({ error: "Invalid username or password." });
     }
 
-    const passwordsMatch = false;
+    const passwordsMatch = await bcrypt.compare(password, foundUser.password)
+    console.log(passwordsMatch)
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: "Invalid username or password." });
     }
 
-    const token = null;
-    res.json({ data: token });
+    const token = jwt.sign(username, jwtSecret)
+    res.status(201).json({ data: token });
 };
 
 export { register, login };
