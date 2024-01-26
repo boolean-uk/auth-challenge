@@ -17,6 +17,11 @@ const register = async (req, res) => {
       .json({ error: "Both username and password required" });
   }
 
+  const existingUser = await findUserDB(username);
+  if (existingUser) {
+    return res.status(401).json({ error: "Username already exists" });
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -24,12 +29,8 @@ const register = async (req, res) => {
 
     res.status(201).json({ data: createdUser });
   } catch (error) {
-    if (error.code === "2002");
-    {
-      return res.status(401).json({ error: "Username already exists" });
-    }
+    res.status(500).json({ error: "Internal Service Error" });
   }
-  res.status(500).json({ error: error.message });
 };
 
 const login = async (req, res) => {
