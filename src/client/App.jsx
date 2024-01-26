@@ -1,36 +1,39 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, Link, Navigate, useNavigate } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
+
 import "./App.css";
 import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
 
+
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
-function RegisterPage({ handleRegister, error }) {
-  return (
-    <>
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} error={error} />
-    </>
-  );
-}
+// function RegisterPage({ handleRegister, error }) {
+//   return (
+//     <Box>
+//       <h1>Register</h1>
+//       <UserForm handleSubmit={handleRegister} error={error} />
+//     </Box>
+//   );
+// }
 
 function LoginPage({ handleLogin, error }) {
   return (
-    <>
+    <Box>
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} error={error} />
-    </>
+    </Box>
   );
 }
 
-function DashboardPage({ movies }) {
+function DashboardPage({ movies, handleCreateMovie, error }) {
   return (
-    <>
+    <Box>
       <h1>Create a movie</h1>
       <Link to="/login">Log out</Link>
-      <MovieForm />
+      <MovieForm handleSubmit={handleCreateMovie} error={error} />
       <h1>Movie list</h1>
       <ul>
         {movies.map((movie) => {
@@ -43,7 +46,7 @@ function DashboardPage({ movies }) {
           );
         })}
       </ul>
-    </>
+    </Box>
   );
 }
 
@@ -122,32 +125,9 @@ function App() {
       setError(result.error);
     }
   };
-  {
-    /* <h1>Register</h1>
-  <UserForm handleSubmit={handleRegister} error={error} /> */
-  }
-
-  // <h1>Login</h1>
-  // <UserForm handleSubmit={handleLogin} error={error} />
-
-  // <h1>Create a movie</h1>
-  // <MovieForm handleSubmit={handleCreateMovie} error={error} />
-
-  // <h1>Movie list</h1>
-  // <ul>
-  //   {movies.map((movie) => {
-  //     return (
-  //       <li key={movie.id}>
-  //         <h3>{movie.title}</h3>
-  //         <p>Description: {movie.description}</p>
-  //         <p>Runtime: {movie.runtimeMins}</p>
-  //       </li>
-  //     );
-  //   })}
-  // </ul>
 
   return (
-    <div className="App">
+    <Box p={4}>
       <Routes>
         <Route
           path="/register"
@@ -171,7 +151,7 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/register" />} />
       </Routes>
-    </div>
+    </Box>
   );
 }
 
