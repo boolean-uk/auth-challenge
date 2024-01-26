@@ -10,4 +10,6 @@ await prisma.movie.create({
     }
 })
 
-export default createMovieDB
+const getMoviesDB = async() => await prisma.movie.findMany()
+
+export { createMovieDB, getMoviesDB } 
