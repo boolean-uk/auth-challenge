@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0 && prettier . --check",
     "format": "prettier . --write",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest",
     "prepare": "husky"
   },
   "dependencies": {
