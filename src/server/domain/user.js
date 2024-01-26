@@ -9,4 +9,16 @@ const registerUserDB = async (username, hash) =>
         },
     });
 
-export default registerUserDB
+const findUser = async (username) => {
+    return await prisma.user.findFirst({
+        where: {
+            username,
+        },
+        select: {
+            username: true,
+            password: true,
+        },
+    });
+};
+
+export { registerUserDB, findUser };
