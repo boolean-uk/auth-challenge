@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
-import axios from 'axios'
 
 // Views
 import HomePage from './views/HomePage'
@@ -13,6 +12,8 @@ const apiUrl = `http://localhost:${port}`
 
 function App() {
   const [isAuth, setIsAuth] = useState(false)
+
+  useEffect(() => {}, [])
 
   return (
     <div className="container">

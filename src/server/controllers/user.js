@@ -42,16 +42,4 @@ const loginUser = async (req, res) => {
   }
 }
 
-const verifyUser = (req, res) => {
-  const { token } = req.body
-
-  try {
-    const jwtToken = jwt.verify(token, secret)
-
-    res.status(201).json({ token: jwtToken })
-  } catch (error) {
-    res.status(error.status ?? 500).json({ error: error.message })
-  }
-}
-
-export { registerUser, loginUser, verifyUser }
+export { registerUser, loginUser }
