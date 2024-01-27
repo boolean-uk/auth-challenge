@@ -61,7 +61,29 @@ function App() {
     }
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const [movieMessage, setMovieMessage] = useState("");
+
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    try {
+      const token = localStorage.getItem("user_login_token");
+
+      const res = await api.post(
+        "/movie",
+        { title, description, runtimeMins },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const createdMovie = res.data.data;
+
+      setMovies([...movies, createdMovie]);
+      setMovieMessage("Created movie successfully");
+    } catch (e) {
+      console.log(e.message);
+      setMovieMessage(
+        e.response.data.error ?? "Failed attempting to create movie"
+      );
+    }
+  };
 
   return (
     <div className="App">
@@ -75,6 +97,7 @@ function App() {
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
+      {movieMessage && <p>{movieMessage}</p>}
 
       <h1>Movie list</h1>
       <ul>
