@@ -7,10 +7,8 @@ import RegisterPage from './views/RegisterPage'
 import LoginPage from './views/LoginPage'
 import { useEffect, useState } from 'react'
 
-const port = import.meta.env.VITE_PORT
-const apiUrl = `http://localhost:${port}`
-
 function App() {
+  const [user, setUser] = useState({ username: '', password: '' })
   const [isAuth, setIsAuth] = useState(false)
 
   useEffect(() => {
@@ -20,6 +18,19 @@ function App() {
       setIsAuth(true)
     }
   }, [])
+
+  const userHandleChange = (event) => {
+    const { value, name } = event.target
+
+    setUser({
+      ...user,
+      [name]: value
+    })
+  }
+
+  const clearUser = () => {
+    setUser({ username: '', password: '' })
+  }
 
   return (
     <div className="container">
@@ -34,7 +45,18 @@ function App() {
         />
         <Route
           path="/login"
-          element={!isAuth ? <LoginPage /> : <Navigate to="/" />}
+          element={
+            !isAuth ? (
+              <LoginPage
+                user={user}
+                setIsAuth={setIsAuth}
+                userHandleChange={userHandleChange}
+                clearUser={clearUser}
+              />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
