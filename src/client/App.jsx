@@ -40,14 +40,26 @@ function App() {
     try {
       const res = await api.post("/user/register", { username, password });
 
-      setRegisterMessage(res.data.message ?? "Registration Successful");
+      setRegisterMessage("Registration Successful");
     } catch (e) {
       console.log(e.message);
-      setRegisterMessage("Registration Failed");
+      setRegisterMessage(e.response.data.error ?? "Registration Failed");
     }
   };
 
-  const handleLogin = async ({ username, password }) => {};
+  const [loginMessage, setLoginMessage] = useState("");
+
+  const handleLogin = async ({ username, password }) => {
+    try {
+      const res = await api.post("/user/login", { username, password });
+
+      localStorage.setItem("user_login_token", res.data.data);
+      setLoginMessage("Login Successful");
+    } catch (e) {
+      console.log(e.message);
+      setLoginMessage(e.response.data.error ?? "Login Failed");
+    }
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
@@ -59,6 +71,7 @@ function App() {
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
+      {loginMessage && <p>{loginMessage}</p>}
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
