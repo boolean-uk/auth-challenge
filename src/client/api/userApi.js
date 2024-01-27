@@ -5,19 +5,35 @@ const apiUrl = `http://localhost:${port}`
 
 const loginUserApi = async (user, setMessage, setIsAuth, clearUser) => {
   try {
-    const response = await axios.post(`${apiUrl}/user/login`, {
+    const { data } = await axios.post(`${apiUrl}/user/login`, {
       username: user.username,
       password: user.password
     })
 
-    localStorage.setItem('token', response.data.token)
+    localStorage.setItem('token', data.token)
     setIsAuth(true)
     clearUser()
 
-    return response
+    return data
   } catch (error) {
     setMessage(error.response.data.error)
   }
 }
 
-export { loginUserApi }
+const registerUserApi = async (user, setMessage, navigate, clearUser) => {
+  try {
+    const { data } = await axios.post(`${apiUrl}/user/register`, {
+      username: user.username,
+      password: user.password
+    })
+
+    clearUser()
+    navigate('/login')
+
+    return data
+  } catch (error) {
+    setMessage(error.response.data.error)
+  }
+}
+
+export { loginUserApi, registerUserApi }

@@ -41,7 +41,18 @@ function App() {
         />
         <Route
           path="/register"
-          element={!isAuth ? <RegisterPage /> : <Navigate to="/" />}
+          element={
+            !isAuth ? (
+              <RegisterPage
+                user={user}
+                setIsAuth={setIsAuth}
+                userHandleChange={userHandleChange}
+                clearUser={clearUser}
+              />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
         <Route
           path="/login"

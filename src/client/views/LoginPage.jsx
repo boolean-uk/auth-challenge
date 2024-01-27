@@ -11,10 +11,10 @@ import { loginUserApi } from '../api/userApi'
 const LoginPage = ({ user, setIsAuth, userHandleChange, clearUser }) => {
   const [message, setMessage] = useState(null)
 
-  const submitLogin = async (event) => {
+  const submitLogin = (event) => {
     event.preventDefault()
 
-    await loginUserApi(user, setMessage, setIsAuth, clearUser)
+    loginUserApi(user, setMessage, setIsAuth, clearUser)
   }
 
   return (
