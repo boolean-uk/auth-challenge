@@ -29,21 +29,27 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { username, password } = req.body;
 
-  const foundUser = null;
+  if (!username || !password) {
+    return res.status(400).send({ error: "Missing fields in request body" });
+  }
+
+  const foundUser = await getUserByUsernameDb(username);
 
   if (!foundUser) {
-    return res.status(401).json({ error: "Invalid username or password." });
+    return res
+      .status(404)
+      .send({ error: "No user found with the provided username" });
   }
 
-  const passwordsMatch = false;
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
   if (!passwordsMatch) {
-    return res.status(401).json({ error: "Invalid username or password." });
+    return res.status(409).send({ error: "Password is incorrect" });
   }
 
-  const token = null;
+  const token = jwt.sign({ username: foundUser.username }, jwtSecret);
 
-  res.json({ data: token });
+  return res.status(201).send({ data: token });
 };
 
 export { register, login };
