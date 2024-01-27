@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import errors from "../errors/errors.js";
 import {
   createMovieDb,
   getAllMoviesDb,
@@ -17,7 +18,7 @@ const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body;
 
   if (!title || !description || !runtimeMins) {
-    return res.status(400).send({ error: "Missing fields in request body" });
+    return res.status(400).send({ error: errors.message01 });
   }
 
   const titleExists = await getMovieByTitleDb(title);

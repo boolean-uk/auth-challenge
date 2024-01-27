@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import errors from "../errors/errors.js";
 import { createUserDb, getUserByUsernameDb } from "../domains/user.js";
 
 const jwtSecret = "mysecret";
@@ -8,7 +9,7 @@ const register = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).send({ error: "Missing fields in request body" });
+    return res.status(400).send({ error: errors.message01 });
   }
 
   const usernameIsDuplicate = await getUserByUsernameDb(username);
@@ -30,7 +31,7 @@ const login = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).send({ error: "Missing fields in request body" });
+    return res.status(400).send({ error: errors.message01 });
   }
 
   const foundUser = await getUserByUsernameDb(username);
