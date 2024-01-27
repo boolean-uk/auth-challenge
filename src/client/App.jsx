@@ -36,6 +36,7 @@ function App() {
 
 
   const handleRegister = async ({ username, password }) => {
+
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -74,6 +75,22 @@ function App() {
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const authToken = localStorage.getItem('newToken')
+
+    const options = {
+      method: 'POST',
+      headers:{
+        'Authorization': `Bearer${authToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    }
+
+    const data = await fetch(`${apiUrl}/movie`, options);
+    if(data){
+      const newMovie = await data.json()
+      setMovies(newMovie)
+    }
 
   }
 
