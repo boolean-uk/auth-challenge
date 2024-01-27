@@ -1,11 +1,13 @@
 import MovieForm from "../../components/Movies/components/MovieForm.jsx";
 import api from "../../../server/api/axios.js";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./index.css";
+import { MovieContext } from "../../contexts.js";
 
 export default function CreateMovie() {
   const [movieMessage, setMovieMessage] = useState("");
+  const { movies, setMovies } = useContext(MovieContext);
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     try {
