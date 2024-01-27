@@ -13,7 +13,13 @@ const apiUrl = `http://localhost:${port}`
 function App() {
   const [isAuth, setIsAuth] = useState(false)
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      setIsAuth(true)
+    }
+  }, [])
 
   return (
     <div className="container">
@@ -22,8 +28,14 @@ function App() {
           path="/"
           element={isAuth ? <HomePage /> : <Navigate to="/login" />}
         />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/register"
+          element={!isAuth ? <RegisterPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!isAuth ? <LoginPage /> : <Navigate to="/" />}
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
