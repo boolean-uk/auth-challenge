@@ -11,7 +11,6 @@ import DashboardPage from "./components/DashboardPage";
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
-
 function App() {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
@@ -34,6 +33,7 @@ function App() {
     if (response.ok) {
       await response.json();
       localStorage.clear();
+      navigate("login");
       setError(null);
     } else {
       const result = await response.json();
@@ -94,7 +94,11 @@ function App() {
         <Route
           path="/register"
           element={
-            <RegisterPage handleRegister={handleRegister} error={error} setError={setError}/>
+            <RegisterPage
+              handleRegister={handleRegister}
+              error={error}
+              setError={setError}
+            />
           }
         />
         <Route

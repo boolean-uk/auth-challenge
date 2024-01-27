@@ -7,7 +7,17 @@ import {
   Button,
   FormErrorMessage,
   FormHelperText,
+  Box,
+  Heading,
+  VStack,
+  Card,
+  HStack,
+  Stack,
+  CardBody,
+  Text,
+  Center,
 } from "@chakra-ui/react";
+import { IoLogoOctocat } from "react-icons/io";
 
 const userLocalStorage = () => {
   const storedUser = localStorage.getItem("user");
@@ -52,37 +62,107 @@ export default function UserForm({ handleSubmit, error, setError }) {
 
   return (
     <>
-      <form onSubmit={handleSubmitDecorator}>
-        <FormControl id="user-form" isRequired>
-          <FormLabel htmlFor="username">Username</FormLabel>
-          <Input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={user.username}
-            onChange={handleChange}
-          />
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={user.password}
-            onChange={handleChange}
-          />
-          <Button type="submit">Submit</Button>
-          {error && <p>{error}</p>}
-        </FormControl>
-      </form>
+      <Box>
+        <Center>
+          <Stack>
+            <VStack as="header" spacing="6" mt="8">
+              <IoLogoOctocat className="logo" />
+              <Heading
+                as="h1"
+                fontWeight="300"
+                fontSize="24px"
+                letterSpacing="-0.5"
+              >
+                {isRegisterPage ? "Register" : "Log In"}
+              </Heading>
+            </VStack>
+            <Card
+              bgColor="#f6f9fa"
+              variant="outline"
+              borderColor="#d8dee4"
+              maxWidth="308px"
+            >
+              <CardBody>
+                <form onSubmit={handleSubmitDecorator}>
+                  <Stack spacing={4}>
+                    <FormControl id="user-form" isRequired>
+                      <FormLabel htmlFor="username" size="sm">
+                        Username
+                      </FormLabel>
+                      <Input
+                        type="text"
+                        name="username"
+                        bg="white"
+                        borderColor="#d8dee4"
+                        size="sm"
+                        borderRadius="6px"
+                        value={user.username}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
 
-      <p>
-        {isRegisterPage
-          ? `Already have an account? `
-          : `Don't have an account? `}
-        <Link to={isRegisterPage ? "/login" : "/register"}>
-          {isRegisterPage ? "Log In" : "Register"}
-        </Link>
-      </p>
+                    <FormControl isRequired>
+                      <HStack justifyContent="space-between">
+                        <FormLabel htmlFor="password">Password</FormLabel>
+                        <Button
+                          as="a"
+                          href="http://localhost/user/register"
+                          variant="link"
+                          size="xs"
+                          color="#0969da"
+                          fontWeight="500"
+                        >
+                          Forgot password?
+                        </Button>
+                      </HStack>
+                      <Input
+                        type="password"
+                        name="password"
+                        bg="white"
+                        borderColor="#d8dee4"
+                        size="sm"
+                        borderRadius="6px"
+                        value={user.password}
+                        onChange={handleChange}
+                      />
+                      <Button
+                        type="submit"
+                        bg="#2da44e"
+                        color="white"
+                        size="sm"
+                        _hover={{ bg: "#2c974b" }}
+                        width="100%"
+                        mt="4"
+                      >
+                        {isRegisterPage ? "Create an account" : "Sign in"}
+                      </Button>
+                      {error && <p>{error}</p>}
+                    </FormControl>
+                  </Stack>
+                </form>
+              </CardBody>
+            </Card>
+            <Card variant="outline" bgColor="#d0d7d">
+              <CardBody>
+                <Center>
+                  <HStack fontSize="sm" spacing={1}>
+                    <Text>
+                      {isRegisterPage
+                        ? `Already have an account? `
+                        : `Don't have an account? `}
+                    </Text>
+                    <Link to={isRegisterPage ? "/login" : "/register"}>
+                      <p className="sign-in">
+                        {isRegisterPage ? "Log In" : "Register"}
+                      </p>
+                    </Link>
+                  </HStack>
+                </Center>
+              </CardBody>
+            </Card>
+          </Stack>
+        </Center>
+      </Box>
     </>
   );
 }
