@@ -8,7 +8,7 @@ import Input from '../components/Input'
 // API
 import { registerUserApi } from '../api/userApi'
 
-const RegisterPage = ({ user, setIsAuth, userHandleChange, clearUser }) => {
+const RegisterPage = ({ user, userHandleChange, clearUser }) => {
   const [message, setMessage] = useState(null)
 
   const navigate = useNavigate()
