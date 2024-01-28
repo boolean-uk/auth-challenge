@@ -11,7 +11,11 @@ const getMovieByTitleDb = async (title) => {
 }
 
 const getMoviesDb = async () => {
-  const movies = await prisma.movie.findMany()
+  const movies = await prisma.movie.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
 
   return movies
 }
