@@ -54,7 +54,7 @@ const HomePage = ({ setIsAuth }) => {
   }
 
   return (
-    <div className="homePage">
+    <div className="homePage container">
       <h1 className="homePage__title">Movies</h1>
 
       <button className="homePage__logout" onClick={logout}>

@@ -18,7 +18,7 @@ const LoginPage = ({ user, setIsAuth, userHandleChange, clearUser }) => {
   }
 
   return (
-    <div className="loginPage">
+    <div className="loginPage container">
       <h1 className="loginPage__title">Login</h1>
       <span className="loginPage__subtitle">
         Need an account? <Link to="/register">Sign Up</Link>

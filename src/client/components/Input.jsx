@@ -12,6 +12,7 @@ export default function Input({
       name={name}
       value={value}
       onChange={handleChange}
+      className="form__input"
     />
   )
 }

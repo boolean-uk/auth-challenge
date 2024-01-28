@@ -20,7 +20,7 @@ const RegisterPage = ({ user, userHandleChange, clearUser }) => {
   }
 
   return (
-    <div className="registerPage">
+    <div className="registerPage container">
       <h1 className="registerPage__title">Register</h1>
       <span className="registerPage__subtitle">
         Already have an account? <Link to="/login">Log in</Link>
