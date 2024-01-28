@@ -34,7 +34,7 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-    const createdRegister = await fetch(`${apiUrl}/register`, {
+    const createdRegister = await fetch(`${apiUrl}/user/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,17 @@ function App() {
     console.log(createdRegister);
   };
 
-  const handleLogin = async ({ username, password }) => {};
+  const handleLogin = async ({ username, password }) => {
+    const verifyLogin = await fetch(`${apiUrl}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    const logInToken = await verifyLogin.json();
+    localStorage.setItem("token", JSON.stringify(logInToken));
+  };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
