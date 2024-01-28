@@ -12,9 +12,11 @@ const getMovies = async (req, res) => {
   const { authorization } = req.headers
 
   try {
-    checkToken(authorization)
+    const checkedToken = checkToken(authorization)
 
-    const movies = await getMoviesDb()
+    const userId = checkedToken.id
+
+    const movies = await getMoviesDb(userId)
 
     res.status(200).json({ movies })
   } catch (error) {
@@ -27,11 +29,19 @@ const createMovie = async (req, res) => {
   const { title, description, runTime } = req.body
 
   try {
-    checkToken(authorization)
-    checkFields([title, description, runTime])
-    await checkTitleExist(title)
+    const checkedToken = checkToken(authorization)
 
-    const createdMovie = await createMovieDb(title, description, runTime)
+    const userId = checkedToken.id
+
+    checkFields([title, description, runTime])
+    await checkTitleExist(title, userId)
+
+    const createdMovie = await createMovieDb(
+      title,
+      description,
+      runTime,
+      userId
+    )
 
     res.status(201).json({ movie: createdMovie })
   } catch (error) {

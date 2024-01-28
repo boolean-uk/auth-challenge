@@ -34,7 +34,10 @@ const loginUser = async (req, res) => {
 
     await checkPassword(password, foundUser.password)
 
-    const jwtToken = jwt.sign({ username: foundUser.username }, secret)
+    const jwtToken = jwt.sign(
+      { id: foundUser.id, username: foundUser.username },
+      secret
+    )
 
     res.status(201).json({ token: jwtToken })
   } catch (error) {

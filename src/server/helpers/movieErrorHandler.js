@@ -24,8 +24,8 @@ const checkFields = (fields) => {
   })
 }
 
-const checkTitleExist = async (title) => {
-  const foundMovie = await getMovieByTitleDb(title)
+const checkTitleExist = async (title, userId) => {
+  const foundMovie = await getMovieByTitleDb(title, userId)
 
   if (foundMovie) {
     throw errorCreator('The movie with provided title is already exist', 409)
