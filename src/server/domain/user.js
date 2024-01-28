@@ -13,8 +13,26 @@ const createUserInDatabase = async (username, hash) => {
     return newUser;
   } catch (error) {
     console.error("Error creating user in the database:", error);
-    throw error; // Re-throw the error for further handling, if necessary
+    throw error;
   }
 };
 
-export { createUserInDatabase };
+const findUserInDatabase = async (username) => {
+  try {
+    const foundUser = await prisma.user.findFirst({
+      where: {
+        username,
+      },
+      select: {
+        username: true,
+        password: true,
+      },
+    });
+    return foundUser;
+  } catch (error) {
+    console.error("Error finding user in the database:", error);
+    throw error;
+  }
+};
+
+export { createUserInDatabase, findUserInDatabase };

@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-import { createUserInDatabase } from "../domain/user.js";
+import { createUserInDatabase, findUserInDatabase } from "../domain/user.js";
 const jwtSecret = "mysecret";
 
 const register = async (req, res) => {
