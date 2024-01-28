@@ -17,8 +17,12 @@ const HomePage = () => {
     runTime: 0
   })
 
-  useEffect(() => {
+  const getAllMovies = () => {
     getAllMoviesApi(setMovies, setMessage)
+  }
+
+  useEffect(() => {
+    getAllMovies()
   }, [])
 
   const movieHandleChange = (event) => {
@@ -41,7 +45,7 @@ const HomePage = () => {
   const submitMovie = (event) => {
     event.preventDefault()
 
-    createMovieApi(movie, setMessage, clearMovieForm)
+    createMovieApi(movie, setMessage, clearMovieForm, getAllMovies)
   }
 
   return (

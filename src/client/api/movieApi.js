@@ -20,12 +20,18 @@ const getAllMoviesApi = async (setMovies, setMessage) => {
   }
 }
 
-const createMovieApi = async (movie, setMessage, clearMovieForm) => {
+const createMovieApi = async (
+  movie,
+  setMessage,
+  clearMovieForm,
+  getAllMovies
+) => {
   try {
     await axios.post(`${apiUrl}/movie`, movie, headers)
 
     clearMovieForm()
     setMessage(null)
+    getAllMovies()
   } catch (error) {
     setMessage(error.response.data.error)
   }
