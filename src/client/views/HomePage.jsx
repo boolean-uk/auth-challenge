@@ -1,19 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // components
 import Form from '../components/Form'
 import Input from '../components/Input'
+import MovieElement from '../components/MovieElement'
 
 // API
-import { createMovieApi } from '../api/movieApi'
+import { createMovieApi, getAllMoviesApi } from '../api/movieApi'
 
 const HomePage = () => {
+  const [movies, setMovies] = useState([])
   const [message, setMessage] = useState(null)
   const [movie, setMovie] = useState({
     title: '',
     description: '',
     runTime: 0
   })
+
+  useEffect(() => {
+    getAllMoviesApi(setMovies, setMessage)
+  }, [])
 
   const movieHandleChange = (event) => {
     const { value, name } = event.target
@@ -73,6 +79,15 @@ const HomePage = () => {
       />
 
       {message && <p className="message">{message}</p>}
+
+      <div className="homePage__movies">
+        <h2 className="homePage__movies-title">Movies list</h2>
+        <ul className="homePage__movies-list">
+          {movies.map((movie, index) => (
+            <MovieElement key={index} movie={movie} />
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
