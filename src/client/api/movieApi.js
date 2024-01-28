@@ -2,17 +2,14 @@ import axios from 'axios'
 
 const port = import.meta.env.VITE_PORT
 const apiUrl = `http://localhost:${port}`
-const token = localStorage.getItem('token')
-
-const headers = {
-  headers: { Authorization: `Bearer ${token}` }
-}
 
 const getAllMoviesApi = async (setMovies, setMessage) => {
   try {
     const {
       data: { movies }
-    } = await axios.get(`${apiUrl}/movie`, headers)
+    } = await axios.get(`${apiUrl}/movie`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
 
     setMovies(movies)
   } catch (error) {
@@ -27,7 +24,9 @@ const createMovieApi = async (
   getAllMovies
 ) => {
   try {
-    await axios.post(`${apiUrl}/movie`, movie, headers)
+    await axios.post(`${apiUrl}/movie`, movie, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
 
     clearMovieForm()
     setMessage(null)

@@ -37,7 +37,13 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={isAuth ? <HomePage /> : <Navigate to="/login" />}
+          element={
+            isAuth ? (
+              <HomePage setIsAuth={setIsAuth} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/register"

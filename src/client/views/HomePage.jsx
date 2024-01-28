@@ -8,7 +8,7 @@ import MovieElement from '../components/MovieElement'
 // API
 import { createMovieApi, getAllMoviesApi } from '../api/movieApi'
 
-const HomePage = () => {
+const HomePage = ({ setIsAuth }) => {
   const [movies, setMovies] = useState([])
   const [message, setMessage] = useState(null)
   const [movie, setMovie] = useState({
@@ -48,9 +48,18 @@ const HomePage = () => {
     createMovieApi(movie, setMessage, clearMovieForm, getAllMovies)
   }
 
+  const logout = () => {
+    localStorage.removeItem('token')
+    setIsAuth(false)
+  }
+
   return (
     <div className="homePage">
       <h1 className="homePage__title">Movies</h1>
+
+      <button className="homePage__logout" onClick={logout}>
+        Log out
+      </button>
 
       <Form
         handleSubmit={submitMovie}
