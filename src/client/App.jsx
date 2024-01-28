@@ -44,8 +44,9 @@ function App() {
 
     try {
       const registerUserData = await fetch(`${apiUrl}/user/register`, options);
-      const newUser = await registerUserData.json();
-      console.log(newUser.data.username);
+      const reg = await registerUserData.json();
+      console.log(reg);
+      return;
     } catch (error) {
       console.error("Error during registration:", error);
     }
