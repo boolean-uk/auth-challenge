@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
   /**
@@ -34,16 +34,55 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-
+    const createdRegister = await fetch(`${apiUrl}/user/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    console.log(createdRegister);
   };
 
   const handleLogin = async ({ username, password }) => {
-
+    const verifyLogin = await fetch(`${apiUrl}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    const logInToken = await verifyLogin.json();
+    localStorage.setItem("token", JSON.stringify(logInToken));
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    try {
+        
+        const token = JSON.parse(localStorage.getItem("token"));
 
-  }
+        const createMovie = await fetch(`${apiUrl}/movie`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ title, description, runtimeMins })
+        });
+
+        
+
+        const movieCreated = await createMovie.json();
+
+       
+        setMovies((prevMovies) => [...prevMovies, movieCreated]);
+
+    } catch (error) {
+        console.error("Error creating movie:", error.message);
+       
+    }
+};
+
 
   return (
     <div className="App">
@@ -58,7 +97,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
