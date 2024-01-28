@@ -56,7 +56,33 @@ function App() {
     localStorage.setItem("token", JSON.stringify(logInToken));
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    try {
+        
+        const token = JSON.parse(localStorage.getItem("token"));
+
+        const createMovie = await fetch(`${apiUrl}/movie`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ title, description, runtimeMins })
+        });
+
+        
+
+        const movieCreated = await createMovie.json();
+
+       
+        setMovies((prevMovies) => [...prevMovies, movieCreated]);
+
+    } catch (error) {
+        console.error("Error creating movie:", error.message);
+       
+    }
+};
+
 
   return (
     <div className="App">
