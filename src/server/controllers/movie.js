@@ -1,5 +1,5 @@
 // DB
-import { createMovieDb } from '../domains/movie.js'
+import { getMoviesDb, createMovieDb } from '../domains/movie.js'
 
 // Helpers
 import {
@@ -7,6 +7,20 @@ import {
   checkFields,
   checkTitleExist
 } from '../helpers/movieErrorHandler.js'
+
+const getMovies = async (req, res) => {
+  const { authorization } = req.headers
+
+  try {
+    checkToken(authorization)
+
+    const movies = await getMoviesDb()
+
+    res.status(200).json({ movies })
+  } catch (error) {
+    res.status(error.status ?? 500).json({ error: error.message })
+  }
+}
 
 const createMovie = async (req, res) => {
   const { authorization } = req.headers
@@ -25,4 +39,4 @@ const createMovie = async (req, res) => {
   }
 }
 
-export { createMovie }
+export { getMovies, createMovie }

@@ -10,6 +10,12 @@ const getMovieByTitleDb = async (title) => {
   return foundMovie
 }
 
+const getMoviesDb = async () => {
+  const movies = await prisma.movie.findMany()
+
+  return movies
+}
+
 const createMovieDb = async (title, description, runTime) => {
   const createdMovie = await prisma.movie.create({
     data: {
@@ -22,4 +28,4 @@ const createMovieDb = async (title, description, runTime) => {
   return createdMovie
 }
 
-export { createMovieDb, getMovieByTitleDb }
+export { createMovieDb, getMoviesDb, getMovieByTitleDb }
