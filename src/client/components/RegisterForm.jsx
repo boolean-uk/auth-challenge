@@ -25,7 +25,12 @@ const RegisterForm = ({ apiUrl }) => {
         e && e.preventDefault()
        fetch(`${apiUrl}/user/register`, options)
         .then(r => r.json())
-        .then(setMessage)
+        .then((data) => {
+            if(data.error) {
+                window.alert(data.error)
+            }
+            setMessage(data)
+        })
     }
 
     useEffect(registerUser, [])

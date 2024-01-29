@@ -26,10 +26,14 @@ const MovieForm = ({ apiUrl, getMovies}) => {
             },
             body: JSON.stringify(data)
         }
-        console.log(data)
         fetch(`${apiUrl}/movie`, options)
         .then(res => res.json())
-        .then(getMovies)
+        .then((data) => {
+            if(data.error) {
+                window.alert(data.error)
+            }
+            getMovies(data)
+        })
     }
 
     useEffect(createMovie, [])

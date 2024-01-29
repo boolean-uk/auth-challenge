@@ -36,7 +36,12 @@ const LoginForm = ({ apiUrl }) => {
 
         fetch(`${apiUrl}/user/login`, options)
         .then(res => res.json())
-        .then(addToLocalStorage)
+        .then((data) => {
+            if(data.error) {
+                window.alert(data.error)
+            }
+            addToLocalStorage(data)
+        })
     }
     
     useEffect(login, [])
