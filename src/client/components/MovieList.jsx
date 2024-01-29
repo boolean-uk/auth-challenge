@@ -7,7 +7,7 @@ const MovieList = ({ movies })  => {
             <section>
                 <h2>Current list</h2>
                 <ul>
-                    {movies && movies.movies.map((movie, index)=> (
+                    {movies && movies.movies.toReversed().map((movie, index)=> (
                         <Movie key={index + "movie"} movie={movie} />
                     ))}
                 </ul>
