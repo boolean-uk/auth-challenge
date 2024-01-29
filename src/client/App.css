@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  display: grid;
 }
 
 .App-logo {
@@ -39,4 +39,95 @@
 
 ul {
   list-style: none;
+}
+
+form{
+  border-radius: 10px;
+  width: 400px;
+  background-color: rgba(0, 0, 139, 0.229);
+  margin: 10px auto;
+  padding: 12px;
+  display: grid;
+}
+
+section {
+  background-color: white;
+  margin: 10px auto;
+  padding: 12px;
+  display: grid;
+  place-self: center;
+}
+
+label {
+  place-self: start;
+  display: grid;
+  padding: 0 20px;
+  grid-template-columns: 180px 1fr;
+}
+
+input {
+  height: 30px;
+  border: none;
+  place-self: center;
+}
+
+h2 {
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.096));
+  width: 400px;
+  place-self: center;
+  text-align: center;
+}
+
+h3 {
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.473));
+  padding: 2px 12px;
+  place-self: start;
+  text-transform:uppercase;
+}
+
+button {
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: white;
+  color: rgb(41, 41, 70);
+  border: 2px solid white;
+  border-radius: 10px;
+  place-self: end;
+  padding: 4px;
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.171);
+}
+
+aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 40px;
+  background-color: rgb(41, 41, 70);
+  height: 100vh;
+}
+
+aside > nav > ul {
+  display: grid;
+  gap: 20px;
+  place-items: start;
+}
+
+a {
+  color: white;
+  padding: 4px;
+}
+
+a:hover {
+  color: rgb(41, 41, 70);
+  background-color: white;
+}
+
+
+section li {
+  display: grid;
+  width: 600px;
+  border-left: 1px solid rgba(0, 0, 0, 0.432);
+  padding: 0 30px;
+  margin-bottom: 10px;
+  place-self: start;
 }
