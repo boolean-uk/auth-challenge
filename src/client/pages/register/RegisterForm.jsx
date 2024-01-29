@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { postrequest } from "../../helpers/api-calls"
+import { postrequest } from "../../helpers/api-user-post"
 
 const DEFAULT_FORM = {
     username: "",
