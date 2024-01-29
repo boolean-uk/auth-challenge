@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client"
 
-export const createUserDb = (req, res) => {
+export const createUserDb = async (req, res) => {
   const { username, password } = req.body
 
   const user = await Prisma.user.create({
