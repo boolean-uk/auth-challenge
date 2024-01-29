@@ -26,7 +26,7 @@ function App() {
   
   const handleRegisterInput = (event) => {
     const { name, value } = event.target
-    setSignUpForm({...loginForm, [name]: value})
+    setSignUpForm({ ...signUpForm, [name]: value})
   }
   
   const handleRegisterSubmit = (event) => {
