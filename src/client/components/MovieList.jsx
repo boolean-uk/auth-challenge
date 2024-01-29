@@ -4,15 +4,17 @@ import MovieListContent from "./MovieListContent";
 
 import '../styles/movie-list.css'
 import '../styles/logout.css'
+import axios from "axios";
 
 function MovieList({ apiUrl }) {
-
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        fetch(`${apiUrl}/movie`)
-          .then(res => res.json())
-          .then(res => setMovies(res.data));
+        const getAllMovies = async () => {
+            const { data } = await axios.get(`${apiUrl}/movie`)
+            setMovies(data.data)
+        }
+        getAllMovies()
       }, [apiUrl]);
 
     return (
