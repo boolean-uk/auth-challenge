@@ -1,39 +1,19 @@
 import { useState } from "react"
+import { postrequestMovie } from "../../helpers/api-movie-post"
 const DEFAULT_FORM = {
     title: "",
     description: "",
     runtimeMins: 0,
 }
 
-const MovieForm = ({ apiUrl, getMovies}) => {
+const MovieForm = ({ updateList }) => {
     const [form, setForm] = useState(DEFAULT_FORM)
 
     const updateForm = (e) => setForm({...form, [e.target.name]: e.target.value})
 
     const createMovie = (e) => {
         e && e.preventDefault()
-        const data = {
-            title: form.title,
-            description: form.description,
-            runtimeMins: form.runtimeMins
-        }
-        const token = localStorage.getItem("token")
-        const options = {
-            method: "POST",
-            headers: {
-                "Authorization": token,
-                "content-type":"application/json",
-            },
-            body: JSON.stringify(data)
-        }
-        fetch(`${apiUrl}/movie`, options)
-        .then(res => res.json())
-        .then((data) => {
-            if(data.error) {
-                window.alert(data.error)
-            }
-            getMovies(data)
-        })
+        postrequestMovie(form, updateList)
     }
 
     return(
