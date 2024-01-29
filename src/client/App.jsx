@@ -66,33 +66,33 @@ function App() {
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     try {
       const token = localStorage.getItem("token");
-
+  
       if (!token) {
-        console.error("Authentication token not found. Please log in.");
+        console.error("token not found. Please log in.");
         return;
       }
-
+  
       const response = await fetch(`${apiUrl}/movie`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-
-          body: JSON.stringify({ title, description, runtimeMins }),
         },
+        body: JSON.stringify({ title, description, runtimeMins }),
       });
-      if (response.ok) {
-        const newMovie = await response.json();
+      const data = await response.json();
 
-        setMovies((prevMovies) => [...prevMovies, newMovie]);
+      if (response.ok) {
+  
+        setMovies((prevMovies) => [...prevMovies, data.data]);
       } else {
         console.error("Failed to create the movie");
       }
     } catch (error) {
-      console.error("An error occurred during movie creation:", error);
+      console.error("An error occurred while creating the movie:", error);
     }
   };
-
+  
   return (
     <div className="App">
       <h1>Register</h1>
