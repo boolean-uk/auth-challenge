@@ -2,10 +2,9 @@ import { getMovies } from "./api-get";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
+const token = localStorage.getItem("token")
 
 const buildUrl = () => `${apiUrl}/movie`
-
-const token = localStorage.getItem("token")
 
 const buildOptionsObject = (form) => {
     const options = {
