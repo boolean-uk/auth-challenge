@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { LoginForm } from './components/LoginForm';
-import { MovieList } from './components/MovieList';
-import { RegisterForm } from './components/RegisterForm';
-import { MovieForm } from './components/CreateMovieForm';
+import { LoginForm } from './pages/login/LoginForm';
+import { MovieList } from './pages/home/MovieList';
+import { RegisterForm } from './pages/register/RegisterForm';
+import { MovieForm } from './pages/create-movie/CreateMovieForm';
 import { Link, Route, Routes } from 'react-router-dom';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
+
 
 function App() {
   const [movies, setMovies] = useState(undefined)
