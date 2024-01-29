@@ -1,19 +1,12 @@
 import React from "react";
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import UserForm from "./UserForm";
 
-function RegisterPage({ handleRegister, error, setError }) {
+function RegisterPage({ handleRegister, error }) {
   return (
     <Box>
-      {/* <h1>Register</h1> */}
-      <UserForm handleSubmit={handleRegister} error={error} setError={setError}/>
+      <UserForm handleSubmit={handleRegister} error={error} />
     </Box>
   );
 }

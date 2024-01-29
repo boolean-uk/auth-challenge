@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
-
 const jwtSecret = "mysecret";
 
 import { createUserDB } from "../domain/user.js";
@@ -19,7 +17,7 @@ const register = async (req, res) => {
 
   const existingUser = await findUserDB(username);
   if (existingUser) {
-    return res.status(401).json({ error: "Username already exists" });
+    return res.status(409).json({ error: "Username already exists" });
   }
 
   try {

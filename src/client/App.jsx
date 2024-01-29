@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, Link, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 
 import "./App.css";
-import MovieForm from "./components/MovieForm";
+
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import DashboardPage from "./components/DashboardPage";
@@ -33,10 +33,11 @@ function App() {
     if (response.ok) {
       await response.json();
       localStorage.clear();
-      navigate("login");
       setError(null);
+      navigate("login");
     } else {
       const result = await response.json();
+      console.log(result.error);
       setError(result.error);
     }
   };
@@ -53,6 +54,7 @@ function App() {
       setError(null);
       localStorage.setItem("userToken", result.data.token);
       localStorage.removeItem("user");
+      localStorage.setItem("username", result.data.username);
       navigate("dashboard");
     } else {
       const result = await response.json();
@@ -94,11 +96,7 @@ function App() {
         <Route
           path="/register"
           element={
-            <RegisterPage
-              handleRegister={handleRegister}
-              error={error}
-              setError={setError}
-            />
+            <RegisterPage handleRegister={handleRegister} error={error} />
           }
         />
         <Route
@@ -115,7 +113,7 @@ function App() {
             />
           }
         />
-        <Route path="/" element={<Navigate to="/register" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Box>
   );
