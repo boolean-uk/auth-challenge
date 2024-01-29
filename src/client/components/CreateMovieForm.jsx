@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 const DEFAULT_FORM = {
     title: "",
     description: "",
@@ -35,8 +35,6 @@ const MovieForm = ({ apiUrl, getMovies}) => {
             getMovies(data)
         })
     }
-
-    useEffect(createMovie, [])
 
     return(
         <>

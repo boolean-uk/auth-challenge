@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 const DEFAULT_FORM = {
     username: "",
@@ -32,8 +32,6 @@ const RegisterForm = ({ apiUrl }) => {
             setMessage(data)
         })
     }
-
-    useEffect(registerUser, [])
 
     return(
         <>

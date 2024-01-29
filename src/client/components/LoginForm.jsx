@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 const DEFAULT_FORM = {
     username: "", 
@@ -44,7 +44,6 @@ const LoginForm = ({ apiUrl }) => {
         })
     }
     
-    useEffect(login, [])
     return(
         <>
             <form onSubmit={login}>
