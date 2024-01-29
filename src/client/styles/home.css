@@ -7,6 +7,7 @@
 
 .home--form-container {
     grid-template-rows: repeat(2, auto) 60px;
+    gap: 10px;
     border-radius: 8px;
     padding: 20px 50px;
 }
