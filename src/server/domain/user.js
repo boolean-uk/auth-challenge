@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client"
-import { authHashing } from "../helper/hashing"
+import { authHashing } from "../helper/hashing.js"
 
 export const createUserDb = async (req, res) => {
   const { username } = req.body
