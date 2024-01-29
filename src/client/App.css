@@ -40,3 +40,9 @@
 ul {
   list-style: none;
 }
+
+.logout {
+  position: relative;
+  left: 40%;
+  top: 20px
+}

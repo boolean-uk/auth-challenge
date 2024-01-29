@@ -73,7 +73,7 @@ function App() {
     if (newMovie.data) {
       setMovies([...movies, newMovie.data])
     }
-    
+
     return alert(newMovie.message)
   }
 
@@ -85,7 +85,7 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={logout}>Logout</button>
+      <button className="logout" onClick={logout}>Logout</button>
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
 
