@@ -11,39 +11,85 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
-
   const handleRegister = async ({ username, password }) => {
+    try {
+      const response = await fetch(`http://localhost:4000/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Registration completed", data);
+        // You can update the App state or redirect user to a new page here
+      } else {
+        throw new Error(data.message || "Registration failed");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
+    try {
+      const response = await fetch(`http://localhost:4000/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Login successful", data);
+        localStorage.setItem("token", data.token);
+        console.log("User logged in:", username, localStorage.getItem("token"));
+      } else {
+        throw new Error(data.message || "Login unsuccessful");
+      }
+    } catch (error) {
+      console.error("An error occurred during the login process:", error.message);
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token has been found');
+      }
 
-  }
+      const response = await fetch(`${apiUrl}/movie`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMovies(prevMovies => [...prevMovies, data.data]);
+        console.log(data, token)
+      } else {
+        throw new Error(data.message || 'Failed to create movie');
+      }
+    } catch (error) {
+      console.error('An error occurred during movie creation:', error.message);
+    }
+  };
 
   return (
     <div className="App">
