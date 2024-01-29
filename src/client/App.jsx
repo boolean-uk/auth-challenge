@@ -34,28 +34,22 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-
-   {
-      const response = await fetch(`${apiUrl}/user/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      })
-
-     console.log('message registration', handleRegister)
-
-    }
+    const createdRegister = await fetch(`${apiUrl}/user/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    console.log(createdRegister);
   };
 
   const handleLogin = async ({ username, password }) => {
-     
    
+    
   };
+
+  
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
         
