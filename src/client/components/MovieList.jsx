@@ -64,16 +64,18 @@ function MovieList({ apiUrl }) {
     return (
         <section className="movie-list--container grid">
             <Logout />
-            <div className="movie-list--create-movie">
-              <h1>Create a movie</h1>
-              <MovieForm handleSubmit={handleCreateMovie} />
-              {createMovieMessage && <p>{createMovieMessage}</p>}
-            </div>
-            <div className="movie-list--movies-container grid">
-              <h1>Movie list</h1>
-              <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
-              {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
-              <MovieListItems movies={movies} />
+            <div className="movie-list--sub-container grid">
+              <div className="movie-list--create-movie">
+                <h1>Create a movie</h1>
+                <MovieForm handleSubmit={handleCreateMovie} />
+                {createMovieMessage && <p>{createMovieMessage}</p>}
+              </div>
+              <div className="movie-list--movies-container grid">
+                <h1>Movie list</h1>
+                <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
+                {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
+                <MovieListItems movies={movies} />
+              </div>
             </div>
         </section>
     )
