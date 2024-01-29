@@ -76,7 +76,26 @@ function App() {
     }
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const movieData = { title, description, runtimeMins };
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(movieData),
+    };
+
+    try {
+      const newMovieResponse = await fetch(`${apiUrl}/movie`, options);
+      const newMovieData = await newMovieResponse.json();
+      setMovies([...movies, newMovieData.data]);
+    } catch (error) {
+      console.error("Error while adding a new movie:", error);
+    }
+  };
 
   return (
     <div className="App">

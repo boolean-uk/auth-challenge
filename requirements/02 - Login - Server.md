@@ -6,4 +6,4 @@ Do the work for this requirement in the `login` function in [src/server/controll
 
 1. Using the `username` provided in the request body, find that user in the database and assign it to the `foundUser` variable.
 2. Compare the `password` provided in the request body to the hashed password on the `foundUser`. Store the result in the `passwordsMatch` variable.
-3. Create a JWT containing the `username` and store it in the `token` variable.
+3. the `username` and store it in the `token` variable.
