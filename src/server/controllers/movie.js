@@ -15,7 +15,7 @@ const createMovie = async (req, res) => {
         const token = req.headers.authorization.split(" ");
         jwt.verify(token[1], jwtSecret);
     } catch (err) {
-        return res.status(401).json({ error: "Invalid token provided." });
+        return res.status(401).json({ message: "Verified user not signed in." });
     }
     const createdMovie = await createMovieDB(title, description, runtimeMins);
     return res.status(201).json({ data: createdMovie, message: "Movie created" });
