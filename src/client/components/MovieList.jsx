@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Logout from "./Logout"
 import MovieForm from "./MovieForm";
+import MovieListItems from "./SingleMovie";
 
 import '../styles/movie-list.css'
 
@@ -71,18 +72,7 @@ function MovieList({ apiUrl }) {
               <h1>Movie list</h1>
               <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
               {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
-      
-              <ul>
-              {movies.map(movie => {
-                  return (
-                  <li key={movie.id}>
-                      <h3>{movie.title}</h3>
-                      <p>Description: {movie.description}</p>
-                      <p>Runtime: {movie.runtimeMins}</p>
-                  </li>
-                  );
-              })}
-              </ul>
+              <MovieListItems movies={movies} />
             </div>
         </section>
     )
