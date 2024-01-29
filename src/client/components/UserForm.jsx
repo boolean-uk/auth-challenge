@@ -6,6 +6,7 @@ export default function UserForm({ handleSubmit }) {
     const handleSubmitDecorator = (e) => {
         e.preventDefault();
         handleSubmit(user);
+        
     };
 
     const handleChange = (e) => {
@@ -17,6 +18,9 @@ export default function UserForm({ handleSubmit }) {
         });
     };
 
+
+
+    
     return (
         <form onSubmit={handleSubmitDecorator}>
             <input type="text" name="username" placeholder="Username" value={user.username} onChange={handleChange} />

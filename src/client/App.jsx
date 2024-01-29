@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
   /**
@@ -33,17 +33,70 @@ function App() {
    *   }
    * */
 
-  const handleRegister = async ({ username, password }) => {
 
+
+  const handleRegister = async ({ username, password }) => {
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, options);
+
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log("Here is the user", newUser);
+      } else {
+        console.log(
+          "Error occurred while trying to post:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (err) {
+      console.error("Error during fetch:", err);
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
 
+    const logUser = await fetch(`${apiUrl}/user/login`, options);
+    if (logUser.ok) {
+      const userToken = await logUser.json();
+      localStorage.setItem("newToken", userToken.data);
+    } else {
+      return "username or password not found";
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    
+    const authToken = localStorage.getItem("newToken");
 
-  }
+    console.log("What is the Auth Token", authToken);
+
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    };
+
+    const data = await fetch(`${apiUrl}/movie`, options);
+    if (data) {
+      const newMovie = await data.json();
+      setMovies([...movies, newMovie]);
+    }
+  };
 
   return (
     <div className="App">
@@ -58,7 +111,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
