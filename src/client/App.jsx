@@ -67,14 +67,16 @@ function App() {
 
     const newMovieData = await fetch(`${apiUrl}/movie`, options)
     const newMovie = await newMovieData.json()
-    setMovies([...movies, newMovie.data])
-    console.log(newMovie.message)
+
+    if (newMovie.data) {
+      setMovies([...movies, newMovie.data])
+    }
     return alert(newMovie.message)
   }
 
   const logout = () => {
     localStorage.removeItem("token")
-    return
+    return alert("User logged out")
   }
 
 
