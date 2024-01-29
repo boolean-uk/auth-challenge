@@ -5,6 +5,11 @@
     position: relative;
     justify-content: center;
 }
+
+.movie-list--movies-container {
+    justify-items: center;
+    gap: 20px;
+}
   
 .delete-movies-btn {
     width: 200px;

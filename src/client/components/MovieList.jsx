@@ -69,7 +69,7 @@ function MovieList({ apiUrl }) {
               <MovieForm handleSubmit={handleCreateMovie} />
               {createMovieMessage && <p>{createMovieMessage}</p>}
             </div>
-            <div className="movie-list--movies-container">
+            <div className="movie-list--movies-container grid">
               <h1>Movie list</h1>
               <button className='delete-movies-btn' onClick={deleteAllMovies}>Delete all Movies</button>
               {deleteAllMoviesMessage && <p>{deleteAllMoviesMessage}</p>}
