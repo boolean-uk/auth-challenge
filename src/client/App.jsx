@@ -36,10 +36,32 @@ function App() {
       console.error('Registration error:', error.message);
     }
   };
-  
-  const handleLogin = async ({ username, password }) => {
 
+  const handleLogin = async ({ username, password }) => {
+    try {
+      const response = await fetch('/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+ 
+      if (response.ok) {
+     
+        const { token } = await response.json();
+  
+        localStorage.setItem('token', token);
+
+      } else {
+    
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error);
+    }
   };
+  
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
 
