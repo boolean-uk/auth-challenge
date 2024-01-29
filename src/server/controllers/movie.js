@@ -19,12 +19,11 @@ const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
     try {
-        const authHeader = req.headers['Authorization'];
+        const authHeader = req.headers.authorization;     
 
         if (!authHeader) {
             return res.status(401).json({ error: 'Unauthorized: Missing Token' });
         }
-
         const token = authHeader.split(' ')[1];
 
         const verifyToken = async (token, secret) => {
@@ -32,15 +31,15 @@ const createMovie = async (req, res) => {
                 const result = await jwt.verify(token, secret);
                 return result;
             } catch (error) {
-                throw new Error('Invalid token');
+               // throw new Error('Invalid token');
+               console.log(error.message)
             }
         };
 
         const tokenVerified = await verifyToken(token, jwtSecret);
-        console.log(tokenVerified)
 
         if (tokenVerified) {
-            const createdMovie = await movieDB(title, description, runtimeMins);
+            const createdMovie = await movieDB({title, description, runtimeMins});
             res.json({ data: createdMovie });
         } else {
             return res.status(401).json({ error: 'Invalid token provided.' });
