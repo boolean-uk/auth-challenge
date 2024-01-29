@@ -1,12 +1,10 @@
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import jwt from "jsonwebtoken";
+const jwtSecret = "mysecret";
 
-const jwtSecret = 'mysecret';
+import { createMovieDB, getMoviesDB } from "../domain/movie.js";
 
 const getAllMovies = async (req, res) => {
-    const movies = await prisma.movie.findMany();
-
+    const movies = await getMoviesDB();
     res.json({ data: movies });
 };
 
@@ -14,18 +12,13 @@ const createMovie = async (req, res) => {
     const { title, description, runtimeMins } = req.body;
 
     try {
-        const token = null;
-        // todo verify the token
-    } catch (e) {
-        return res.status(401).json({ error: 'Invalid token provided.' })
+        const token = req.headers.authorization.split(" ");
+        jwt.verify(token[1], jwtSecret);
+    } catch (err) {
+        return res.status(401).json({ message: "Verified user not signed in." });
     }
-
-    const createdMovie = null;
-
-    res.json({ data: createdMovie });
+    const createdMovie = await createMovieDB(title, description, runtimeMins);
+    return res.status(201).json({ data: createdMovie, message: "Movie created" });
 };
 
-export {
-    getAllMovies,
-    createMovie
-};
+export { getAllMovies, createMovie };
