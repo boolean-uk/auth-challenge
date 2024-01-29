@@ -8,7 +8,6 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
-  // const [shouldFetchMovies, setShouldFetchMovies] = useState(false)
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -16,6 +15,7 @@ function App() {
       .then(res => setMovies(res.data))
 
   }, []);
+
 
   const handleRegister = async ({ username, password }) => {
     const data = { username, password }
@@ -31,6 +31,7 @@ function App() {
     const registeredUser = await registerUserData.json()
     return alert(registeredUser.message)
   };
+
 
   const handleLogin = async ({ username, password }) => {
     const data = {
@@ -53,6 +54,7 @@ function App() {
 
   };
 
+
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     const data = { title, description, runtimeMins }
 
@@ -71,6 +73,7 @@ function App() {
     if (newMovie.data) {
       setMovies([...movies, newMovie.data])
     }
+    
     return alert(newMovie.message)
   }
 
