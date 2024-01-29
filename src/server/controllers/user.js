@@ -1,19 +1,35 @@
 import { Prisma } from "@prisma/client"
+import { comparePassword } from "../helper.js/hashing"
 
-const getUserByName = async (username) => {
+export const getUserByName = async (req, res) => {
+  const { username, password } = req.body
+
   try {
     const user = await Prisma.user.findUnique({
       where: {
         username
       }
     })
-    return { user }
+    res.json({ user })
   } catch (error) {
     console.log(error)
   }
 }
 
-const createUser = async (username, password) => {
+export const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body
+    const user = await getUserByName(req, res)
+    
+    if (comparePassword(password, user.password)) {
+      res.status(200).json({ message: `logged in user ${username}` })
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'incorrect username or password'})
+  }
+}
+
+export const createUser = async (username, password) => {
   
 }
 
@@ -22,8 +38,6 @@ export const handleRegister = (username, password) => {
     const user = getUserByName(username)
     if (user) {
       return JSON.stringify({ error: 'username is already taken' })
-    } else {
-
     }
   } catch (error) {
     console.log(error)

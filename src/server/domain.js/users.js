@@ -16,7 +16,7 @@ export const createUserDb = async (req, res) => {
   res.status(201).json({ user })
 }
 
-export const checkUsersPasswordDb = async (req, res) => {
+const checkUsersPasswordDb = async (req, res) => {
   const { username } = req.body
   const submittedPassword = req.body.password
 
