@@ -2,9 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Logout from "./Logout"
 import MovieForm from "./MovieForm";
-import MovieListItems from "./SingleMovie";
+import MovieListItems from "./MovieListItems";
 
 import '../styles/movie-list.css'
+import '../styles/logout.css'
 
 function MovieList({ apiUrl }) {
 
