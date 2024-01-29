@@ -40,18 +40,21 @@ function App() {
 
   const handleLogin = async ({ username, password }) => {
     try {
+      const data = { username, password };
+  
       const response = await fetch(`${apiUrl}/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
-        const { token } = await response.json();
-
+        const { data: token } = await response.json();
+  
         localStorage.setItem("token", token);
+        console.log("Login successful. Token:", token);
       } else {
         console.error("Login failed");
       }
