@@ -45,8 +45,15 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
-   
-    
+    const verifyLogin = await fetch(`${apiUrl}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    const logInToken = await verifyLogin.json();
+    localStorage.setItem("token", JSON.stringify(logInToken));
   };
 
   
