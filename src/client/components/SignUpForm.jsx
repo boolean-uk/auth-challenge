@@ -9,7 +9,7 @@ export default function SignUpForm({ handleInput, handleSubmit }) {
         <label htmlFor="password">Password</label>
         <input name="password" type="password" />
       </div>
-      <button>Submit</button>
+      <button>Create</button>
     </form>
   )
 }
