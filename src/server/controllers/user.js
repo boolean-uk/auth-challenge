@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client"
-import { authHashing, comparePassword } from "../helper.js/hashing"
-import { createUserDb } from "../domain.js/users"
+import { comparePassword } from "../helper/hashing"
+import { createUserDb } from "../domain/user"
 
 export const getUserByName = async (req, res) => {
   const { username } = req.body
@@ -32,12 +32,10 @@ export const loginUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { username, password } = req.body
+    const { username } = req.body
     const usernameTaken = await getUserByName(req, res)
     
     if (usernameTaken) throw new Error(`${username} already exists`)
-
-    const hash = authHashing(password)
     const user = await createUserDb(req, res)
 
     res.status(201).json({ user })
