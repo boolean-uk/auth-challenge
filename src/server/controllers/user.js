@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client"
 import { comparePassword } from "../helper/hashing"
 import { createUserDb } from "../domain/user"
 
-export const getUserByName = async (req, res) => {
+const getUserByName = async (req, res) => {
   const { username } = req.body
 
   try {
@@ -17,7 +17,7 @@ export const getUserByName = async (req, res) => {
   }
 }
 
-export const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body
     const user = await getUserByName(req, res)
@@ -30,7 +30,7 @@ export const loginUser = async (req, res) => {
   }
 }
 
-export const createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { username } = req.body
     const usernameTaken = await getUserByName(req, res)
@@ -44,7 +44,7 @@ export const createUser = async (req, res) => {
   }
 }
 
-export const handleRegister = (username, password) => {
+const handleRegister = (username, password) => {
   try {
     const user = getUserByName(username)
     if (user) {
@@ -53,4 +53,11 @@ export const handleRegister = (username, password) => {
   } catch (error) {
     console.log(error)
   }
+}
+
+export { 
+  getUserByName,
+  loginUser,
+  createUser,
+  handleRegister
 }
