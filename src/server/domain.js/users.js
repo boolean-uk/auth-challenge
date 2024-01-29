@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client"
-import { authHashing } from "../helper.js/hashing"
+import { authHashing, comparePassword } from "../helper.js/hashing"
 
 export const createUserDb = async (req, res) => {
   const { username } = req.body
@@ -14,6 +14,15 @@ export const createUserDb = async (req, res) => {
   })
 
   res.status(201).json({ user })
+}
+
+export const checkUsersPasswordDb = async (req, res) => {
+  const { username, password } = req.body
+
+  const user = await getUserByNameDb(username)
+  const hash = user.password
+  const correctPassword = await comparePassword(password, hash)
+  return correctPassword
 }
 
 
