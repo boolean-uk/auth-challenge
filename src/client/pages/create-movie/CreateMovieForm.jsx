@@ -18,8 +18,8 @@ const MovieForm = ({ updateList }) => {
 
     return(
         <>
-            <h2>Add a movie</h2>
             <form onSubmit={createMovie}>
+            <h2>Add a movie</h2>
                 <label>
                     <h3>title:</h3>
                     <input 
