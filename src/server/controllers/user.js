@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client"
 import { comparePassword } from "../helper.js/hashing"
 
 export const getUserByName = async (req, res) => {
-  const { username, password } = req.body
+  const { username } = req.body
 
   try {
     const user = await Prisma.user.findUnique({
