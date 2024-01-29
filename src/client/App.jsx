@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { handleRegister } from '../server/controllers/user';
 import './App.css';
+import LoginForm from './components/LoginForm';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -10,27 +11,19 @@ function App() {
     username: "",
     password: ""
   }
-  const form = useState(initForm)
+  const [loginForm, setLoginForm] = useState(initForm)
+  const [signUpForm, setSignUpForm] = useState(initForm)
 
   const handleInput = (event) => {
     const { name, value } = event.target
-    console.log(name, value)
+    setLoginForm({...loginForm, [name]: value})
+    setSignUpForm({...loginForm, [name]: value})
   }
 
   return (
     <div className="App">
       <h1>Register an account</h1>
-      <form onChange={handleInput} onSubmit={handleRegister}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input name="username" />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input name="password" type="password" />
-        </div>
-        <button>Submit</button>
-      </form>
+        {/* <LoginForm handleInput={handleInput} handleSubmit={handleSubmit}/>
       <h1>Login into your account</h1>
       <form>
         <label htmlFor="username">
@@ -41,7 +34,7 @@ function App() {
           Password
           <input name="password" type="password" />
         </label>
-      </form>
+      </form> */}
     </div>
   );
 }
