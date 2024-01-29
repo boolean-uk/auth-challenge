@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client"
 import { comparePassword } from "../helper/hashing.js"
-import { createUserDb } from "../domain/user.js"
+import { createUserDb } from '../domain/user.js'
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js"
 
 export const getUserByName = async (req, res) => {
   const { username } = req.body
@@ -31,26 +31,17 @@ export const loginUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
+  const { username } = req.body
   try {
-    const { username } = req.body
-    const usernameTaken = await getUserByName(req, res)
-    
-    if (usernameTaken) throw new Error(`${username} already exists`)
     const user = await createUserDb(req, res)
-
-    res.status(201).json({ user })
+    res.status(200).json({ success: `User ${username} created`})
   } catch (error) {
-    res.status(500).json({ error: 'incorrect username or password'})
-  }
-}
-
-export const handleRegister = (username, password) => {
-  try {
-    const user = getUserByName(username)
-    if (user) {
-      return JSON.stringify({ error: 'username is already taken' })
+    if (error instanceof PrismaClientKnownRequestError) {
+      console.log(error)
+      if (error.code === "P2002") {
+        res.status(409).json({ error: `Username ${username} is already taken` })
+      }
     }
-  } catch (error) {
-    console.log(error)
+    res.status(500).json({ error })
   }
 }

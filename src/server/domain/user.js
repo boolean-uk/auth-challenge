@@ -1,28 +1,30 @@
-import { Prisma } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
 import { authHashing } from "../helper/hashing.js"
 
 export const createUserDb = async (req, res) => {
   const { username } = req.body
-  const password = authHashing(req.body.password)
+  const password = await authHashing(req.body.password)
 
-  const user = await Prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       username,
       password
     }
   })
 
-  res.status(201).json({ user })
+  return res.status(201).json({ user })
 }
 
 export const getUserByNameDb = async (req, res) => {
   const { username } = req.body
 
-  const user = await Prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUniqueOrThrow({
     where: {
       username
     }
   })
 
-  res.json({ user })
+  return res.json({ user })
 }

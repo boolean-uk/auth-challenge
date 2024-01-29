@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import SignUpForm from './components/SignUpForm'
 import LoginForm from './components/LoginForm';
+import MovieForm from './components/MovieForm';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -28,15 +29,16 @@ function App() {
     setSignUpForm({ ...signUpForm, [name]: value})
   }
   
-  const handleRegisterSubmit = (event) => {
+  const handleRegisterSubmit = async (event) => {
     event.preventDefault()
+    const headers = { 'Content-Type': 'application/json' }
     const options = {
       method: 'POST',
+      headers: headers,
       body: JSON.stringify(signUpForm)
     }
-    fetch(`${apiUrl}/register`, options)
-      .then(response => response.json())
-      .then(data => console.log(data))
+
+    const answer = await fetch(`${apiUrl}/register`, options)
   }
 
   return (
@@ -45,6 +47,8 @@ function App() {
       <SignUpForm handleInput={handleRegisterInput} handleSubmit={handleRegisterSubmit} />
       <h1>Login to your account</h1>
       <LoginForm handleInput={handleLoginInput} handleSubmit={handleLoginSubmit} />
+      <h1>Create a new movie</h1>
+      <MovieForm />
     </div>
   );
 }
