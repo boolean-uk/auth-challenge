@@ -14,7 +14,7 @@ function App() {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
       .then(res => setMovies(res.data))
-    
+
   }, []);
 
   const handleRegister = async ({ username, password }) => {
@@ -26,9 +26,10 @@ function App() {
       body: JSON.stringify(data)
     }
 
+    localStorage.removeItem("token")
     const registerUserData = await fetch(`${apiUrl}/user/register`, options)
-    await registerUserData.json()
-    return
+    const registeredUser = await registerUserData.json()
+    return alert(registeredUser.message)
   };
 
   const handleLogin = async ({ username, password }) => {
@@ -45,10 +46,11 @@ function App() {
 
     const userData = await fetch(`${apiUrl}/user/login`, options)
     const newLogin = await userData.json()
-    const userToken = newLogin.data
-    console.log(userToken)
+    const userToken = newLogin.token
 
     localStorage.setItem("token", userToken)
+    return alert(newLogin.message)
+
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
@@ -66,11 +68,19 @@ function App() {
     const newMovieData = await fetch(`${apiUrl}/movie`, options)
     const newMovie = await newMovieData.json()
     setMovies([...movies, newMovie.data])
+    console.log(newMovie.message)
+    return alert(newMovie.message)
+  }
+
+  const logout = () => {
+    localStorage.removeItem("token")
+    return
   }
 
 
   return (
     <div className="App">
+      <button onClick={logout}>Logout</button>
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
 

@@ -18,7 +18,7 @@ const createMovie = async (req, res) => {
         return res.status(401).json({ error: "Invalid token provided." });
     }
     const createdMovie = await createMovieDB(title, description, runtimeMins);
-    return res.status(201).json({ data: createdMovie });
+    return res.status(201).json({ data: createdMovie, message: "Movie created" });
 };
 
 export { getAllMovies, createMovie };
