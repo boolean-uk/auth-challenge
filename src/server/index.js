@@ -28,7 +28,8 @@ app.get('*', (req, res) => {
 });
 
 // Start our API server
-const port = process.env.VITE_PORT;
+// const port = process.env.VITE_PORT;
+const port = 4000;
 app.listen(port, () => {
     console.log(`\n Server is running on http://localhost:${port}\n`);
 });

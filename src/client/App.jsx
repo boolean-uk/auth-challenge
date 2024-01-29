@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { handleRegister } from '../server/controllers/user';
 import './App.css';
 import SignUpForm from './components/SignUpForm'
 import LoginForm from './components/LoginForm';
@@ -31,6 +30,13 @@ function App() {
   
   const handleRegisterSubmit = (event) => {
     event.preventDefault()
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(signUpForm)
+    }
+    fetch(`${apiUrl}/register`, options)
+      .then(response => response.json())
+      .then(data => console.log(data))
   }
 
   return (
