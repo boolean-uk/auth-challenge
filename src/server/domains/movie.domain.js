@@ -18,4 +18,11 @@ function createMovie(title, description, runtimeMins) {
   });
 }
 
-export { createMovie };
+/**
+ * @returns {Promise<Types.Movie[]>}
+ */
+function selectAllMovies() {
+  return prisma.movie.findMany();
+}
+
+export { createMovie, selectAllMovies };

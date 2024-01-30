@@ -1,6 +1,6 @@
 import express from "express";
 import { validateRequest } from "../middleware/validateRequest/index.js";
-import { submitMovie } from "../controllers/movie.js";
+import { getAllMovies, submitMovie } from "../controllers/movie.js";
 import { submitMovieSchema } from "../middleware/validateRequest/movie.validate.js";
 import { validateLoginSession } from "../middleware/validateLogin/index.js";
 
@@ -12,5 +12,7 @@ router.post(
   validateRequest(submitMovieSchema),
   submitMovie,
 );
+
+router.get("/", getAllMovies);
 
 export default router;

@@ -1,4 +1,4 @@
-import { createMovie } from "../domains/movie.domain.js";
+import { createMovie, selectAllMovies } from "../domains/movie.domain.js";
 import { handleError } from "../utils/error.js";
 // eslint-disable-next-line no-unused-vars
 import * as Types from "../utils/types.d.js";
@@ -26,4 +26,21 @@ async function submitMovie(req, res) {
   }
 }
 
-export { submitMovie };
+/**
+ * @param {Types.ExRequest} req
+ * @param {Types.ExResponse} res
+ * @returns {Promise<void>}
+ */
+async function getAllMovies(req, res) {
+  try {
+    const movieList = await selectAllMovies();
+    const payload = {
+      movies: movieList,
+    };
+    res.status(200).json(payload);
+  } catch (error) {
+    handleError(error, res);
+  }
+}
+
+export { getAllMovies, submitMovie };
