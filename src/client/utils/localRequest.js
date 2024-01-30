@@ -9,12 +9,13 @@ const token = localStorage.getItem("token");
  * @returns {Promise<Object>}
  */
 async function postUrl(endpoint, payload) {
+  const token = localStorage.getItem("token");
   const url = BASE_PATH + endpoint;
   const options = {
     body: JSON.stringify(payload),
     method: "post",
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: token ? `Bearer ${token}` : null,
       "content-type": "application/json",
     },
   };
