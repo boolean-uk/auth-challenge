@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -18,15 +18,32 @@ import {
   Td,
   Button,
 } from "@chakra-ui/react";
+import axios from "axios";
 
 import MovieForm from "./MovieForm";
 
 function DashboardPage({ movies, handleCreateMovie, error }) {
+  const [updatedMovies, setUpdatedMovies] = useState([]);
+
   const username = localStorage.getItem("username");
 
   const isMobile = useBreakpointValue({ base: true, lg: false });
 
-  const reversedMovies = movies.sort((a, b) => b.id - a.id);
+  useEffect(() => {
+    setUpdatedMovies([...movies].sort((a, b) => b.id - a.id));
+  }, [movies]);
+
+  const handleDelete = async (movieToDelete) => {
+    try {
+      await axios.delete(`http://localhost:4000/movie/${movieToDelete.id}`);
+      setUpdatedMovies((prevMovies) =>
+        prevMovies.filter((movie) => movie.id !== movieToDelete.id)
+      );
+    } catch (error) {
+      console.error("Error deleting movie:", error);
+    }
+  };
+  
 
   return (
     <Grid
@@ -84,11 +101,13 @@ function DashboardPage({ movies, handleCreateMovie, error }) {
           <MovieForm handleSubmit={handleCreateMovie} error={error} />
         </Container>
         <Container mt={10} maxW="1100px">
-          <Center mb={5}>
-            <Heading as="h2" size="sm">
-              Movie List
-            </Heading>
-          </Center>
+          {updatedMovies && (
+            <Center mb={5}>
+              <Heading as="h2" size="sm">
+                Movie List
+              </Heading>
+            </Center>
+          )}
           <Table variant="striped">
             <Thead>
               <Tr>
@@ -99,13 +118,17 @@ function DashboardPage({ movies, handleCreateMovie, error }) {
               </Tr>
             </Thead>
             <Tbody>
-              {reversedMovies.map((movie) => (
+              {updatedMovies.map((movie) => (
                 <Tr key={movie.id}>
                   <Td>{movie.title}</Td>
                   <Td>{movie.description}</Td>
                   <Td>{movie.runtimeMins}</Td>
                   <Td>
-                    <Button colorScheme="red" size="sm">
+                    <Button
+                      colorScheme="red"
+                      size="sm"
+                      onClick={() => handleDelete(movie)}
+                    >
                       Delete
                     </Button>
                   </Td>

@@ -18,3 +18,9 @@ export const findMovieDB = async (title) => {
     },
   });
 };
+
+export const deleteMovieDB = async (id) => {
+  return await prisma.movie.delete({
+    where: { id: Number(id) },
+  });
+};

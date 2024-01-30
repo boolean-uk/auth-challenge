@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-import { createMovieDB, findMovieDB } from "../domain/movie.js";
+import { createMovieDB, findMovieDB, deleteMovieDB } from "../domain/movie.js";
 
 const jwtSecret = "mysecret";
 
@@ -39,4 +39,15 @@ const createMovie = async (req, res) => {
   res.status(201).json({ data: createdMovie });
 };
 
-export { getAllMovies, createMovie };
+const deleteMovie = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedMovie = await deleteMovieDB(id);
+    res.status(204).json({ data: deletedMovie });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Error" });
+  }
+};
+
+export { getAllMovies, createMovie, deleteMovie };
