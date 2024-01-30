@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import localRequest from "../utils/localRequest.js";
+import SubmissionConfirmation from "./SubmissionConfirmation.jsx";
 
 const DEFAULT_USER_DETAILS = {
   username: "",
@@ -49,33 +50,9 @@ export default function UserForm({ endpoint, login, title }) {
         </label>
         <button type="submit">{login ? "Login" : "Register"}</button>
       </form>
-      {SubmissionConfirmation(submissionResponse)}
+      <SubmissionConfirmation submissionResponse={submissionResponse} />
     </div>
   );
-}
-
-function SubmissionConfirmation(submissionResponse) {
-  const ok = submissionResponse.ok;
-
-  if (ok) {
-    return <div>Success!</div>;
-  }
-
-  if (ok === false) {
-    const { formErrors, fieldErrors } = submissionResponse.error;
-    let fieldErrorArr = [];
-    for (const issue in fieldErrors) {
-      fieldErrorArr.push(`${issue}: ${fieldErrors[issue]}`);
-    }
-
-    return (
-      <div>
-        Failed! {formErrors} {fieldErrorArr}
-      </div>
-    );
-  }
-
-  return <></>;
 }
 
 UserForm.propTypes = {
