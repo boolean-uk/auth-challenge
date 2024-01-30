@@ -181,12 +181,22 @@ describe("User Endpoint", () => {
 
     it("will return 401 when incorrect login details are provided", async () => {
       await createUser("bob", await hashString("builder"));
-      const request = {
+      const requestWrongPassword = {
         username: "bob",
         password: "plumber",
       };
 
-      const response = await supertest(app).post("/user/login").send(request);
+      const requestFakeUser = {
+        username: "sean",
+        password: "builder",
+      };
+
+      const responseWrongPassword = await supertest(app)
+        .post("/user/login")
+        .send(requestWrongPassword);
+      const responseFakeUser = await supertest(app)
+        .post("/user/login")
+        .send(requestFakeUser);
 
       const expected = {
         error: {
@@ -196,8 +206,10 @@ describe("User Endpoint", () => {
         },
       };
 
-      expect(response.status).toEqual(401);
-      expect(response.body).toEqual(expected);
+      expect(responseWrongPassword.status).toEqual(401);
+      expect(responseWrongPassword.body).toEqual(expected);
+      expect(responseFakeUser.status).toEqual(401);
+      expect(responseFakeUser.body).toEqual(expected);
     });
 
     it("will return 400 when request is malformed", async () => {
