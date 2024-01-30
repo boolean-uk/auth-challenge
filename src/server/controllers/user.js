@@ -1,26 +1,27 @@
 import { comparePassword } from "../helper/hashing.js"
-import { createUserDb } from '../domain/user.js'
+// import { generateToken } from '../helper/token.js'
+import { createUserDb, getUserByNameDb } from '../domain/user.js'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js"
 
 export const getUserByName = async (req, res) => {
   const { username } = req.body
 
   try {
-    const user = await Prisma.user.findUnique({
-      where: {
-        username
-      }
-    })
-    res.json({ user })
+    const user = await getUserByNameDb(req, res)
+
+    if (user) {
+      console.log("found user")
+      return res.status(200).json({ result: `${username} exists`})
+    }
   } catch (error) {
-    console.log(error)
+    return res.status(404).json({ result: `${username} does not exist`})
   }
 }
 
 export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body
-    const user = await getUserByName(req, res)
+    const user = await getUserByNameDb(req, res)
     
     if (comparePassword(password, user.password)) {
       res.status(200).json({ message: `logged in user ${username}` })
@@ -41,10 +42,10 @@ export const createUser = async (req, res) => {
     if (user) res.status(201).json({ success: `User ${username} created`})
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
-      console.log(error)
       if (error.code === "P2002") {
         return res.status(409).json({ error: `Username ${username} is already taken` })
       }
+      return res.status(error.code).json({ error: error.message })
     }
     return res.status(500).json({ error })
   }
