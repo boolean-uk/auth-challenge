@@ -39,7 +39,6 @@ const login = async (req, res) => {
   const token = jwt.sign(username, jwtSecret);
 
   res.status(201).json({ data: token});
-  console.log("assigned token" ,token)
 };
 
 export { register, login };

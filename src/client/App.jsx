@@ -9,6 +9,7 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
 
+  const [userResponse, setUserResponse] = useState(null);
   const [loginResponse, setLoginResponse] = useState(null);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ function App() {
       }
       const data = await res.json();
       console.log(`Status Code: ${res.status}`, data);
+      setUserResponse(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -84,24 +86,25 @@ function App() {
     <div className="App">
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
-
+      {userResponse ? <h3>Account created!</h3> : <h3>Create an account!</h3>}
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
-      {loginResponse && <h3>Login Success</h3>}
+      {loginResponse ? <h3>Login successful!</h3> : <h3>Login</h3>}
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
 
       <h1>Movie list</h1>
       <ul>
-        {loginResponse && movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
+        {loginResponse &&
+          movies.map((movie) => {
+            return (
+              <li key={movie.id}>
+                <h3>{movie.title}</h3>
+                <p>Description: {movie.description}</p>
+                <p>Runtime: {movie.runtimeMins}</p>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );
