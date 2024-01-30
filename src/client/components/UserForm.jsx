@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../App.css";
 
 export default function UserForm({ handleSubmit }) {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -33,7 +34,7 @@ export default function UserForm({ handleSubmit }) {
         value={user.password}
         onChange={handleChange}
       />
-      <button type="submit">Submit</button>
+      <button type="submit" className="button">Submit</button>
     </form>
   );
 }

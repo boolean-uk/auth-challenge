@@ -75,8 +75,8 @@ function App() {
 
     if (newMovie.data) {
       setMovies([...movies, newMovie.data]);
-    }else{
-      return alert('You have to Log In first')
+    } else {
+      return alert("You have to Log In first");
     }
 
     return alert(newMovie.message);
@@ -97,7 +97,7 @@ function App() {
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
 
-      <button className="logout" onClick={handleLogOut}>
+      <button className="button" onClick={handleLogOut}>
         Log Out
       </button>
       <h1>Movie list</h1>

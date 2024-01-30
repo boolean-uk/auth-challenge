@@ -13,6 +13,6 @@ const findUser = async (username) =>
   await prisma.user.findFirst({
     where: {
       username,
-    }
+    },
   });
 export { registerNewUserdb, findUser };
