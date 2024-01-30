@@ -26,5 +26,5 @@ export const getUserByNameDb = async (req, res) => {
     }
   })
 
-  return res.status(200).json({ user })
+  return user
 }

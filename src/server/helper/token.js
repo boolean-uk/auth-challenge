@@ -1,7 +1,12 @@
 import pkg from 'jsonwebtoken';
 const { jwt } = pkg;
 
-export const generateToken = (payload, secret) => jwt.sign(payload, secret)
+const header = {
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+export const generateToken = (payload) => jwt.sign(header, payload)
 
 export const generateExpiringToken = (payload, secret, expiryTime) => jwt.sign(payload, secret, { expiresIn: expiryTime })
 
