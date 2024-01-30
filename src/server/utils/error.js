@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
+import jwt from "jsonwebtoken";
 import { ZodError } from "zod";
-import { MismatchLoginError } from "./errorClasses.js";
+import { MismatchLoginError, TokenError } from "./errorClasses.js";
 
 // eslint-disable-next-line no-unused-vars
 import * as Types from "./types.d.js";
@@ -23,6 +24,11 @@ function handleError(error, res) {
 
   if (error instanceof MismatchLoginError) {
     handleMismatchLoginError(error, res);
+    return;
+  }
+
+  if (error instanceof TokenError || error instanceof jwt.JsonWebTokenError) {
+    handleTokenError(error, res);
     return;
   }
 
@@ -118,6 +124,29 @@ function createMismatchErrorPayload() {
 function handleMismatchLoginError(error, res) {
   const payload = createMismatchErrorPayload();
   res.status(payload.error.code).json(payload);
+}
+
+/**
+ * @param {import("../utils/errorClasses.js").TokenError} error
+ * @param {Types.ExResponse} res
+ */
+function handleTokenError(error, res) {
+  const payload = createTokenErrorPayload(error);
+  res.status(payload.error.code).json(payload);
+}
+
+/**
+ * @param {import("../utils/errorClasses.js").TokenError} error
+ * @returns {Types.ApiError}
+ */
+function createTokenErrorPayload(error) {
+  return {
+    error: {
+      formErrors: [error.message],
+      fieldErrors: {},
+      code: 401,
+    },
+  };
 }
 
 export { handleError };
