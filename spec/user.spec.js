@@ -8,11 +8,11 @@ describe("/user", () => {
   describe("/register", () => {
       const endpoint = "/user/register"
       const user1 = {
-        username: "Geralt",
-        password: "Roach",
+        username: "Dandelion",
+        password: "Jaskier",
       };
       const user2 = {   
-          username: "Geralt",
+          username: "Dandelion",
           password: "axii",
         };
       const user3 = {   
@@ -24,7 +24,7 @@ describe("/user", () => {
       };
       
     test("a new user is registered", async () => {
-      const message = "Welcome, Geralt!"
+      const message = "Welcome, Dandelion!"
       const result = await supertest(app).post(endpoint).send(user1)
 			expect(result.status).toEqual(201);
       expect(result.body.message).toEqual(message)
@@ -56,11 +56,11 @@ describe("/user", () => {
   describe("/login", () => {
     const endpoint = "/user/login"
     const user1 = {
-      username: "Geralt",
-      password: "Roach",
+      username: "Dandelion",
+      password: "Jaskier",
     };
     const user2 = {
-      username: "Geralt",
+      username: "Dandelion",
       password: "Roche",
     };
     const user3 = {
@@ -72,7 +72,7 @@ describe("/user", () => {
       password: "Roach",
     };
     const user5 = {
-      username: "Geralt",
+      username: "Dandelion",
     };
     test("the user is logged in", async() => {
       const result = await supertest(app).post(endpoint).send(user1)
