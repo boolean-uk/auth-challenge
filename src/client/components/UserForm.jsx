@@ -34,7 +34,9 @@ export default function UserForm({ handleSubmit }) {
         value={user.password}
         onChange={handleChange}
       />
-      <button type="submit" className="button">Submit</button>
+      <button type="submit" className="button">
+        Submit
+      </button>
     </form>
   );
 }

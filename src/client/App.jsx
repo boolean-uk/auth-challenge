@@ -75,9 +75,7 @@ function App() {
 
     if (newMovie.data) {
       setMovies([...movies, newMovie.data]);
-    } else {
-      return alert("You have to Log In first");
-    }
+    } 
 
     return alert(newMovie.message);
   };
