@@ -37,7 +37,7 @@ function App() {
       headers: headers,
       body: JSON.stringify(signUpForm)
     }
-    console.log(signUpForm)
+    
     const answer = await fetch(`${apiUrl}/register`, options)
     
     if (answer.status === 200) {
@@ -47,7 +47,6 @@ function App() {
     }
 
     setSignUpForm(initForm)
-    console.log(initForm)
   }
 
   return (

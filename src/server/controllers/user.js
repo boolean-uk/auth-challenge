@@ -43,9 +43,9 @@ export const createUser = async (req, res) => {
     if (error instanceof PrismaClientKnownRequestError) {
       console.log(error)
       if (error.code === "P2002") {
-        res.status(409).json({ error: `Username ${username} is already taken` })
+        return res.status(409).json({ error: `Username ${username} is already taken` })
       }
     }
-    res.status(500).json({ error })
+    return res.status(500).json({ error })
   }
 }
