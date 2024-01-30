@@ -17,4 +17,16 @@ function createUser(username, password) {
   });
 }
 
-export { createUser };
+/**
+ * @param {String} username
+ * @returns {Promise<Types.User>}
+ */
+function selectUserByUsername(username) {
+  return prisma.user.findUniqueOrThrow({
+    where: {
+      username,
+    },
+  });
+}
+
+export { createUser, selectUserByUsername };
