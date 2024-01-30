@@ -32,9 +32,13 @@ export const loginUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   const { username } = req.body
+  
+  const usernameTaken = await getUserByName(req, res)
+  if (usernameTaken) res.status(409).json({ error: `Username ${username} is already taken` })
+  
   try {
     const user = await createUserDb(req, res)
-    res.status(200).json({ success: `User ${username} created`})
+    if (user) res.status(201).json({ success: `User ${username} created`})
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       console.log(error)

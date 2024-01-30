@@ -37,8 +37,17 @@ function App() {
       headers: headers,
       body: JSON.stringify(signUpForm)
     }
-
+    console.log(signUpForm)
     const answer = await fetch(`${apiUrl}/register`, options)
+    
+    if (answer.status === 200) {
+      alert("Account created")
+    } else {
+      alert(answer.status, answer.statusText)
+    }
+
+    setSignUpForm(initForm)
+    console.log(initForm)
   }
 
   return (

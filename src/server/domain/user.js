@@ -14,7 +14,7 @@ export const createUserDb = async (req, res) => {
     }
   })
 
-  return res.status(201).json({ user })
+  return user
 }
 
 export const getUserByNameDb = async (req, res) => {
@@ -26,5 +26,5 @@ export const getUserByNameDb = async (req, res) => {
     }
   })
 
-  return res.json({ user })
+  return user
 }
