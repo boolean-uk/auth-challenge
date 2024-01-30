@@ -12,8 +12,23 @@ const findUserDb = async (username) =>
         }
     })
 
+const findUserWithMoviesDb = async (username) => 
+    await prisma.user.findUnique({
+        where: {
+            username
+        }, 
+        include: {
+            movies: {
+                include: {
+                    movie: true
+                }
+            }
+        }
+    })
+
 
 export { 
     registerDb, 
-    findUserDb
+    findUserDb, 
+    findUserWithMoviesDb
 }
