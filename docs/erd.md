@@ -10,8 +10,8 @@
 
 erDiagram
 
- User ||--o{ MovieToUser : has
- Movie ||--|{ MovieToUser : has
+ User ||--o{ MoviesOnUsers : has
+ Movie ||--|{ MoviesOnUsers : has
 
  User {
   Int           id           PK
