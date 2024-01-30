@@ -1,31 +1,61 @@
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
+import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 
-const jwtSecret = 'mysecret';
+import { createMovieDB, findMovieDB, deleteMovieDB } from "../domain/movie.js";
+
+const jwtSecret = "mysecret";
 
 const getAllMovies = async (req, res) => {
-    const movies = await prisma.movie.findMany();
+  const movies = await prisma.movie.findMany();
 
-    res.json({ data: movies });
+  res.json({ data: movies });
 };
 
 const createMovie = async (req, res) => {
-    const { title, description, runtimeMins } = req.body;
+  const { title, description, runtimeMins } = req.body;
 
-    try {
-        const token = null;
-        // todo verify the token
-    } catch (e) {
-        return res.status(401).json({ error: 'Invalid token provided.' })
+  if (!title || !description || !runtimeMins) {
+    return res.status(406).json({ error: "All fields are required" });
+  }
+
+  const existingMovie = await findMovieDB(title);
+  if (existingMovie) {
+    res.status(409).json({ error: "Movie with such title already exists" });
+  }
+
+  try {
+    const tokenHeader = req.headers.authorization;
+
+    const token = tokenHeader.split(" ")[1];
+
+    jwt.verify(token, jwtSecret);
+  } catch (error) {
+    return res.status(401).json({ error: "Invalid token provided." });
+  }
+  try {
+    const createdMovie = await createMovieDB(title, description, runtimeMins);
+
+    res.status(201).json({ data: createdMovie });
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "2002") {
+        res.status(409).json({ error: "Movie with such title already exists" });
+      }
     }
-
-    const createdMovie = null;
-
-    res.json({ data: createdMovie });
+  }
 };
 
-export {
-    getAllMovies,
-    createMovie
+const deleteMovie = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedMovie = await deleteMovieDB(id);
+    res.status(204).json({ data: deletedMovie });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Error" });
+  }
 };
+
+export { getAllMovies, createMovie, deleteMovie };

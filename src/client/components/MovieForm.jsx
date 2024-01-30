@@ -1,28 +1,92 @@
-import { useState } from "react";
+import {
+  VStack,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Box,
+  Textarea,
+  Text,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
-export default function MovieForm({ handleSubmit }) {
-    const [movie, setMovie] = useState({ title: '', description: '', runtimeMins: 60 });
+const movieLocalStorage = () => {
+  const storedMovie = localStorage.getItem("movie");
 
-    const handleSubmitDecorator = (e) => {
-        e.preventDefault();
-        handleSubmit(movie);
-    }
+  try {
+    return storedMovie
+      ? JSON.parse(storedMovie)
+      : { title: "", description: "", runtimeMins: 0 };
+  } catch (error) {
+    return { title: "", description: "", runtimeMins: 0 };
+  }
+};
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+export default function MovieForm({ handleSubmit, error }) {
+  const [movie, setMovie] = useState(movieLocalStorage());
 
-        setMovie({
-            ...movie,
-            [name]: name === 'runtimeMins' ? parseInt(value) : value
-        });
-    }
+  const handleSubmitDecorator = (e) => {
+    e.preventDefault();
+    handleSubmit(movie);
+    setMovie({
+      title: "",
+      description: "",
+      runtimeMins: 0,
+    });
+    localStorage.removeItem("movie");
+  };
 
-    return (
-        <form onSubmit={handleSubmitDecorator}>
-            <input type='text' name='title' placeholder="Title" value={movie.title} onChange={handleChange} />
-            <input type='text' name='description' placeholder="Description" value={movie.description} onChange={handleChange} />
-            <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movie.runtimeMins} onChange={handleChange} />
-            <button type="submit">Submit</button>
-        </form>
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setMovie({
+      ...movie,
+      [name]: name === "runtimeMins" ? parseInt(value) : value,
+    });
+    localStorage.setItem("movie", JSON.stringify(movie));
+  };
+
+
+  return (
+    <Box>
+      <VStack as="form" onSubmit={handleSubmitDecorator} spacing={4}>
+        <FormControl>
+          <FormLabel>Title</FormLabel>
+          <Input
+            minLength={3}
+            type="text"
+            name="title"
+            value={movie.title}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            type="text"
+            name="description"
+            value={movie.description}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Runtime (minutes)</FormLabel>
+          <Input
+            type="number"
+            name="runtimeMins"
+            value={movie.runtimeMins}
+            onChange={handleChange}
+          />
+        </FormControl>
+        {error && (
+          <Text color="red" mt="1">
+            {error}
+          </Text>
+        )}
+        <Button type="submit" colorScheme="telegram">
+          Submit a movie
+        </Button>
+      </VStack>
+    </Box>
+  );
 }
