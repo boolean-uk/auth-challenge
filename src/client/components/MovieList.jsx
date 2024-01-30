@@ -4,7 +4,6 @@ import Logout from "./Logout"
 import MovieListContent from "./MovieListContent";
 
 import '../styles/movie-list.css'
-import '../styles/logout.css'
 
 function MovieList({ apiUrl }) {
     const [movies, setMovies] = useState([]);
