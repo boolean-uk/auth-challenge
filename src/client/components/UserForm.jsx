@@ -47,7 +47,7 @@ export default function UserForm({ endpoint, login, title }) {
             minLength={1}
           />
         </label>
-        <button type="submit">Register</button>
+        <button type="submit">{login ? "Login" : "Register"}</button>
       </form>
       {SubmissionConfirmation(submissionResponse)}
     </div>
