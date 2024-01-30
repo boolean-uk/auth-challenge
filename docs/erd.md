@@ -1,8 +1,10 @@
-# ERD
+# m:n movies-users
 
 ## requirement
 
 - The movies list is the same for all users - modify the schema and your server code so that each user has their own list of movies.
+
+## ERD
 
 ```mermaid
 
@@ -30,12 +32,13 @@ erDiagram
   DateTime  updatedAt         
 }
 
- MovieToUser {
-    Int     userId          FK
-    Int     movieId         FK
-    Boolean favourite
-    String  note
-    Int     personalRating
+ MoviesOnUsers {
+    Int       userId          FK
+    Int       movieId         FK
+    Boolean   favourite
+    String    note
+    Int       personalRating
+    DateTime  assignedAt
  }
 
 ```
@@ -47,4 +50,3 @@ erDiagram
 - a logged in user can edit their own personal list
 - when the former happens, if the movie does not already exists in the db, create it
 - ... if it already exists, simply add it to that user's personal list
-
