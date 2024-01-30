@@ -23,7 +23,6 @@ const handleResponse = (data) => {
             addToLocalStorage(data.response.token)
             message = data.response.message
         }
-
         return message
 }
 
