@@ -1,8 +1,8 @@
-import { handleError } from "../../utils/error";
-import { TokenError } from "../../utils/errorClasses";
+import { handleError } from "../../utils/error.js";
+import { TokenError } from "../../utils/errorClasses.js";
 // eslint-disable-next-line no-unused-vars
-import * as Types from "../../utils/types.d";
-import { validateToken } from "../../utils/webToken";
+import * as Types from "../../utils/types.d.js";
+import { validateToken } from "../../utils/webToken.js";
 
 /**
  * @param {Types.ExRequest} req

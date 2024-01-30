@@ -1,6 +1,6 @@
 import express from "express";
 
-import validateRequest from "../middleware/validateRequest/index.js";
+import { validateRequest } from "../middleware/validateRequest/index.js";
 
 import { loginUser, registerUser } from "../controllers/user.js";
 import { registerUserSchema } from "../middleware/validateRequest/user.validate.js";

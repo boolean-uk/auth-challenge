@@ -1,8 +1,8 @@
 import express from "express";
-import validateRequest from "../middleware/validateRequest";
-import { submitMovie } from "../controllers/movie";
-import { submitMovieSchema } from "../middleware/validateRequest/movie.validate";
-import { validateLoginSession } from "../middleware/validateLogin";
+import { validateRequest } from "../middleware/validateRequest/index.js";
+import { submitMovie } from "../controllers/movie.js";
+import { submitMovieSchema } from "../middleware/validateRequest/movie.validate.js";
+import { validateLoginSession } from "../middleware/validateLogin/index.js";
 
 const router = express.Router();
 

@@ -17,4 +17,4 @@ function validateRequest(schema) {
   };
 }
 
-export default validateRequest;
+export { validateRequest };
