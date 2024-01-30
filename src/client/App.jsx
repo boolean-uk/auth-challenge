@@ -9,14 +9,13 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
 
-  // useEffect(() => {
-  //   fetch(`${apiUrl}/movie`)
-  //     .then((res) => res.json())
-  //     .then((res) => setMovies(res.data));
-  // }, []);
+  useEffect(() => {
+    fetch(`${apiUrl}/movie`)
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
+  }, []);
 
   const handleRegister = async ({ username, password }) => {
-   
     const data = {
       username,
       password,
@@ -28,12 +27,10 @@ function App() {
       body: JSON.stringify(data),
     };
 
-    console.log(username, password);
 
     const registerUserData = await fetch(`${apiUrl}/user/register`, options);
     const registeredUser = await registerUserData.json();
-
-    return alert(registeredUser.message)
+    return alert(registeredUser.message);
   };
 
   const handleLogin = async ({ username, password }) => {
@@ -51,14 +48,38 @@ function App() {
     const logInUserData = await fetch(`${apiUrl}/user/login`, options);
 
     const loggedUser = await logInUserData.json();
-    
+
     const userToken = loggedUser.data;
 
     localStorage.setItem("token", userToken);
     return alert(loggedUser.message);
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const data = {
+      title,
+      description,
+      runtimeMins,
+    };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    };
+
+    const newMovieData = await fetch(`${apiUrl}/movie`, options);
+
+    const newMovie = await newMovieData.json();
+
+    if (newMovie.data) {
+      setMovies([...movies, newMovie.data]);
+    }
+
+    return alert(newMovie.message)
+  };
 
   return (
     <div className="App">

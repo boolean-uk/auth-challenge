@@ -23,7 +23,7 @@ const createMovie = async (req, res) => {
   const createdMovie = await createMovieDb(title, description, runtimeMins);
 
   return res.status(201).json({
-    newmovie: createdMovie,
+    newMovie: createdMovie,
     message: "New movie created successfully",
   });
 };
