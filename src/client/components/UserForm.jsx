@@ -20,7 +20,10 @@ export default function UserForm({ endpoint, login, title }) {
     const response = await localRequest.postUrl(endpoint, userDetails);
     setSubmissionResponse(response);
     if (login) {
-      localStorage.setItem("token", response.token);
+      localStorage.removeItem("token");
+      if (response.ok) {
+        localStorage.setItem("token", response.token);
+      }
     }
   }
 
