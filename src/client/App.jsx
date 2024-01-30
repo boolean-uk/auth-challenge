@@ -9,6 +9,7 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
   const [registerDetails, setRegisterDetails] = useState([])
+  const [loginDetails, setLoginDetails] = useState([])
 
 
   useEffect(() => {
@@ -43,6 +44,25 @@ function App() {
 
 
   const handleLogin = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/user/login`, options)
+      if (response.ok) {
+        const data = await response.json()
+        setLoginDetails('Login successful')
+        localStorage.setItem('jwt token', data.token)
+      } else {
+        setLoginDetails('Login failed')
+      }
+    } catch (err) {
+      console.error(error);
+      setLoginDetails('An error occured during logging')
+    }
 
   };
 
@@ -59,6 +79,7 @@ function App() {
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
+      <p>{loginDetails}</p>
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
