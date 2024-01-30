@@ -17,6 +17,13 @@ import {
   Tbody,
   Td,
   Button,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -24,6 +31,8 @@ import MovieForm from "./MovieForm";
 
 function DashboardPage({ movies, handleCreateMovie, error }) {
   const [updatedMovies, setUpdatedMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
   const username = localStorage.getItem("username");
 
@@ -33,17 +42,45 @@ function DashboardPage({ movies, handleCreateMovie, error }) {
     setUpdatedMovies([...movies].sort((a, b) => b.id - a.id));
   }, [movies]);
 
-  const handleDelete = async (movieToDelete) => {
+  const handleDelete = (movieToDelete) => {
+    setSelectedMovie(movieToDelete);
+    setIsDeleteAlertOpen(true);
+  };
+
+  const onDeleteConfirm = async () => {
     try {
-      await axios.delete(`http://localhost:4000/movie/${movieToDelete.id}`);
+      await axios.delete(`http://localhost:4000/movie/${selectedMovie.id}`);
       setUpdatedMovies((prevMovies) =>
-        prevMovies.filter((movie) => movie.id !== movieToDelete.id)
+        prevMovies.filter((movie) => movie.id !== selectedMovie.id)
       );
     } catch (error) {
       console.error("Error deleting movie:", error);
+    } finally {
+      setIsDeleteAlertOpen(false);
+      setSelectedMovie(null);
     }
   };
-  
+
+  const onDeleteCancel = () => {
+    setIsDeleteAlertOpen(false);
+    setSelectedMovie(null);
+  };
+
+  // const handleDelete = async (movieToDelete) => {
+  //   const confirmation = window.confirm("Are yous ure to delete this movie?");
+  //   if (confirmation) {
+  //     try {
+  //       await axios.delete(`http://localhost:4000/movie/${movieToDelete.id}`);
+  //       setUpdatedMovies((prevMovies) =>
+  //         prevMovies.filter((movie) => movie.id !== movieToDelete.id)
+  //       );
+  //     } catch (error) {
+  //       console.error("Error deleting movie:", error);
+  //     }
+  //   } else {
+  //     console.log("Cancelled");
+  //   }
+  // };
 
   return (
     <Grid
@@ -138,6 +175,25 @@ function DashboardPage({ movies, handleCreateMovie, error }) {
           </Table>
         </Container>
       </GridItem>
+      <AlertDialog isOpen={isDeleteAlertOpen} onClose={onDeleteCancel}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Confirm Delete
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              Are you sure you want to delete the movie?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={onDeleteCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={onDeleteConfirm} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Grid>
   );
 }
