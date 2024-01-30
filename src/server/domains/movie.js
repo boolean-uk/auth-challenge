@@ -67,7 +67,15 @@ const connectMovieDb = async (title, favourite = false, note, personalRating, us
   });
 
 const getMoviesDb = async() => 
-  await prisma.movie.findMany()
+  await prisma.movie.findMany({
+    include:{
+      users: {
+        include:{
+          user: true
+        }
+      }
+    }
+  })
 
 export { 
   createMovieDb, 
