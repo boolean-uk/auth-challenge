@@ -1,4 +1,5 @@
 import "./App.css";
+import MovieForm from "./components/MovieForm";
 import UserForm from "./components/UserForm";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         login={false}
       />
       <UserForm title={"Login"} endpoint={"user/login"} login={true} />
+      <MovieForm />
     </div>
   );
 }
