@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getAllMoviesDb } from "../domains/movie.js";
+import { createMovieDb, getAllMoviesDb } from "../domains/movie.js";
 const jwtSecret = "mysecret";
 
 const getAllMovies = async (req, res) => {
@@ -12,15 +12,20 @@ const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body;
 
   try {
-    const token = null;
+    const token = req.headers.authorization.split(" ")[1];
+
     // todo verify the token
-  } catch (e) {
+    jwt.verify(token, jwtSecret);
+  } catch (err) {
     return res.status(401).json({ error: "Invalid token provided." });
   }
 
-  const createdMovie = null;
+  const createdMovie = await createMovieDb(title, description, runtimeMins);
 
-  res.json({ data: createdMovie });
+  return res.status(201).json({
+    newmovie: createdMovie,
+    message: "New movie created successfully",
+  });
 };
 
 export { getAllMovies, createMovie };
