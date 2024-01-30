@@ -1,5 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import { ZodError } from "zod";
+import { MismatchLoginError } from "./errorClasses.js";
+
 // eslint-disable-next-line no-unused-vars
 import * as Types from "./types.d.js";
 
@@ -18,6 +20,12 @@ function handleError(error, res) {
     handleZodError(error, res);
     return;
   }
+
+  if (error instanceof MismatchLoginError) {
+    handleMismatchLoginError(error, res);
+    return;
+  }
+
   res.status(500).json({ error: error.message });
 }
 
@@ -87,6 +95,29 @@ function createZodErrorPayload(error) {
       code: 400,
     },
   };
+}
+
+/**
+ * @returns {Types.ApiError}
+ */
+function createMismatchErrorPayload() {
+  return {
+    error: {
+      formErrors: ["Unrecognized username and password combination"],
+      fieldErrors: {},
+      code: 401,
+    },
+  };
+}
+
+/**
+ * @param {import("../utils/errorClasses.js").MismatchLoginError} error
+ * @param {Types.ExResponse} res
+ * @returns {void}
+ */
+function handleMismatchLoginError(error, res) {
+  const payload = createMismatchErrorPayload();
+  res.status(payload.error.code).json(payload);
 }
 
 export { handleError };
