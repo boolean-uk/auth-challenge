@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 
 import { createMovieDB, findMovieDB, deleteMovieDB } from "../domain/movie.js";
 
@@ -33,10 +34,17 @@ const createMovie = async (req, res) => {
   } catch (error) {
     return res.status(401).json({ error: "Invalid token provided." });
   }
+  try {
+    const createdMovie = await createMovieDB(title, description, runtimeMins);
 
-  const createdMovie = await createMovieDB(title, description, runtimeMins);
-
-  res.status(201).json({ data: createdMovie });
+    res.status(201).json({ data: createdMovie });
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "2002") {
+        res.status(409).json({ error: "Movie with such title already exists" });
+      }
+    }
+  }
 };
 
 const deleteMovie = async (req, res) => {

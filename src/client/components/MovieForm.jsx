@@ -8,14 +8,22 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const movieLocalStorage = () => {
+  const storedMovie = localStorage.getItem("movie");
+
+  try {
+    return storedMovie
+      ? JSON.parse(storedMovie)
+      : { title: "", description: "", runtimeMins: 0 };
+  } catch (error) {
+    return { title: "", description: "", runtimeMins: 0 };
+  }
+};
 
 export default function MovieForm({ handleSubmit, error }) {
-  const [movie, setMovie] = useState({
-    title: "",
-    description: "",
-    runtimeMins: 0,
-  });
+  const [movie, setMovie] = useState(movieLocalStorage());
 
   const handleSubmitDecorator = (e) => {
     e.preventDefault();
@@ -25,6 +33,7 @@ export default function MovieForm({ handleSubmit, error }) {
       description: "",
       runtimeMins: 0,
     });
+    localStorage.removeItem("movie");
   };
 
   const handleChange = (e) => {
@@ -34,7 +43,9 @@ export default function MovieForm({ handleSubmit, error }) {
       ...movie,
       [name]: name === "runtimeMins" ? parseInt(value) : value,
     });
+    localStorage.setItem("movie", JSON.stringify(movie));
   };
+
 
   return (
     <Box>
@@ -42,6 +53,7 @@ export default function MovieForm({ handleSubmit, error }) {
         <FormControl>
           <FormLabel>Title</FormLabel>
           <Input
+            minLength={3}
             type="text"
             name="title"
             value={movie.title}
