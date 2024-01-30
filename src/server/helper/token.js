@@ -1,4 +1,5 @@
-import { jwt } from "jsonwebtoken";
+import pkg from 'jsonwebtoken';
+const { jwt } = pkg;
 
 const cert = {
   id: 123,

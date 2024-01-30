@@ -1,7 +1,7 @@
-import { comparePassword } from "../helper/hashing.js"
-// import { generateToken } from '../helper/token.js'
+import { comparePassword } from "../helper/hashing.js";
 import { createUserDb, getUserByNameDb } from '../domain/user.js'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js"
+import { generateToken, generateExpiringToken, verifyToken } from "../helper/token.js";
 
 export const getUserByName = async (req, res) => {
   const { username } = req.body
@@ -24,7 +24,17 @@ export const loginUser = async (req, res) => {
     const user = await getUserByNameDb(req, res)
     
     if (comparePassword(password, user.password)) {
-      res.status(200).json({ message: `logged in user ${username}` })
+      const payload = {
+        sub: 'login',
+        username
+      }
+      const token = await generateToken(payload)
+      console.log(token)
+      res.status(200).json({ 
+          message: `logged in user ${username,
+          token 
+        }` 
+      })
     }
   } catch (error) {
     res.status(500).json({ error: 'incorrect username or password'})
