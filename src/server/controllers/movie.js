@@ -16,7 +16,6 @@ const getAllMovies = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body;
 
@@ -33,10 +32,10 @@ const createMovie = async (req, res) => {
       description,
       runtimeMins
     );
-    res.status(201).json({ data: createdMovie });
+    res.status(201).json({ data: createdMovie, message: "Movie created" });
   } catch (error) {
     console.error("Error creating movie:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "movie already added to the database" });
   }
 };
 

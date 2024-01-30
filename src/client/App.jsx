@@ -46,7 +46,7 @@ function App() {
       const registerUserData = await fetch(`${apiUrl}/user/register`, options);
       const reg = await registerUserData.json();
       console.log(reg);
-      return;
+      return alert(reg.message);
     } catch (error) {
       console.error("Error during registration:", error);
     }
@@ -68,9 +68,9 @@ function App() {
       const loginData = await loginResponse.json();
       console.log(loginData);
       const authToken = loginData.data;
-      console.log(authToken);
 
       localStorage.setItem("token", authToken);
+      return alert(loginData.message);
     } catch (error) {
       console.error("Error during login:", error);
     }
@@ -91,9 +91,15 @@ function App() {
     try {
       const newMovieResponse = await fetch(`${apiUrl}/movie`, options);
       const newMovieData = await newMovieResponse.json();
-      setMovies([...movies, newMovieData.data]);
+
+      if (newMovieResponse.ok) {
+        setMovies([...movies, newMovieData.data]);
+        alert(newMovieData.message);
+      } else {
+        alert(`Error: ${newMovieData.error}`);
+      }
     } catch (error) {
-      console.error("Error while adding a new movie:", error);
+      console.error("Error creating movie:", error);
     }
   };
 
