@@ -35,7 +35,6 @@ const login = async (req, res) => {
   
   const token = jwt.sign(username, process.env.SECRET)
   const response = { token }
-  // unecessary addition?
   response.message = "login successful"
 
   res.status(201).json({ response })
