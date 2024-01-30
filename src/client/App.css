@@ -40,3 +40,15 @@
 ul {
   list-style: none;
 }
+
+.button {
+  background-color: rgb(151, 151, 151);
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  line-height: 30px;
+  cursor: pointer;
+  color: white;
+  width: 100px;
+  margin-top: 20px;
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import '../App.css'
 
 export default function MovieForm({ handleSubmit }) {
     const [movie, setMovie] = useState({ title: '', description: '', runtimeMins: 60 });
@@ -22,7 +23,7 @@ export default function MovieForm({ handleSubmit }) {
             <input type='text' name='title' placeholder="Title" value={movie.title} onChange={handleChange} />
             <input type='text' name='description' placeholder="Description" value={movie.description} onChange={handleChange} />
             <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movie.runtimeMins} onChange={handleChange} />
-            <button type="submit">Submit</button>
+            <button type="submit" className="button">Submit</button>
         </form>
     );
 }
