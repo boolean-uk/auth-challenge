@@ -20,4 +20,12 @@ function createToken(username) {
   return jwt.sign(payload, secret, options);
 }
 
-export { createToken };
+/**
+ * @param {String} token
+ * @returns {String | import("jsonwebtoken").JwtPayload}
+ */
+function validateToken(token) {
+  return jwt.verify(token, secret);
+}
+
+export { createToken, validateToken };
