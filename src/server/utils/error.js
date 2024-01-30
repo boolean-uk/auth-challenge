@@ -37,6 +37,7 @@ function handleError(error, res) {
 
 const prismaErrors = {
   P2002: createPrismaUniquePayload,
+  P2025: createPrismaEntryNotFound,
 };
 
 /**
@@ -46,7 +47,6 @@ const prismaErrors = {
  */
 function handlePrismaError(error, res) {
   const handler = prismaErrors[error.code];
-
   if (handler) {
     const payload = handler(error);
     res.status(payload.error.code).json(payload);
@@ -74,6 +74,20 @@ function createPrismaUniquePayload(error) {
       fieldErrors,
       code: 409,
     },
+  };
+}
+
+function createPrismaEntryNotFound(error) {
+  const { message } = error;
+
+  if (message.includes("User")) {
+    return createMismatchErrorPayload();
+  }
+
+  return {
+    formErrors: ["Entry not found"],
+    fieldErrors: {},
+    code: 404,
   };
 }
 
