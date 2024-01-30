@@ -1,8 +1,6 @@
 const PORT = import.meta.env.VITE_PORT;
 const BASE_PATH = `http://localhost:${PORT}/`;
 
-const token = localStorage.getItem("token");
-
 /**
  * @param {String} endpoint
  * @param {{}} payload
@@ -26,4 +24,20 @@ async function postUrl(endpoint, payload) {
   return response;
 }
 
-export default { postUrl };
+async function getUrl(endpoint) {
+  const token = localStorage.getItem("token");
+  const url = BASE_PATH + endpoint;
+  const options = {
+    headers: {
+      authorization: token ? `Bearer ${token}` : null,
+      "content-type": "application/json",
+    },
+  };
+
+  const request = await fetch(url, options);
+  const response = await request.json();
+  response.ok = request.ok;
+  return response;
+}
+
+export default { getUrl, postUrl };
