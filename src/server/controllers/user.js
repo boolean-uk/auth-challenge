@@ -22,7 +22,8 @@ export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body
     const user = await getUserByNameDb(req, res)
-    
+    console.log(user)
+
     if (comparePassword(password, user.password)) {
       const payload = {
         sub: 'login',
@@ -44,9 +45,11 @@ export const loginUser = async (req, res) => {
 export const createUser = async (req, res) => {
   const { username } = req.body
   
-  const usernameTaken = await getUserByName(req, res)
-  if (usernameTaken) res.status(409).json({ error: `Username ${username} is already taken` })
-  
+  const usernameTaken = await getUserByNameDb(req, res)
+  if (usernameTaken) {
+    return res.status(409).json({ error: `Username ${username} is already taken` })
+  }
+
   try {
     const user = await createUserDb(req, res)
     if (user) res.status(201).json({ success: `User ${username} created`})
@@ -55,8 +58,7 @@ export const createUser = async (req, res) => {
       if (error.code === "P2002") {
         return res.status(409).json({ error: `Username ${username} is already taken` })
       }
-      return res.status(error.code).json({ error: error.message })
     }
-    return res.status(500).json({ error })
+    return res.status(500).json({ error: "something went wrong. Sorry." })
   }
 }
