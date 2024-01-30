@@ -131,3 +131,7 @@ section li {
   margin-bottom: 10px;
   place-self: start;
 }
+
+div {
+  place-self: center;
+}
