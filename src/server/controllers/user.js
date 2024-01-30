@@ -1,39 +1,51 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+// eslint-disable-next-line no-unused-vars
+import * as Types from "../utils/types.d.js";
+import * as bcrypt from "bcrypt";
+import { createUser, selectUserByUsername } from "../domains/user.domain.js";
+import { handleError } from "../utils/error.js";
+import { MismatchLoginError } from "../utils/errorClasses.js";
+import { createToken } from "../utils/webToken.js";
 
-const jwtSecret = 'mysecret';
-
-const register = async (req, res) => {
+/**
+ * @param {Types.ExRequest} req
+ * @param {Types.ExResponse} res
+ * @returns {Promise<void>}
+ */
+async function registerUser(req, res) {
+  try {
     const { username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = await createUser(username, hashedPassword);
+    const payload = {
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+      },
+    };
+    res.status(201).json(payload);
+  } catch (error) {
+    handleError(error, res);
+  }
+}
 
-    const createdUser = null;
-
-    res.json({ data: createdUser });
-};
-
-const login = async (req, res) => {
+/**
+ * @param {Types.ExRequest} req
+ * @param {Types.ExResponse} res
+ * @returns {Promise<void>}
+ */
+async function loginUser(req, res) {
+  try {
     const { username, password } = req.body;
-
-    const foundUser = null;
-
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+    const foundUser = await selectUserByUsername(username);
+    const validPassword = await bcrypt.compare(password, foundUser.password);
+    if (!validPassword) {
+      throw new MismatchLoginError("Username and login do not match");
     }
+    const token = createToken(username);
+    res.status(201).json({ token });
+  } catch (error) {
+    handleError(error, res);
+  }
+}
 
-    const passwordsMatch = false;
-
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-
-    const token = null;
-
-    res.json({ data: token });
-};
-
-export {
-    register,
-    login
-};
+export { loginUser, registerUser };
