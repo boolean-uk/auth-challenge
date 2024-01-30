@@ -5,13 +5,28 @@ const prisma = new PrismaClient();
 
 const jwtSecret = 'mysecret';
 
-const register = async (req, res) => {
+/*const register = async (req, res) => {
     const { username, password } = req.body;
 
     const createdUser = null;
 
     res.json({ data: createdUser });
-};
+};*/
+
+const register = async (req, res) => {
+    const { username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 12)
+    
+    const createdUser = await prisma.user.create({
+    data: {
+    username: username,
+    password: hashedPassword
+    }
+    });
+    
+    console.log(createdUser)
+    res.status(201).json({ data: createdUser });
+    }
 
 const login = async (req, res) => {
     const { username, password } = req.body;

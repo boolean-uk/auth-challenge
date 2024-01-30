@@ -8,6 +8,8 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [registerDetails, setRegisterDetails] = useState([])
+
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -15,27 +17,30 @@ function App() {
       .then(res => setMovies(res.data));
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
 
   const handleRegister = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    };
 
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, options)
+
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log(newUser);
+        setRegisterDetails('Registration successful')
+      } else {
+        setRegisterDetails('Registration failed')
+      }
+    } catch (error) {
+      console.error(error);
+      setRegisterDetails("An error occured during registration")
+    }
   };
+
 
   const handleLogin = async ({ username, password }) => {
 
@@ -49,6 +54,8 @@ function App() {
     <div className="App">
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
+      <p>{registerDetails}</p>
+
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
