@@ -27,7 +27,6 @@ function App() {
       body: JSON.stringify(data),
     };
 
-
     const registerUserData = await fetch(`${apiUrl}/user/register`, options);
     const registeredUser = await registerUserData.json();
     return alert(registeredUser.message);
@@ -76,11 +75,17 @@ function App() {
 
     if (newMovie.data) {
       setMovies([...movies, newMovie.data]);
+    }else{
+      return alert('You have to Log In first')
     }
 
-    return alert(newMovie.message)
+    return alert(newMovie.message);
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    return alert("User Log Out sucessfully");
+  };
   return (
     <div className="App">
       <h1>Register</h1>
@@ -92,6 +97,9 @@ function App() {
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
 
+      <button className="logout" onClick={handleLogOut}>
+        Log Out
+      </button>
       <h1>Movie list</h1>
       <ul>
         {movies.map((movie) => {
