@@ -50,7 +50,7 @@ const getMovies = async(req, res) => {
 const getMoviesByUser = async(req, res) => {
     const token = req.headers.authorization
     try {
-        const username = jwt.verify(token, process.env.SECRET)
+        const username = token && jwt.verify(token, process.env.SECRET)
         const user = await findUserWithMoviesDb(username)
         const movies = user.movies
         res.json({ movies })
