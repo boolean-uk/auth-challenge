@@ -14,8 +14,8 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
 
@@ -44,31 +44,52 @@ function App() {
 
 
   const handleLogin = async ({ username, password }) => {
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    }
-
     try {
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      }
+    
+      
       const response = await fetch(`${apiUrl}/user/login`, options)
+    
       if (response.ok) {
         const data = await response.json()
+        localStorage.setItem('token', data.token)
         setLoginDetails('Login successful')
-        localStorage.setItem('jwt token', data.token)
       } else {
         setLoginDetails('Login failed')
       }
-    } catch (err) {
+    } catch (error) {
       console.error(error);
-      setLoginDetails('An error occured during logging')
+      setLoginDetails('An error occured during logging', error.message)
     }
-
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
 
+
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const token = `Bearer ${localStorage.getItem('token')}`
+    if (!token) {
+      throw new Error('No token has been found');
+    }
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    }
+    const newMovieData = await fetch(`${apiUrl}/movie`, options)
+    const newMovie = await newMovieData.json()
+
+    if (newMovie.data) {
+      setMovies([...movies, newMovie.data])
+    }
   }
+
 
   return (
     <div className="App">
@@ -81,12 +102,14 @@ function App() {
       <UserForm handleSubmit={handleLogin} />
       <p>{loginDetails}</p>
 
+
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
+      <p>{movies}</p>
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
@@ -98,6 +121,8 @@ function App() {
       </ul>
     </div>
   );
+
 }
+
 
 export default App;
