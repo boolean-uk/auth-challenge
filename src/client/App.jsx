@@ -56,8 +56,31 @@ function App() {
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const data = {
+      title,
+      description,
+      runtimeMins,
+    };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    };
 
-  }
+    const newMovieData = await fetch(`${apiUrl}/movie`, options);
+
+    const newMovie = await newMovieData.json();
+
+    if (newMovie.data) {
+      setMovies([...movies, newMovie.data]);
+    } 
+
+    return alert(newMovie.message);
+  };
+
 
   return (
     <div className="App">
