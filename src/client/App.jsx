@@ -15,35 +15,72 @@ function App() {
       .then(res => setMovies(res.data));
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
 
   const handleRegister = async ({ username, password }) => {
+    const data = {
+      username,
+      password,
+    };
 
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    const registerUserData = await fetch(`${apiUrl}/user/register`, options);
+    const registeredUser = await registerUserData.json();
+    return alert(registeredUser.message);
   };
 
   const handleLogin = async ({ username, password }) => {
+    const data = {
+      username,
+      password,
+    };
 
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    const logInUserData = await fetch(`${apiUrl}/user/login`, options);
+
+    const loggedUser = await logInUserData.json();
+
+    const userToken = loggedUser.data;
+
+    localStorage.setItem("token", userToken);
+    return alert(loggedUser.message);
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const data = {
+      title,
+      description,
+      runtimeMins,
+    };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    };
 
-  }
+    const newMovieData = await fetch(`${apiUrl}/movie`, options);
+
+    const newMovie = await newMovieData.json();
+
+    if (newMovie.data) {
+      setMovies([...movies, newMovie.data]);
+    } 
+
+    return alert(newMovie.message);
+  };
+
 
   return (
     <div className="App">
