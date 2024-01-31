@@ -16,5 +16,17 @@ const registerNewUser = async (username, passwordHash) => {
   }
 };
 
+const findUserByUsername = async (username) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+    });
+    return user;
+  } catch (error) {
+    throw new Error(`Error finding user: ${error.message}`);
+  }
+};
 
-export { registerNewUser };
+export { registerNewUser, findUserByUsername };
