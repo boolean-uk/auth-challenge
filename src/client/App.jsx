@@ -1,73 +1,62 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
+import SignUpForm from './components/SignUpForm'
+import LoginForm from './components/LoginForm';
 import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const initForm = {
+    username: "",
+    password: ""
+  }
+  const [loginForm, setLoginForm] = useState(initForm)
+  const [signUpForm, setSignUpForm] = useState(initForm)
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
+  const handleLoginInput = (event) => {
+    const { name, value } = event.target
+    setLoginForm({...loginForm, [name]: value})
+  }
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
+  const handleLoginSubmit = (event) => {
+    event.preventDefault()
+  }
+  
+  const handleRegisterInput = (event) => {
+    const { name, value } = event.target
+    setSignUpForm({ ...signUpForm, [name]: value})
+  }
+  
+  const handleRegisterSubmit = async (event) => {
+    event.preventDefault()
+    const headers = { 'Content-Type': 'application/json' }
+    const options = {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(signUpForm)
+    }
+    
+    const answer = await fetch(`${apiUrl}/register`, options)
+    
+    if (answer.status === 200) {
+      alert("Account created")
+    } else {
+      alert(answer.status, answer.statusText)
+    }
 
-  const handleRegister = async ({ username, password }) => {
-
-  };
-
-  const handleLogin = async ({ username, password }) => {
-
-  };
-
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
+    setSignUpForm(initForm)
   }
 
   return (
     <div className="App">
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
-
-      <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
-
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
-
-      <h1>Movie list</h1>
-      <ul>
-        {movies.map(movie => {
-          return (
-            <li key={movie.id}>
-              <h3>{movie.title}</h3>
-              <p>Description: {movie.description}</p>
-              <p>Runtime: {movie.runtimeMins}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <h1>Register an account</h1>
+      <SignUpForm handleInput={handleRegisterInput} handleSubmit={handleRegisterSubmit} />
+      <h1>Login to your account</h1>
+      <LoginForm handleInput={handleLoginInput} handleSubmit={handleLoginSubmit} />
+      <h1>Create a new movie</h1>
+      <MovieForm />
     </div>
   );
 }

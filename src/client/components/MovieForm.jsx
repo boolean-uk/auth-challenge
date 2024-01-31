@@ -1,28 +1,19 @@
-import { useState } from "react";
-
-export default function MovieForm({ handleSubmit }) {
-    const [movie, setMovie] = useState({ title: '', description: '', runtimeMins: 60 });
-
-    const handleSubmitDecorator = (e) => {
-        e.preventDefault();
-        handleSubmit(movie);
-    }
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        setMovie({
-            ...movie,
-            [name]: name === 'runtimeMins' ? parseInt(value) : value
-        });
-    }
-
-    return (
-        <form onSubmit={handleSubmitDecorator}>
-            <input type='text' name='title' placeholder="Title" value={movie.title} onChange={handleChange} />
-            <input type='text' name='description' placeholder="Description" value={movie.description} onChange={handleChange} />
-            <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movie.runtimeMins} onChange={handleChange} />
-            <button type="submit">Submit</button>
-        </form>
-    );
+export default function MovieForm ({ handleInput, handleSubmit }) {
+  return (
+    <form onChange={handleInput} onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="title">Title</label>
+        <input name="title" />
+      </div>
+      <div>
+        <label htmlFor="description">Description</label>
+        <input name="description" />
+      </div>
+      <div>
+        <label htmlFor="durationMins">Duration (minutes)</label>
+        <input name="durationMins" />
+      </div>
+      <button>Create</button>
+    </form>
+  )
 }

@@ -1,39 +1,44 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import { comparePassword } from "../helper/hashing.js";
+import { createUserDb, getUserByNameDb } from '../domain/user.js'
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js"
+import { generateToken, generateExpiringToken, verifyToken } from "../helper/token.js";
 
-const jwtSecret = 'mysecret';
+export const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body
+    const user = await getUserByNameDb(req, res)
+    const passwordCheck = await comparePassword(password, user.password)
 
-const register = async (req, res) => {
-    const { username, password } = req.body;
-
-    const createdUser = null;
-
-    res.json({ data: createdUser });
-};
-
-const login = async (req, res) => {
-    const { username, password } = req.body;
-
-    const foundUser = null;
-
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+    if (passwordCheck) {
+      const payload = {
+        sub: 'login',
+        username
+      }
+      const token = await generateToken(payload)
+      console.log(token)
+      res.status(200).json({ 
+          message: `logged in user ${username,
+          token 
+        }` 
+      })
     }
+  } catch (error) {
+    res.status(500).json({ error: 'incorrect username or password'})
+  }
+}
 
-    const passwordsMatch = false;
-
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+export const createUser = async (req, res) => {
+  const { username } = req.body
+  
+  try {
+    const user = await createUserDb(req, res)
+    if (user) res.status(201).json({ success: `User ${username} created`})
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return res.status(409).json({ error: `Username ${username} is already taken` })
+      }
     }
-
-    const token = null;
-
-    res.json({ data: token });
-};
-
-export {
-    register,
-    login
-};
+    return res.status(500).json({ error: "something went wrong. Sorry." })
+  }
+}
