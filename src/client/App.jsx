@@ -8,57 +8,108 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [registerDetails, setRegisterDetails] = useState([])
+  const [loginDetails, setLoginDetails] = useState('')
+
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
 
   const handleRegister = async ({ username, password }) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    };
 
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, options)
+
+
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log(newUser);
+        setRegisterDetails('Registration successful')
+      } else {
+        setRegisterDetails('Registration failed')
+      }
+    } catch (error) {
+      console.error(error);
+      setRegisterDetails("An error occured during registration")
+    }
   };
+
 
   const handleLogin = async ({ username, password }) => {
+    try {
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      }
 
+      const response = await fetch(`${apiUrl}/user/login`, options)
+
+      if (response) {
+        const data = await response.json()
+        localStorage.setItem('token', data.token)
+        setLoginDetails('Login successful')
+      } else {
+        setLoginDetails('Login failed')
+      }
+    } catch (error) {
+      console.error(error);
+      setLoginDetails('An error occured during logging', error.message)
+    }
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
 
+
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const token = `Bearer ${localStorage.getItem('token')}`
+    if (!token) {
+      throw new Error('No token has been found');
+    }
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    }
+    const newMovieData = await fetch(`${apiUrl}/movie`, options)
+    const newMovie = await newMovieData.json()
+
+    if (newMovie.data) {
+      setMovies([...movies, newMovie.data])
+    }
   }
+
 
   return (
     <div className="App">
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
+      <p>{registerDetails}</p>
+
 
       <h1>Login</h1>
       <UserForm handleSubmit={handleLogin} />
+      <p>{loginDetails}</p>
+
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
 
+
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
@@ -70,6 +121,8 @@ function App() {
       </ul>
     </div>
   );
+
 }
+
 
 export default App;
