@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import errors from "../errors/errors.js";
 import { createUserDb, getUserByUsernameDb } from "../domains/user.js";
 
-const jwtSecret = "mysecret";
+const jwtSecret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   const { username, password } = req.body;

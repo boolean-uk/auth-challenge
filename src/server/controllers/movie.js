@@ -6,7 +6,7 @@ import {
   getMovieByTitleDb,
 } from "../domains/movie.js";
 
-const jwtSecret = "mysecret";
+const jwtSecret = process.env.JWT_SECRET;
 
 const getAllMovies = async (req, res) => {
   const allMovies = await getAllMoviesDb();
