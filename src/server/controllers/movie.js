@@ -14,34 +14,48 @@ const createMovie = async (req, res) => {
   const { title, description, runtimeMins } = req.body;
 
   try {
-    // 1. Get the token from the request header
-    const token = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
-      return res.status(401).json({ error: "Authorization token missing." });
+    if (!authHeader) {
+      return res.status(401).json({ error: "Unauthorized: Missing Token" });
     }
 
-    // 2. Verify the token
-    const decodedToken = jwt.verify(token, jwtSecret);
-    console.log(decodedToken);
-    // 3. Create the movie if verification is successful
-    const createdMovie = await prisma.movie.create({
-      data: {
-        title,
-        description,
-        runtimeMins,
-      },
-    });
+    const token = authHeader.split(" ")[1];
+    console.log("this is the token line 24:",token);
+    const verifyToken = async (token, secret) => {
+      try {
+        const result = await jwt.verify(token, secret);
+        return result;
+      } catch (error) {
+        console.log(error.message);
+        throw new Error("Invalid token");
+      }
+    };
 
-    res.json({ data: createdMovie });
+    try {
+      const tokenVerified = await verifyToken(token, jwtSecret);
+        console.log("token verified:", tokenVerified)
+      if (tokenVerified) {
+        const createdMovie = await prisma.movie.create({
+          data: {
+            title,
+            description,
+            runtimeMins,
+          },
+        });
+
+        res.json({ data: createdMovie });
+      } else {
+        return res.status(401).json({ error: "Invalid token provided." });
+      }
+    } catch (error) {
+      res
+        .status(401)
+        .json({ error: error.message || "Invalid token provided." });
+    }
   } catch (error) {
-    console.error("Error creating movie:", error.message);
-
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ error: "Invalid token provided." });
-    }
-
-    return res.status(500).json({ error: "Internal server error." });
+    res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
+
 export { getAllMovies, createMovie };

@@ -53,37 +53,33 @@ function App() {
       body: JSON.stringify({ username, password }),
     });
     const logInToken = await verifyLogin.json();
-    localStorage.setItem("token", JSON.stringify(logInToken));
+    console.log(logInToken)
+    localStorage.setItem("token", logInToken.data);
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-    try {
-        
-        const token = JSON.parse(localStorage.getItem("token"));
+    
+    const authToken = localStorage.getItem("token");
 
-        const createMovie = await fetch(`${apiUrl}/movie`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ title, description, runtimeMins })
-        });
+    console.log(authToken);
 
-        
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    };
 
-        const movieCreated = await createMovie.json();
-
-       
-        setMovies((prevMovies) => [...prevMovies, movieCreated]);
-
-    } catch (error) {
-        console.error("Error creating movie:", error.message);
-       
+    const data = await fetch(`${apiUrl}/movie`, options);
+    if (data) {
+      const newMovie = await data.json();
+      console.log(newMovie)
+      setMovies([...movies, newMovie]);
     }
-};
-
-
+  };
+    
   return (
     <div className="App">
       <h1>Register</h1>
