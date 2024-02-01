@@ -9,7 +9,7 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
   const [registerDetails, setRegisterDetails] = useState([])
-  const [loginDetails, setLoginDetails] = useState([])
+  const [loginDetails, setLoginDetails] = useState('')
 
 
   useEffect(() => {
@@ -28,6 +28,7 @@ function App() {
 
     try {
       const response = await fetch(`${apiUrl}/user/register`, options)
+
 
       if (response.ok) {
         const newUser = await response.json();
@@ -50,11 +51,10 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       }
-    
-      
+
       const response = await fetch(`${apiUrl}/user/login`, options)
-    
-      if (response.ok) {
+
+      if (response) {
         const data = await response.json()
         localStorage.setItem('token', data.token)
         setLoginDetails('Login successful')
@@ -105,7 +105,7 @@ function App() {
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
-      <p>{movies}</p>
+
 
       <h1>Movie list</h1>
       <ul>
