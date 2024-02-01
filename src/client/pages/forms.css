@@ -1,0 +1,66 @@
+.form-page {
+  display: grid;
+  position: relative;
+  place-items: center;
+  height: calc(100vh - 75px);
+}
+
+.form-container {
+  display: grid;
+  padding: 1.25rem;
+
+  height: 400px;
+  width: 400px;
+  border: 2px solid black;
+  border-radius: 14px;
+}
+
+.form-container > h1 {
+  border-bottom: 1px solid rgb(51, 51, 51);
+}
+
+.form-container > form {
+  display: grid;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.error-message {
+  color: red;
+}
+
+.form-container > form > button {
+  font-size: 15px;
+}
+
+.form-container > form > button:hover {
+  background-color: lightgreen;
+  transition: background-color ease-in-out 250ms;
+}
+
+.form-container > form > button,
+.back-btn {
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.back-btn {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+
+  background-color: rgb(243, 39, 90);
+  color: #fff;
+}
+
+.create-movie--form {
+  grid-template: 50px 1fr / 1fr;
+}
+
+.login-page--form,
+.register-page--form {
+  grid-template: 50px 20px 1fr / 1fr;
+}
