@@ -1,4 +1,4 @@
-import prisma from "../utils/prisma.js";
+import prisma from "../prisma/prisma.js";
 
 const getAllMoviesDb = async () => await prisma.movie.findMany();
 

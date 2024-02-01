@@ -1,4 +1,4 @@
-import prisma from "../utils/prisma.js";
+import prisma from "../prisma/prisma.js";
 
 const createUserDb = async (username, password) =>
   await prisma.user.create({
