@@ -2,12 +2,15 @@ import MovieForm from "../../components/Movies/components/MovieForm.jsx";
 import api from "../../../server/api/axios.js";
 
 import { useContext, useState } from "react";
-import "./index.css";
 import { MovieContext } from "../../contexts.js";
+import { useNavigate } from "react-router-dom";
+import "../forms.css";
 
 export default function CreateMovie() {
   const [movieMessage, setMovieMessage] = useState("");
   const { movies, setMovies } = useContext(MovieContext);
+
+  const navigate = useNavigate();
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
     try {
@@ -32,10 +35,16 @@ export default function CreateMovie() {
   };
 
   return (
-    <div className="create-movie-page">
-      <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
-      {movieMessage && <p>{movieMessage}</p>}
+    <div className="create-movie-page form-page">
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        Go back
+      </button>
+
+      <div className="create-movie--form form-container">
+        <h1>Create a movie</h1>
+        <MovieForm handleSubmit={handleCreateMovie} />
+        {movieMessage && <p className="error-message">{movieMessage}</p>}
+      </div>
     </div>
   );
 }
