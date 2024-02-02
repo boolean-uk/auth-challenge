@@ -34,16 +34,69 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
+    const option  = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username, password})
+      };
+      try{
+        const data  = await fetch(`${apiUrl}/register`, option)
+        if(data){
+          const fetchData = await data.json();
+        }else {
+          return 'error occurred when posting'
+
+        }
+
+      }catch(e) {
+        console.log('Error in registration : ', e)
+
+      }
+
+
 
   };
 
   const handleLogin = async ({ username, password }) => {
+    const option = {
+      method: 'Post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username, password})
+    }
+    const logUser = await fetch (`${apiUrl}/user/login`, option)
+    if (logUser){
+      const userToken = await logUser.json()
+    }else{
+      return 'username and password can not be found'
+    }
 
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const authToken = localStorage.getItem("newToken");
 
   }
+    console.log("What is the Auth Token", authToken);
+
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    };
+
+    const data = await fetch(`${apiUrl}/movie`, options);
+    if (data) {
+      const newMovie = await data.json();
+      setMovies([...movies, newMovie]);
+    }
+  };
 
   return (
     <div className="App">
@@ -70,6 +123,6 @@ function App() {
       </ul>
     </div>
   );
-}
+      }
 
 export default App;
