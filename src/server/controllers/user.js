@@ -1,39 +1,56 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import errors from "../errors/errors.js";
+import { createUserDb, getUserByUsernameDb } from "../domains/user.js";
 
-const jwtSecret = 'mysecret';
+const jwtSecret = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const createdUser = null;
+  if (!username || !password) {
+    return res.status(400).send({ error: errors.message01 });
+  }
 
-    res.json({ data: createdUser });
+  const usernameIsDuplicate = await getUserByUsernameDb(username);
+
+  if (usernameIsDuplicate) {
+    return res
+      .status(409)
+      .send({ error: "A user with the provided username already exists" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const createdUser = await createUserDb(username, hashedPassword);
+
+  return res.status(201).send({ data: createdUser });
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const foundUser = null;
+  if (!username || !password) {
+    return res.status(400).send({ error: errors.message01 });
+  }
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  const foundUser = await getUserByUsernameDb(username);
 
-    const passwordsMatch = false;
+  if (!foundUser) {
+    return res
+      .status(404)
+      .send({ error: "No user found with the provided username" });
+  }
 
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
-    const token = null;
+  if (!passwordsMatch) {
+    return res.status(409).send({ error: "Password is incorrect" });
+  }
 
-    res.json({ data: token });
+  const token = jwt.sign({ username: foundUser.username }, jwtSecret);
+
+  return res.status(201).send({ data: token });
 };
 
-export {
-    register,
-    login
-};
+export { register, login };

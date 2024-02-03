@@ -1,31 +1,46 @@
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import jwt from "jsonwebtoken";
+import errors from "../errors/errors.js";
+import {
+  createMovieDb,
+  getAllMoviesDb,
+  getMovieByTitleDb,
+} from "../domains/movie.js";
 
-const jwtSecret = 'mysecret';
+const jwtSecret = process.env.JWT_SECRET;
 
 const getAllMovies = async (req, res) => {
-    const movies = await prisma.movie.findMany();
+  const allMovies = await getAllMoviesDb();
 
-    res.json({ data: movies });
+  return res.status(200).send({ data: allMovies });
 };
 
 const createMovie = async (req, res) => {
-    const { title, description, runtimeMins } = req.body;
+  const { title, description, runtimeMins } = req.body;
 
-    try {
-        const token = null;
-        // todo verify the token
-    } catch (e) {
-        return res.status(401).json({ error: 'Invalid token provided.' })
-    }
+  if (!title || !description || !runtimeMins) {
+    return res.status(400).send({ error: errors.message01 });
+  }
 
-    const createdMovie = null;
+  const titleExists = await getMovieByTitleDb(title);
 
-    res.json({ data: createdMovie });
+  if (titleExists) {
+    return res
+      .status(404)
+      .send({ error: "A movie with the provided title already exists" });
+  }
+
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    jwt.verify(token, jwtSecret);
+  } catch (e) {
+    console.log(e.message);
+    return res.status(401).json({ error: "Invalid token provided." });
+  }
+
+  const createdMovie = await createMovieDb(title, description, runtimeMins);
+
+  return res.status(201).send({ data: createdMovie });
 };
 
-export {
-    getAllMovies,
-    createMovie
-};
+export { getAllMovies, createMovie };
