@@ -59,10 +59,36 @@ function App() {
   
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-        
-    
-
-  }
+    // Retrieve the token from local storage
+    const authtoken = JSON.parse(localStorage.getItem("token"));
+  
+    try {
+      // Send a request to create a new movie
+      const moviesData = await fetch(`${apiUrl}/movie`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add the authorization header with the token
+          Authorization: `Bearer ${authtoken}`,
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+  
+      const data = await moviesData.json();
+  
+      if (moviesData.ok) {
+        setMovies((prevMovies) => [...prevMovies, data.data]);
+        console.log(data, authtoken);
+        alert("Movie created successfully");
+      } else {
+        throw new Error(data.message || "Failed to create movie");
+      }
+    } catch (error) {
+      console.error("An error occurred during movie creation:", error.message);
+      alert("Failed to create movie");
+    }
+  };
+  
 
   return (
     <div className="App">
