@@ -6,11 +6,27 @@ const prisma = new PrismaClient();
 const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
+    console.log('registering user')
     const { username, password } = req.body;
 
-    const createdUser = null;
+    const existingUser = await prisma.user.findUnique({ where: { username } });
+    if (existingUser) {
+        return res.status(400).json({ error: 'Username already exists' });
+    }
 
-    res.json({ data: createdUser });
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = await prisma.user.create({
+        data: {
+            username,
+            password: hashedPassword
+        }
+    });
+
+    const token = jwt.sign(newUser, jwtSecret);
+
+    res.json({ data: newUser, token });
 };
 
 const login = async (req, res) => {
