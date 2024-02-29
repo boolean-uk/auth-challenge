@@ -9,6 +9,7 @@ const apiUrl = `http://localhost:${port}`;
 function App() {
   const [movies, setMovies] = useState([]);
   const [registerStatus, setRegisterStatus] = useState('');
+  const [loginStatus, setLoginStatus] = useState('');
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -51,6 +52,21 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
+    const res = await fetch(`${apiUrl}/user/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    })
+
+    if (res && res.ok) {
+      const data = await res.json();
+      localStorage.setItem('token', data.data);
+      setLoginStatus('Logged in');
+    } else {
+      setLoginStatus('Failed to log in');
+    }
 
   };
 
