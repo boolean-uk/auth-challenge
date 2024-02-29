@@ -8,6 +8,7 @@ const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [registerStatus, setRegisterStatus] = useState('');
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -34,13 +35,19 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-    fetch(`${apiUrl}/user/register`, {
+    const res = await fetch(`${apiUrl}/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ username, password })
     })
+
+    if (res && res.ok) {
+      setRegisterStatus('User registered');
+    } else {    
+      setRegisterStatus('User failed to register');
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
