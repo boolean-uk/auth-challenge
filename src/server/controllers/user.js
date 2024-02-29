@@ -15,6 +15,7 @@ const register = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(12);
+
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = await prisma.user.create({
@@ -31,7 +32,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-
+    
     const foundUser = await prisma.user.findUnique({ where: { username } });
     if (!foundUser) {
         return res.status(401).json({ error: 'Invalid username or password.' });
