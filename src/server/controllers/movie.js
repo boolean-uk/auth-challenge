@@ -11,18 +11,28 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
+    console.log('Creating movie')
     const { title, description, runtimeMins } = req.body;
 
     try {
-        const token = null;
-        // todo verify the token
+        const token = req.headers.authorization;
+        const user = jwt.verify(token, jwtSecret);
+        if (user) {
+            const createdMovie = await prisma.movie.create({
+                data: {
+                    title,
+                    description,
+                    runtimeMins
+                }
+            });
+            console.log('Movie Created: ', createdMovie);
+            return res.json({ data: createdMovie });
+        }
     } catch (e) {
+        console.error('Failed to create movie: ', e);
         return res.status(401).json({ error: 'Invalid token provided.' })
     }
 
-    const createdMovie = null;
-
-    res.json({ data: createdMovie });
 };
 
 export {
