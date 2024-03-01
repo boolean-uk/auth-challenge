@@ -11,7 +11,7 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
-    console.log('creating movie')
+    console.log('Creating movie')
     const { title, description, runtimeMins } = req.body;
 
     try {
@@ -25,17 +25,14 @@ const createMovie = async (req, res) => {
                     runtimeMins
                 }
             });
-
+            console.log('Movie Created: ', createdMovie);
             return res.json({ data: createdMovie });
         }
     } catch (e) {
+        console.error('Failed to create movie: ', e);
         return res.status(401).json({ error: 'Invalid token provided.' })
     }
 
-    const createdMovie = null;
-
-    res.json({ data: createdMovie });
-    console.log('Movie Created: ', createdMovie);
 };
 
 export {
