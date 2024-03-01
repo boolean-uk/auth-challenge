@@ -11,6 +11,7 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
+    console.log('creating movie')
     const { title, description, runtimeMins } = req.body;
 
     try {
@@ -34,6 +35,7 @@ const createMovie = async (req, res) => {
     const createdMovie = null;
 
     res.json({ data: createdMovie });
+    console.log('Movie Created: ', createdMovie);
 };
 
 export {

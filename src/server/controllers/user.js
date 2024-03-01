@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
-    console.log('registering user')
     const { username, password } = req.body;
+    console.log('Registering user: ', username)
 
     const existingUser = await prisma.user.findUnique({ where: { username } });
     if (existingUser) {
@@ -28,10 +28,12 @@ const register = async (req, res) => {
     const token = jwt.sign(newUser, jwtSecret);
 
     res.json({ data: newUser, token });
+    console.log('Registered: ', newUser);
 };
 
 const login = async (req, res) => {
     const { username, password } = req.body;
+    console.log('Logging in user: ', username)
     
     const foundUser = await prisma.user.findUnique({ where: { username } });
     if (!foundUser) {
@@ -46,6 +48,7 @@ const login = async (req, res) => {
     const token = jwt.sign(foundUser, jwtSecret);
 
     res.json({ data: token });
+    console.log('Logged in: ', foundUser);
 };
 
 export {
