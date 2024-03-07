@@ -1,39 +1,46 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
-
-const jwtSecret = 'mysecret';
+import { findUserDb, registerDb } from "../domains/user.js";
+import { hashPassword, comparePassword } from "../utils/hash-password.js";
+import jwt from "jsonwebtoken"
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
+  const hashedPassword = await hashPassword(password);
 
-    const createdUser = null;
-
-    res.json({ data: createdUser });
+  let registeredUser 
+  try {
+    registeredUser = await registerDb(username, hashedPassword);
+    res.status(201).json({ message: `Welcome, ${registeredUser.username}!` });
+    return
+  } catch(e) {
+    if (e.code === "P2002"){
+    res.status(409).json({error: "invalid username"})
+    }
+  }
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body
 
-    const foundUser = null;
+  const foundUser = await findUserDb(username)
+  if (!foundUser) {
+    res.status(401).json({ error:'incorrect username/password' })
+    return
+  }
+  
+  const isCorrectPassword = await comparePassword(password, foundUser.password) 
+  if (!isCorrectPassword){
+    res.status(401).json({ error:'incorrect username/password' })
+    return
+  }
+  
+  const token = jwt.sign(username, process.env.SECRET)
+  const response = { token }
+  response.message = "login successful"
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  res.status(201).json({ response })
+}
 
-    const passwordsMatch = false;
-
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-
-    const token = null;
-
-    res.json({ data: token });
-};
-
-export {
-    register,
-    login
-};
+export { 
+  register, 
+  login
+ };
