@@ -1,0 +1,33 @@
+.movie-list-items--container {
+    grid-template-columns: repeat(3, minmax(200px, auto));
+    grid-auto-flow: row;
+    gap: 20px;
+    padding: 20px 40px;
+}
+
+.movie-list-items--item > h3, p {
+    margin: 0;
+}
+
+.movie-list-items--item {
+    grid-template-rows: 40px repeat(2, 20px);
+    gap: 5px;
+    align-items: center;
+    background-color: #197023;
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px #000000, 0 0 0 1px #1b1515;
+    padding: 8px;
+    transition: .3s;
+}
+
+.movie-list-items--item:hover {
+    transform: scale(1.05);
+    cursor: default;
+}
+
+.movie-list-items--item > h3 {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+    color: #310b2d;
+}

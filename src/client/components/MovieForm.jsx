@@ -1,4 +1,6 @@
 import { useState } from "react";
+//import '../styles/movie-form.css'
+
 
 export default function MovieForm({ handleSubmit }) {
     const [movie, setMovie] = useState({ title: '', description: '', runtimeMins: 60 });
@@ -6,6 +8,8 @@ export default function MovieForm({ handleSubmit }) {
     const handleSubmitDecorator = (e) => {
         e.preventDefault();
         handleSubmit(movie);
+        setMovie({ title: '', description: '', runtimeMins: 60 })
+
     }
 
     const handleChange = (e) => {
@@ -18,7 +22,7 @@ export default function MovieForm({ handleSubmit }) {
     }
 
     return (
-        <form onSubmit={handleSubmitDecorator}>
+            <form className="movie-form grid" onSubmit={handleSubmitDecorator}>
             <input type='text' name='title' placeholder="Title" value={movie.title} onChange={handleChange} />
             <input type='text' name='description' placeholder="Description" value={movie.description} onChange={handleChange} />
             <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movie.runtimeMins} onChange={handleChange} />
