@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import MovieList from './components/MovieList';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
@@ -68,6 +71,18 @@ function App() {
           );
         })}
       </ul>
+      <Routes>
+        <Route
+          path='/'
+          element={<Home apiUrl={apiUrl} />}
+        >
+        </Route>
+        <Route
+          path='/movie-list'
+          element={<MovieList apiUrl={apiUrl} />}
+        >
+        </Route>
+      </Routes>
     </div>
   );
 }

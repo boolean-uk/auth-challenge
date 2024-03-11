@@ -4,33 +4,48 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 
 const jwtSecret = 'mysecret';
+import { findUserDb, createUserDb } from '../domains/user.js';
+const secret = process.env.JWT_SECRET
+
 
 const register = async (req, res) => {
     const { username, password } = req.body;
 
     const createdUser = null;
+    const isUsernameUnique = await findUserDb(username)
+    if (isUsernameUnique) return res.status(409).json({ error: `Username ${username} has already been taken, please try a different username`})
 
     res.json({ data: createdUser });
+    const hashedPassword = await bcrypt.hash(password, 12)
+    try {
+        const createdUser = await createUserDb(username, hashedPassword)
+        return res.status(201).json({ 
+            data: createdUser,
+            message: `Thank you, ${username}, your registration is now complete.`
+        })
+    }
+    catch (err) {
+        return res.status(500).json({ error: 'Server error, please try again'})
+    }
 };
 
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    const foundUser = null;
+    const foundUser = await findUserDb(username)
 
     if (!foundUser) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
-
-    const passwordsMatch = false;
+    const passwordsMatch = await bcrypt.compare(password, foundUser.password)
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
-
-    const token = null;
-
-    res.json({ data: token });
+    
+    const token = jwt.sign({ username }, secret)
+    res.json({ token, message: `You have successfully logged in as ${username}`
+    });
 };
 
 export {
