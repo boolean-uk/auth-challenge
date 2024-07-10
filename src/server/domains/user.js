@@ -7,6 +7,9 @@ const createUserDb = async (username, password) => await prisma.user.create({
   data: {
     username,
     password: await bcrypt.hash(password, 10)
+  },
+  select: {
+    username: true
   }
 })
 

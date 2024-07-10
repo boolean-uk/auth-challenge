@@ -27,13 +27,31 @@ function App() {
     await fetch(apiUrl + '/user/register', options)
   }
 
+  async function handleLogin(user) {
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    }
+
+    const response = await fetch(apiUrl + '/user/login', options)
+    const data = await response.json()
+
+    if(data.token) {
+      localStorage.setItem("jwt", data.token)
+    }
+
+  }
+
   return (
     <div className='app'>
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister}/>
 
       <h2>Login</h2>
-      <UserForm />
+      <UserForm handleSubmit={handleLogin}/>
 
       <h2>Create a movie</h2>
       <MovieForm />

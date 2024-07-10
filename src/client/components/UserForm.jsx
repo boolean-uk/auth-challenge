@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 function UserForm({ handleSubmit }) {
-    const [newUserData, setNewUserData] = useState({ 
+    const [userData, setUserData] = useState({ 
         username: '', 
         password: '' 
     })
@@ -9,8 +9,8 @@ function UserForm({ handleSubmit }) {
     function handleChange(e) {
         const { name, value } = e.target
 
-        setNewUserData({
-            ...newUserData,
+        setUserData({
+            ...userData,
             [name]: value
         })
     }
@@ -18,9 +18,9 @@ function UserForm({ handleSubmit }) {
     function handleSubmitDecorator(e) {
         e.preventDefault()
         
-        handleSubmit(newUserData)
+        handleSubmit(userData)
         
-        setNewUserData({ 
+        setUserData({ 
             username: '', 
             password: '' 
         })
@@ -28,8 +28,9 @@ function UserForm({ handleSubmit }) {
 
     return (
         <form onSubmit={handleSubmitDecorator}>
-            <input type="text" name="username" placeholder="Username" value={newUserData.username} onChange={handleChange} />
-            <input type="password" name="password" placeholder="Password" value={newUserData.password} onChange={handleChange} />
+            <input type="text" name="username" placeholder="Username" value={userData.username} onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password" value={userData.password} onChange={handleChange} />
+            
             <button type="submit">Submit</button>
         </form>
     )
