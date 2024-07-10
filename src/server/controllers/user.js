@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { createUserDb, getUserDb } from '../domains/user.js'
 import bcrypt from 'bcrypt'
+import { AlreadyExists, IncorrectPassword, MissingFields, NotFoundError } from '../errors/error.js'
 
 const jwtSecret = process.env.JWT_SECRET
 
@@ -12,9 +13,7 @@ async function register(req, res) {
       } = req.body
     
       if (!username || !password) {
-        return res.status(400).json({
-          error: "Missing fields in request body"
-        })
+        throw new MissingFields()
       }
     
       try {
@@ -24,24 +23,24 @@ async function register(req, res) {
       } catch (e) {
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === "P2002") {
-            return res.status(409).json({ error: "A user with the provided username already exists" })
+            throw new AlreadyExists('Username')
           }
         }
-    
-        res.status(500).json({ error: e.message })
       }
 }
 
 async function login(req, res) {
     const { username, password } = req.body
     const foundUser = await getUserDb(username)
+
+    if(!foundUser) {
+        throw new NotFoundError()
+    }
     
     const isPasswordMatch = await bcrypt.compare(password, foundUser.password)
 
     if(!isPasswordMatch) {
-        return res.json({
-            message: 'Invalid password'
-        })
+        throw new IncorrectPassword()
     }
 
     const token = jwt.sign({ sub: username }, jwtSecret)

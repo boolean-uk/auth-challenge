@@ -14,7 +14,7 @@ const createUserDb = async (username, password) => await prisma.user.create({
 })
 
 async function getUserDb(username) {
-    return await prisma.user.findUniqueOrThrow({
+    return await prisma.user.findUnique({
         where: {
             username: username
         }
