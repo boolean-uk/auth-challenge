@@ -1,23 +1,19 @@
 import prisma from "../src/utils/prisma";
 
 const deleteTables = () => {
-  const deleteTables = [
-    prisma.movie.deleteMany(),
-    prisma.user.deleteMany()
-    
-  ];
+  const deleteTables = [prisma.movie.deleteMany(), prisma.user.deleteMany()];
 
-  return prisma.$transaction(deleteTables)
-}
+  return prisma.$transaction(deleteTables);
+};
 
 global.beforeAll(() => {
-  return deleteTables()
-})
+  return deleteTables();
+});
 
 global.afterEach(() => {
-  return deleteTables()
-})
+  return deleteTables();
+});
 
 global.afterAll(() => {
-  return prisma.$disconnect()
-})
+  return prisma.$disconnect();
+});

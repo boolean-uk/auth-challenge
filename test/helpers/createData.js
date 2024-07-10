@@ -17,7 +17,7 @@ async function createMovie(title, description, runtimeMins, userId) {
             title: title,
             description: description,
             runtimeMins: runtimeMins,
-            userId: userId
+            user: {connect: {id: userId}}
         }
     })
 }
