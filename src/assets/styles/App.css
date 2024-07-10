@@ -1,0 +1,28 @@
+h2,
+section div {
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  justify-content: center;
+  align-items: center;
+}
+
+main form,
+section {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin: 2rem 0 2rem 0;
+}
+
+main form {
+  gap: 1rem;
+}
+
+section div {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 1rem 0;
+}
