@@ -1,11 +1,34 @@
-import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+import createUserDb from '../domains/user.js'
 
 const jwtSecret = process.env.JWT_SECRET
 
 async function register(req, res) {
+    const {
+        username,
+        password
+      } = req.body
+    
+      if (!username || !password) {
+        return res.status(400).json({
+          error: "Missing fields in request body"
+        })
+      }
+    
+      try {
+        const createdUser = await createUserDb(username, password)
+    
+        return res.status(201).json({ user: createdUser })
+      } catch (e) {
+        if (e instanceof PrismaClientKnownRequestError) {
+          if (e.code === "P2002") {
+            return res.status(409).json({ error: "A user with the provided username already exists" })
+          }
+        }
+    
+        res.status(500).json({ error: e.message })
+      }
 }
 
 async function login(req, res) {
