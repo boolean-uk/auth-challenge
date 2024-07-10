@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "../src/utils/prisma.js";
 import bcrypt from "bcrypt";
 
 async function seedUsers() {

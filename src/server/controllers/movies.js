@@ -1,5 +1,9 @@
+import { getMoviesDb } from '../domains/movies.js'
+
 async function getMovies(req, res) {
-    console.log('got')
+    
+    const movies = await getMoviesDb()
+    res.status(200).json({ movies })
 }
 
 export { getMovies }
