@@ -1,0 +1,128 @@
+/* Global style */
+h1 {
+  text-align: center;
+  font-size: 2.25rem;
+}
+
+input {
+  background-color: #f9f7f7;
+  border: 1px solid #3f72af;
+  border-radius: 0.15rem;
+  padding: 0.5rem;
+}
+
+input::placeholder {
+  color: #112d4e;
+}
+
+input:focus {
+  outline: 1px solid #112d4e;
+}
+
+input,
+button {
+  width: 20rem;
+  height: 3rem;
+}
+
+button {
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.15rem;
+  background-color: #3f72af;
+  color: #f9f7f7;
+  cursor: pointer;
+}
+
+button:hover {
+  transition: 0.15s ease-in-out;
+  background-color: #112d4e;
+}
+
+#register,
+#login,
+#movies {
+  display: grid;
+  padding: 5rem 4rem 5rem 4rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  background-color: #f9f7f7;
+}
+
+#register span,
+#login span,
+#movies span {
+  display: grid;
+  justify-content: center;
+  gap: 0.15rem;
+}
+
+span a {
+  color: #3f72af;
+}
+
+span a:hover {
+  transition: 0.15s ease-in-out;
+  color: #112d4e;
+}
+/* Register && Login */
+#register,
+#login {
+  gap: 1rem;
+}
+
+#register span,
+#login span {
+  grid-template-columns: repeat(2, auto);
+}
+
+/* Movies */
+#movies {
+  justify-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10rem;
+  margin: 2rem 0 2rem 0;
+}
+
+#movies form {
+  display: grid;
+  gap: 1rem;
+  height: min-content;
+}
+
+#movies section {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+
+#movie {
+  display: grid;
+  padding: 1rem;
+  border: 1px solid #3f72af;
+  border-radius: 0.15rem;
+  gap: 1rem;
+}
+
+#movies form span {
+  grid-template-rows: repeat(2, auto);
+}
+
+#movies form span div {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+#movie div {
+  display: grid;
+  gap: 0.5rem;
+}
+
+#register-link {
+  justify-self: right;
+}
+
+#login-link {
+  justify-self: left;
+}

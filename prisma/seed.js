@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import prisma from "../src/utils/prisma.js"
+import prisma from "../src/server/utils/prisma.js"
 
 async function main() {
   const user = await prisma.user.create({
