@@ -6,6 +6,8 @@ import router from "./routers/user.js"
 import {
 	MissingFieldsError,
 	ExistingDataError,
+	DataNotFoundError,
+	InvalidCredentialsError,
 } from "./errors/errors.js"
 
 const app = express()
@@ -24,12 +26,15 @@ app.use((error, req, res, next) => {
 	if (error instanceof MissingFieldsError) {
 		return res.status(400).json({ error: error.message })
 	}
+	if (error instanceof InvalidCredentialsError) {
+		return res.status(401).json({ error: error.message })
+	}
+    if (error instanceof DataNotFoundError) {
+        return res.status(404).json({ error: error.message })
+    }
     if (error instanceof ExistingDataError) {
         return res.status(409).json({ error: error.message })
     }
-	// if (error instanceof DataNotFoundError) {
-	// 	return res.status(404).json({ error: error.message })
-	// }
 
 	console.error(error)
 	res.status(500).json({
