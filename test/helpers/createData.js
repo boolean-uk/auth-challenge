@@ -6,12 +6,12 @@ async function createUser(username, password) {
     return await prisma.user.create({
         data: {
             username: username,
-            password: await bcrypt.hash(password, 8)
+            passwordHash: await bcrypt.hash(password, 8)
         }
     })
 }
 
-async function createMovie(title, description, runtimeMins, userId = null) {
+async function createMovie(title, description, runtimeMins, userId) {
     return await prisma.movie.create({
         data: {
             title: title,
