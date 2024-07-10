@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function MovieForm({ handleSubmit }) {
+function MovieForm({ handleSubmit, error }) {
     const [movieData, setMovieData] = useState({ 
         title: '', 
         description: '', 
@@ -30,6 +30,8 @@ function MovieForm({ handleSubmit }) {
 
     return (
         <form onSubmit={handleSubmitDecorator}>
+            {error && <p>{error}</p>}
+
             <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
             <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />
             <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movieData.runtimeMins} onChange={handleChange} />

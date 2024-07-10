@@ -1,15 +1,14 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 import jwt from 'jsonwebtoken'
+import { AuthorizationMissingError, NotFoundError, UnauthorizedError } from '../errors/error.js'
 const jwtSecret = process.env.JWT_SECRET
 
 async function verifyToken (req, res, next) {
     const authorization = req.headers.authorization
 
     if(!authorization) {
-        return res.status(400).json({
-            message: 'Authorization missing in headers'
-        })
+        throw new AuthorizationMissingError()
     }
 
     const [_, token] = authorization.split(' ')
@@ -24,14 +23,12 @@ async function verifyToken (req, res, next) {
         })
 
         if(!foundUser) {
-            throw 'User not found'
+            throw new NotFoundError()
         }
 
         req.user = foundUser
     } catch(e) {
-        return res.status(401).json({
-            message: 'Must be logged in to create a movie'
-        })
+        throw new UnauthorizedError()
     }
 
     next()

@@ -11,28 +11,42 @@ class NotFoundError extends APIError {
     }
 }
 
-class AlreadyExists extends APIError {
+class AlreadyExistsError extends APIError {
     constructor(message) {
       super(409, `${message} already exists`)
     }
 }
 
-class IncorrectPassword extends APIError {
+class IncorrectPasswordError extends APIError {
     constructor() {
       super(401, 'Password is incorrect')
     }
 }
 
-class MissingFields extends APIError {
+class MissingFieldsError extends APIError {
     constructor() {
       super(400, 'Missing fields in body')
+    }
+}
+
+class AuthorizationMissingError extends APIError {
+    constructor() {
+      super(400, 'Authorization missing in headers')
+    }
+}
+
+class UnauthorizedError extends APIError {
+    constructor() {
+      super(401, 'Must be logged in to create a movie')
     }
 }
   
 export {
     NotFoundError,
     APIError,
-    AlreadyExists,
-    IncorrectPassword,
-    MissingFields
+    AlreadyExistsError,
+    IncorrectPasswordError,
+    MissingFieldsError,
+    AuthorizationMissingError,
+    UnauthorizedError
 }

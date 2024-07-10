@@ -9,7 +9,9 @@ const apiUrl = `http://localhost:${port}`
 
 function App() {
   const [movies, setMovies] = useState([])
-  console.log(movies)
+  const [registerError, setRegisterError] = useState(null)
+  const [loginError, setLoginError] = useState(null)
+  const [createMovieError, setCreateMovieError] = useState(null)
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -26,7 +28,16 @@ function App() {
       },
     }
 
-    await fetch(apiUrl + '/user/register', options)
+    const response = await fetch(apiUrl + '/user/register', options)
+
+    if (response.status >= 400) {
+      const errorText = await response.text()
+      const error = JSON.parse(errorText)
+
+      setRegisterError(error.error)
+    } else{
+      setRegisterError(null)
+    }
   }
 
   async function handleLogin(user) {
@@ -39,9 +50,15 @@ function App() {
     }
 
     const response = await fetch(apiUrl + '/user/login', options)
-    const data = await response.json()
+    
+    if (response.status >= 400) {
+      const errorText = await response.text()
+      const error = JSON.parse(errorText)
 
-    if(data.token) {
+      setLoginError(error.error)
+    } else{
+      setLoginError(null)
+      const data = await response.json()
       localStorage.setItem("jwt", data.token)
     }
   }
@@ -57,25 +74,35 @@ function App() {
     }
 
     const response = await fetch(apiUrl + '/movie', options)
-    const data = await response.json()
-    const newMovie = data.data
 
-    setMovies([
-      ...movies,
-      newMovie
-    ])
+    if (response.status >= 400) {
+      const errorText = await response.text()
+      const error = JSON.parse(errorText)
+
+      setCreateMovieError(error.error)
+    } else{
+      setCreateMovieError(null)
+
+      const data = await response.json()
+      const newMovie = data.data
+
+      setMovies([
+        ...movies,
+        newMovie
+      ])
+    }
   }
 
   return (
     <div className='app'>
       <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
+      <UserForm handleSubmit={handleRegister} error={registerError} />
 
       <h2>Login</h2>
-      <UserForm handleSubmit={handleLogin} />
+      <UserForm handleSubmit={handleLogin} error={loginError} />
 
       <h2>Create a movie</h2>
-      <MovieForm handleSubmit={handleCreateMovie} />
+      <MovieForm handleSubmit={handleCreateMovie} error={createMovieError} />
 
       <h2>Movie list</h2>
         <ul className='movie-ul'>

@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { createMovieDb, getAllMoviesDb } from '../domains/movie.js'
-import { AlreadyExists, MissingFields } from '../errors/error.js'
+import { AlreadyExistsError, MissingFieldsError } from '../errors/error.js'
 
 async function getAllMovies(req, res) {
     const movies = await getAllMoviesDb()
@@ -14,7 +14,7 @@ async function createMovie(req, res) {
     const {title, description, runtimeMins} = req.body
 
     if(!title || !description || !runtimeMins) {
-        throw new MissingFields()
+        throw new MissingFieldsError()
     }
 
     try {
@@ -26,7 +26,7 @@ async function createMovie(req, res) {
     } catch(e) {
         if (e instanceof PrismaClientKnownRequestError) {
             if (e.code === "P2002") {
-              throw new AlreadyExists('Title')
+              throw new AlreadyExistsError('Title')
             }
           }
     }
@@ -35,4 +35,4 @@ async function createMovie(req, res) {
 export {
     getAllMovies,
     createMovie
-};
+}

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function UserForm({ handleSubmit }) {
+function UserForm({ handleSubmit, error }) {
     const [userData, setUserData] = useState({ 
         username: '', 
         password: '' 
@@ -28,9 +28,11 @@ function UserForm({ handleSubmit }) {
 
     return (
         <form onSubmit={handleSubmitDecorator}>
+            {error && <p>{error}</p>}
+            
             <input type="text" name="username" placeholder="Username" value={userData.username} onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" value={userData.password} onChange={handleChange} />
-            
+
             <button type="submit">Submit</button>
         </form>
     )
