@@ -44,7 +44,7 @@ async function login(req, res) {
         })
     }
 
-    const token = jwt.sign(username, jwtSecret)
+    const token = jwt.sign({ sub: username }, jwtSecret)
 
     res.json({
         token
