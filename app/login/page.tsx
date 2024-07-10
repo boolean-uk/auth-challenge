@@ -1,11 +1,11 @@
 'use client'
 
-import Navbar from "../components/navigation/navbar"
+import { useState , useEffect } from 'react'
+import Form from '../../components/form/Form'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from "react"
+import Navbar from '../../components/navigation/navbar'
 
-
-export default function Page() {    
+export default function page() {
     const router = useRouter()
     
     const [token, setToken] = useState('')
@@ -16,11 +16,12 @@ export default function Page() {
         router.push('/')
       }
     }, [])
-    
+
     return (
         <>
-            <Navbar token={token}/>
-            <h1>Welcome to my last Boolean Exercise</h1>
+            <Navbar token={token} />
+            <h1>Log In</h1>
+            <Form type="login" />
         </>
     )
 }
