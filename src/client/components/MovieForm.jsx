@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// eslint-disable-next-line react/prop-types
 export default function MovieForm({ handleSubmit }) {
     const [movie, setMovie] = useState({ title: '', description: '', runtimeMins: 60 });
 
