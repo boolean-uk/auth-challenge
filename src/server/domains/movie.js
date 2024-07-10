@@ -3,7 +3,7 @@ const prisma = new PrismaClient()
 import bcrypt from 'bcrypt'
 
 async function getAllMoviesDb() {
-    return await prisma.user.findMany()
+    return await prisma.movie.findMany()
 }
 
 export {
