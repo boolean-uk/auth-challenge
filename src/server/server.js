@@ -2,7 +2,8 @@ import express from "express"
 import "express-async-errors"
 import cors from "cors"
 import morgan from "morgan"
-import router from "./routers/user.js"
+import usrRouter from "./routers/user.js"
+import movRouter from "./routers/movie.js"
 import {
 	MissingFieldsError,
 	ExistingDataError,
@@ -17,10 +18,11 @@ app.use(morgan("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const usersRouter = router
-
+const usersRouter = usrRouter
+const moviesRouter = movRouter
 
 app.use('/users', usersRouter)
+app.use('/movies', moviesRouter)
 
 app.use((error, req, res, next) => {
 	if (error instanceof MissingFieldsError) {
