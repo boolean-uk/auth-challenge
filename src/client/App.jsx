@@ -12,13 +12,25 @@ function App() {
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
+      .then(res => setMovies(res.data))
+  }, [])
+
+  async function handleRegister(user) {
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    }
+
+    await fetch(apiUrl + '/user/register', options)
+  }
 
   return (
     <div className='app'>
       <h1>Register</h1>
-      <UserForm />
+      <UserForm handleSubmit={handleRegister}/>
 
       <h2>Login</h2>
       <UserForm />
