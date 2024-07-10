@@ -8,9 +8,11 @@ app.use(morgan('dev'))
 
 import registerRouter from './routes/registerRouter.js'
 import loginRouter from './routes/loginRouter.js'
+import movieRouter from './routes/movieRouter.js'
 
 app.use('/register', registerRouter)
 app.use('/login', loginRouter)
+app.use('/movies', movieRouter)
 
 app.use('*', (req, res, next) => {
     res.status(404).json({

@@ -1,0 +1,43 @@
+.dashboard_header, .register_header, .login_header {
+    background-color: black;
+    grid-area: header;
+    padding: 2.5rem;
+}
+
+.dashboard_main, .register_main, .login_main {
+    background-color: blue;
+    grid-area: main;
+    place-content: center;
+    padding: 9rem;
+    
+}
+.button_box {
+    display: flex;
+    padding: 2rem;
+    gap: 1rem;
+    place-content: center;
+}
+
+.left_side {
+    background-color: green;
+    grid-area: left;
+    place-content: center;
+}
+
+.films_list {
+    overflow: auto;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    scrollbar-width: none;
+}
+
+.films_list::-webkit-scrollbar {
+    display: none;
+}
+
+.right_aside {
+    margin: 0;
+    grid-area: right;
+    background-color: yellow;
+}
