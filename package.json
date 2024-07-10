@@ -14,8 +14,9 @@
     "bcrypt": "^5.1.1",
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.0",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -28,8 +29,13 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "nodemon": "^3.0.2",
+    "nodemon": "^3.1.4",
     "prisma": "^5.16.2",
     "vite": "^5.0.8"
-  }
+  },
+  "description": "- Use a token-based approach to authorise access to API resources\r - Use a hashing library to encrypt sensitive information\r - Build a front-end application that interacts with a bearer-auth protected API",
+  "main": "vite.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

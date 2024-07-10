@@ -1,6 +1,7 @@
-// Load our .env file
 import { config } from 'dotenv';
 config();
+
+import app from './server.js';
 
 
 
