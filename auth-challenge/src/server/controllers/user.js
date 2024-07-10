@@ -1,5 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { createUserDb, getUserByUsername } from "../domains/userDb.js"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const createUser = async (req, res) => {
     const {
@@ -10,6 +12,11 @@ const createUser = async (req, res) => {
     if(!username || !password) {
         return res.status(400).json({
             message: "Username or password fields missing"
+        })
+    }
+    if(username.length > 20) {
+        return res.status(400).json({
+            message: "Username too long"
         })
     }
 
@@ -36,6 +43,28 @@ const createUser = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    const {
+        username,
+        password
+    } = req.body
+
+    const foundUser = await getUserByUsername(username)
+    const verifyPassword = await bcrypt.compare(password, foundUser.passwordHash)
+
+    if(!verifyPassword || !foundUser) {
+        return res.status(400).json({
+            message: "Invalid Credentials"
+        })
+    }
+
+    const token = jwt.sign({ sub: foundUser.id, role: foundUser.role}, process.env.JWT_SECRET)
+    res.status(200).json({
+        user: token
+    })
+}
+
 export {
-    createUser
+    createUser,
+    login
 }
