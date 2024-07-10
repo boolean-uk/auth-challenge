@@ -8,13 +8,14 @@ const port = import.meta.env.VITE_PORT
 const apiUrl = `http://localhost:${port}`
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState([])
+  console.log(movies)
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
       .then(res => res.json())
       .then(res => setMovies(res.data))
-  }, [movies])
+  }, [])
 
   async function handleRegister(user) {
     const options = {
@@ -57,11 +58,12 @@ function App() {
 
     const response = await fetch(apiUrl + '/movie', options)
     const data = await response.json()
+    const newMovie = data.data
 
-    setMovies({
+    setMovies([
       ...movies,
-      data
-    })
+      newMovie
+    ])
   }
 
   return (
@@ -76,13 +78,11 @@ function App() {
       <MovieForm handleSubmit={handleCreateMovie} />
 
       <h2>Movie list</h2>
-      {movies && 
         <ul className='movie-ul'>
           {movies.map((movie, index) => {
-            <MovieLi key={index} movie={movie} />})
+            return <MovieLi key={index} movie={movie} />})
           }
         </ul>
-      }
     </div>
   )
 }

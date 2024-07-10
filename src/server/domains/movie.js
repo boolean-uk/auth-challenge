@@ -6,6 +6,17 @@ async function getAllMoviesDb() {
     return await prisma.movie.findMany()
 }
 
+async function createMovieDb(title, description, runtimeMins) {
+    return await prisma.movie.create({
+        data: {
+            title: title,
+            description: description,
+            runtimeMins: runtimeMins
+        }
+    })
+}
+
 export {
-   getAllMoviesDb
+   getAllMoviesDb,
+   createMovieDb
 } 
