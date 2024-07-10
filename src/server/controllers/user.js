@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import createUserDb from '../domains/user.js'
+import { createUserDb, getUserDb } from '../domains/user.js'
+import bcrypt from 'bcrypt'
 
 const jwtSecret = process.env.JWT_SECRET
 
@@ -32,10 +33,25 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
+    const { username, password } = req.body
+    const foundUser = await getUserDb(username)
+    
+    const isPasswordMatch = await bcrypt.compare(password, foundUser.password)
 
+    if(!isPasswordMatch) {
+        return res.json({
+            message: 'Invalid password'
+        })
+    }
+
+    const token = jwt.sign(username, jwtSecret)
+
+    res.json({
+        token
+    })
 }
 
 export {
     register,
     login
-};
+}

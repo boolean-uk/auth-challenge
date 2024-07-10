@@ -13,4 +13,15 @@ const createUserDb = async (username, password) => await prisma.user.create({
   }
 })
 
-export default createUserDb
+async function getUserDb(username) {
+    return await prisma.user.findUniqueOrThrow({
+        where: {
+            username: username
+        }
+    })
+}
+
+export {
+   createUserDb,
+   getUserDb 
+} 
