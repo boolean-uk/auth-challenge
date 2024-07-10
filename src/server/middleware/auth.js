@@ -48,8 +48,6 @@ const prisma = new PrismaClient()
 
 	try {
 		const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-		console.log(token)
-		console.log(decodedToken)
 
 		const foundUser = await prisma.user.findFirst({
 			where: {
