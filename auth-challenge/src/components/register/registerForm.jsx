@@ -3,6 +3,7 @@ import backarrow from '../../assets/svg/backarrow.svg'
 import { Link } from 'react-router-dom'
 
 export default function RegisterForm() {
+    const routeRequest = 'register'
     return (
         <div className="register_container">
             <section className="register_form_box">
@@ -22,7 +23,7 @@ export default function RegisterForm() {
                     id='backarrow'
                     className='icon'/>
                     </Link>
-                    <Form />
+                    <Form route={routeRequest}/>
                 </main>
             </section>
         </div>

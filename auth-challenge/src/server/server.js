@@ -5,6 +5,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 app.use(cors())
 app.use(morgan('dev'))
+app.use(experss.json())
 
 import registerRouter from './routes/registerRouter.js'
 import loginRouter from './routes/loginRouter.js'

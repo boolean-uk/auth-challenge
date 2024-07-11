@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import '../../styling/dashboard.css'
 
 export default function LoginForm() {
+    const routeRequest = 'login'
     return (
         <div className="login_form_container">
             <section className="login_form_box">
@@ -20,7 +21,7 @@ export default function LoginForm() {
                     className='icon'
                     id='backarrow'/>
                     </Link>
-                    <Form />
+                    <Form route={routeRequest}/>
                 </main>
             </section>
         </div>

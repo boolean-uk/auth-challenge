@@ -1,7 +1,9 @@
 import { useState } from "react"
 import enter from '../../assets/svg/enter.svg'
+import AddFilm from "../films/addFilm"
+import LoginForm from "../login/loginForm"
 
-export default function Form() {
+export default function Form({route}) {
     const [user, setUser] = useState({
         username: '',
         password: ''
@@ -26,13 +28,22 @@ export default function Form() {
             return alert('Username or password fields are missing')
         }
 
-        fetch('http://localhost:4040/register',
+        fetch(`http://localhost:4040/${route}`,
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json'
+                 },
                 body: JSON.stringify(user)
             }
         )
+        console.log(route)
+
+        if(route === 'login') {
+            <AddFilm />
+        }
+        if(route === 'register') {
+            <LoginForm />
+        }
 
         setUser({
             username: '',

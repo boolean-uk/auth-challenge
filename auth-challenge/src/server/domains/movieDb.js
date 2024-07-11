@@ -1,4 +1,4 @@
-import prisma from "../utils/prisma";
+import prisma from "../utils/prisma.js";
 
 const createMovieDb = async (title, description, runTime) => await prisma.movie.create({
     data: {
@@ -11,6 +11,16 @@ const createMovieDb = async (title, description, runTime) => await prisma.movie.
     }
 })
 
+const getAllUsersMovies = async (userID) => await prisma.usersMovies.findMany({
+    where: {
+        userID: userID
+    },
+    include: {
+        movie: true
+    }
+})
+
 export {
-    createMovieDb
+    createMovieDb,
+    getAllUsersMovies
 }

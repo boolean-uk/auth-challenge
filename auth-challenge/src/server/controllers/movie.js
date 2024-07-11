@@ -1,4 +1,4 @@
-import { createMovieDb } from "../domains/movieDb"
+import { createMovieDb, getAllUsersMovies } from "../domains/movieDb.js"
 
 const createMovie = async (req, res) => {
     const {
@@ -31,6 +31,14 @@ const createMovie = async (req, res) => {
     })
 }
 
+const getAllMovies = async (req, res) => {
+    const usersMovies = await getAllUsersMovies()
+    res.status(201).json({
+        movies: usersMovies
+    })
+}
+
 export {
-    createMovie
+    createMovie,
+    getAllMovies
 }

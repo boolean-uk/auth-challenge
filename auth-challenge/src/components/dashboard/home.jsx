@@ -14,7 +14,7 @@ export default function Dashboard() {
                 src={filmreel}
                 alt="film reel icon"
                 id="filmreel"
-                className="icon"/>
+                className="icon"/>          
             </header>
             <main className="dashboard_main">
                 <h2>

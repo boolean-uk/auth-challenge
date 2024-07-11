@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import prisma from "../utils/prisma"
+import prisma from "../utils/prisma.js"
 
 const verifyToken = async (req, res, next) => {
     const [_, token] = req.get('Authorization').split(' ')
