@@ -11,6 +11,14 @@ async function createUser(username, password) {
     })
 }
 
+async function deleteUser(username) {
+    return await prisma.user.delete({
+        where: {
+            username: username
+        }
+    })
+}
+
 async function createMovie(title, description, runtimeMins, userId) {
     return await prisma.movie.create({
         data: {
@@ -22,4 +30,4 @@ async function createMovie(title, description, runtimeMins, userId) {
     })
 }
 
-export { createUser, createMovie }
+export { createUser, createMovie, deleteUser }

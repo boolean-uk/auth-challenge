@@ -11,4 +11,12 @@ async function registerUserDb(username, password) {
     })
 }
 
-export { registerUserDb }
+async function getUser (username) {
+    return await prisma.user.findUniqueOrThrow({
+        where: {
+            username: username
+        }
+    })
+}
+
+export { registerUserDb, getUser }
