@@ -36,7 +36,6 @@ export default function Form({route}) {
                 body: JSON.stringify(user)
             }
         )
-        console.log(route)
 
         if(route === 'login') {
             <AddFilm />
@@ -75,7 +74,7 @@ export default function Form({route}) {
             required
             onChange={(e) => handleChange(e)}
             />
-            <button name="submit" type="submit">
+            <button name="submit" type="submit" className="enter_button">
                 <img
                 src={enter}
                 className="icon"

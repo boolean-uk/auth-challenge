@@ -20,3 +20,35 @@
   width: 30px;
   cursor: pointer;
 }
+
+.button {
+  background-color: #638889;
+  border-radius: 20px;
+  border: 2px solid #9DBC98;
+  color: #EBD9B4;
+  height: 30px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #EBD9B4;
+  border-radius: 20px;
+  border: 2px solid #9DBC98;
+  color:  #638889;
+}
+
+.text_input {
+  border: none;
+  border-bottom: 2px solid #9DBC98;
+  background-color: #F9EFDB;
+}
+
+#form {
+  gap: 2rem;
+}
+
+.enter_button {
+  border: none;
+  background-color: #F9EFDB;
+}

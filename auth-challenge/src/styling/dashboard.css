@@ -36,6 +36,9 @@
     display: flex;
     flex-direction: column-reverse;
     scrollbar-width: none;
+    place-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .films_list::-webkit-scrollbar {
