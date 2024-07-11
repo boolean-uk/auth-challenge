@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function UserForm({ handleSubmit, error }) {
+function UserForm({ handleSubmit, error, setError }) {
     const [userData, setUserData] = useState({ 
         username: '', 
         password: '' 
@@ -17,6 +17,14 @@ function UserForm({ handleSubmit, error }) {
 
     function handleSubmitDecorator(e) {
         e.preventDefault()
+
+        if (!userData.username || !userData.password) {
+            setError('Missing fields in body')
+
+            return
+        }
+
+        setError(null)
         
         handleSubmit(userData)
         
@@ -29,7 +37,7 @@ function UserForm({ handleSubmit, error }) {
     return (
         <form onSubmit={handleSubmitDecorator}>
             {error && <p>{error}</p>}
-            
+
             <input type="text" name="username" placeholder="Username" value={userData.username} onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" value={userData.password} onChange={handleChange} />
 

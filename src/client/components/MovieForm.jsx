@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function MovieForm({ handleSubmit, error }) {
+function MovieForm({ handleSubmit, error, setError }) {
     const [movieData, setMovieData] = useState({ 
         title: '', 
         description: '', 
@@ -18,6 +18,14 @@ function MovieForm({ handleSubmit, error }) {
 
     function handleSubmitDecorator(e) {
         e.preventDefault()
+
+        if (!movieData.title || !movieData.description || !movieData.runtimeMins) {
+            setError('Missing fields in body')
+
+            return
+        }
+
+        setError(null)
         
         handleSubmit(movieData)
         

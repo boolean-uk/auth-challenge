@@ -35,9 +35,11 @@ function App() {
       const error = JSON.parse(errorText)
 
       setRegisterError(error.error)
-    } else{
-      setRegisterError(null)
+
+      return
     }
+
+    setRegisterError(null)
   }
 
   async function handleLogin(user) {
@@ -56,11 +58,14 @@ function App() {
       const error = JSON.parse(errorText)
 
       setLoginError(error.error)
-    } else{
-      setLoginError(null)
-      const data = await response.json()
-      localStorage.setItem("jwt", data.token)
+
+      return
     }
+
+    setLoginError(null)
+
+    const data = await response.json()
+    localStorage.setItem("jwt", data.token)
   }
 
   async function handleCreateMovie(movie) {
@@ -80,29 +85,31 @@ function App() {
       const error = JSON.parse(errorText)
 
       setCreateMovieError(error.error)
-    } else{
-      setCreateMovieError(null)
 
-      const data = await response.json()
-      const newMovie = data.data
-
-      setMovies([
-        ...movies,
-        newMovie
-      ])
+      return
     }
+
+    setCreateMovieError(null)
+
+    const data = await response.json()
+    const newMovie = data.data
+
+    setMovies([
+      ...movies,
+      newMovie
+    ])
   }
 
   return (
     <div className='app'>
       <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} error={registerError} />
+      <UserForm handleSubmit={handleRegister} error={registerError} setError={setRegisterError} />
 
       <h2>Login</h2>
-      <UserForm handleSubmit={handleLogin} error={loginError} />
+      <UserForm handleSubmit={handleLogin} error={loginError} setError={setLoginError} />
 
       <h2>Create a movie</h2>
-      <MovieForm handleSubmit={handleCreateMovie} error={createMovieError} />
+      <MovieForm handleSubmit={handleCreateMovie} error={createMovieError} setError={setCreateMovieError} />
 
       <h2>Movie list</h2>
         <ul className='movie-ul'>
