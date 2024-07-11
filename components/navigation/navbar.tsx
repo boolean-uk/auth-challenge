@@ -11,8 +11,8 @@ export default function Navbar({ token }) {
         '"inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-gray-500 hover:bg-gray-600 font-medium text-center focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md"'
 
     function handleSignOut() {
-        localStorage.removeItem('token')
         router.refresh()
+        localStorage.removeItem('token')
     }
 
     function checkToken() {
@@ -45,18 +45,20 @@ export default function Navbar({ token }) {
         }
 
         return (
-            <>
-                <Link href={'/login'}>
-                    <button className="inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-green-500 hover:bg-green-600 font-medium text-center focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md">
-                        Login
-                    </button>
-                </Link>
-                <Link href={'/register'}>
-                    <button className="inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-blue-500 hover:bg-green-600 font-medium text-center focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md">
-                        Register
-                    </button>
-                </Link>
-            </>
+            <div className="hidden xl:block xl:w-2/3">
+                <div className="flex items-center justify-end gap-5">
+                    <Link href={'/login'}>
+                        <button className="inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-green-500 hover:bg-green-600 font-medium text-center focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md">
+                            Login
+                        </button>
+                    </Link>
+                    <Link href={'/register'}>
+                        <button className="inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-blue-500 hover:bg-green-600 font-medium text-center focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md">
+                            Register
+                        </button>
+                    </Link>
+                </div>
+            </div>
         )
     }
 
