@@ -3,9 +3,15 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 async function registerUser(req, res) {
+  try {
   const { username, password } = req.body;
   const user = await registerUserDb(username, password);
   res.status(200).json({ user });
+  } catch (e) {
+    if (e.code === 'P2002') {
+      res.status(400).json({error: "A user with that name already exists"})
+    }
+  }
 }
 
 async function loginUser(req, res) {

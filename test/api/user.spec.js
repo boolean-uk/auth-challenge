@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../../src/server/server.js";
-import { createUser, deleteUser } from "../helpers/createData.js";
-import { getUser } from "../../src/server/domains/user.js";
+import { createUser } from "../helpers/createData.js";
+
 
 describe("Register endpoint", () => {
     describe("POST /user/register", () => {
