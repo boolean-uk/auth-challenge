@@ -35,6 +35,11 @@ app.use((error, req, res, next) => {
 })
 
 const port = process.env.VITE_PORT
-app.listen(port, () => {
-    console.log(`\n Server is running on http://localhost:${port}\n`)
-})
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`\n Server is running on http://localhost:${port}\n`)
+    })
+
+}
+
+export default app
