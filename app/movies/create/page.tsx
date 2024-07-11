@@ -1,11 +1,20 @@
 'use client'
 
-import { useState } from 'react'
-import Form from '../../components/form/Form'
-import Navbar from '../../components/navigation/navbar'
+import { useState, useEffect } from 'react'
+import Form from '../../../components/form/Form'
+import { useRouter } from 'next/navigation'
+import Navbar from '../../../components/navigation/navbar'
 
 export default function page() {
-    const [token, setToken] = useState(localStorage.getItem('token'))
+    const router = useRouter()
+    const [token, setToken] = useState('')
+
+    useEffect(() => {
+        setToken(localStorage.getItem('token') || '')
+        if (token) {
+            router.push('/')
+        }
+    }, [])
 
     return (
         <>
@@ -14,13 +23,13 @@ export default function page() {
                 <div className="container px-4 mx-auto">
                     <div className="mb-6 text-center">
                         <h3 className="mb-4 text-2xl md:text-3xl font-bold">
-                            Register an Account
+                            Add a new Moive!
                         </h3>
                         <p className="text-lg text-coolGray-500 font-medium">
-                            I promise, this is secure...enough
+                            Make sure it's a good one!
                         </p>
                     </div>
-                    <Form type="register" />
+                    <Form type="movie" />
                 </div>
             </section>
         </>

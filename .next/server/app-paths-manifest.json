@@ -1,7 +1,7 @@
 {
   "/movies/page": "app/movies/page.js",
-  "/page": "app/page.js",
-  "/api/movies/route": "app/api/movies/route.js",
   "/login/page": "app/login/page.js",
-  "/api/users/login/route": "app/api/users/login/route.js"
+  "/page": "app/page.js",
+  "/movies/create/page": "app/movies/create/page.js",
+  "/register/page": "app/register/page.js"
 }

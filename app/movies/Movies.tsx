@@ -30,22 +30,26 @@ export default function Movies() {
         return ''
     }
     return (
-        <div>
-            <h1>Movies</h1>
-            <ul>
-                {data.movies.map((element) => {
-                    return (
-                        <li>
-                            <h3>Title:{element.title}</h3>
-                            <p>{element.description}</p>
-                            <p>
-                                Runtime: {`${element.runtimeMins} minute`}
-                                {pluralise(element.runtimeMins)}
-                            </p>
-                        </li>
-                    )
-                })}
-            </ul>
-        </div>
+        <section className="py-24 md:pt-32 bg-white">
+            <div className="container px-4 mx-auto">
+                <h1 className="mb-4 text-4xl md:text-5xl leading-tight text-coolGray-900 font-bold tracking-tighter">
+                    Movies
+                </h1>
+                <ul>
+                    {data.movies.map((element) => {
+                        return (
+                            <li className="group relative h-full px-8 pt-16 pb-8 bg-coolGray-50 group-hover:bg-white rounded-md shadow-md hover:shadow-xl transition duration-200">
+                                <h3 className="mb-4 text-xl leading-7 text-coolGray-900 font-bold max-w-xs">Title:{element.title}</h3>
+                                <p className="text-coolGray-500 group-hover:text-coolGray-600 font-medium transition duration-200">{element.description}</p>
+                                <p className="text-coolGray-500 group-hover:text-coolGray-600 font-medium transition duration-200">
+                                    Runtime: {`${element.runtimeMins} minute`}
+                                    {pluralise(element.runtimeMins)}
+                                </p>
+                            </li>
+                        )
+                    })}
+                </ul>
+            </div>
+        </section>
     )
 }
