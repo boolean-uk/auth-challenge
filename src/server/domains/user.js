@@ -4,17 +4,31 @@ import bcrypt, { genSalt } from 'bcrypt'
 
 const registerDb = async (username, password) => {
 
-  const saltRound = 10
-  const hashedPassword = await bcrypt.hash(password, saltRound)
   return await prisma.user.create({
     data : {
       username,
-      password : hashedPassword
+      password : password
     }
   })
 }
 
-export { registerDb }
+const loginDb = async (username, password) => {
+  
+  const foundUser = await prisma.user.findFirst({
+    where : {
+      username
+    }
+  })
+
+  if(!foundUser) {
+    throw new Error('username or password invalid')
+  }
+
+  
+
+}
+
+export { registerDb, loginDb }
 
 
 

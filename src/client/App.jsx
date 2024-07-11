@@ -55,11 +55,52 @@ function App() {
   };
 
   const handleLogin = async ({ username, password }) => {
+    try {
+      
+      const res = await fetch(`${apiUrl}/user/login`, {
+        method : 'POST',
+        headers : {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, password})
+      })
 
+      if(!res.ok) {
+        throw new Error('fetching failed')
+      }
+      const data = await res.json()
+      const token = data.data
+      localStorage.setItem('token', token)
+      
+      console.log('token is : ', token)
+    } catch (e) {
+      console.log('Error Loging user: ', e)
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    try {
+      
+    const token = localStorage.getItem('token')
 
+    const res = await fetch(`${apiUrl}/movie`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `bearer ${token}`
+      },
+      body: JSON.stringify({ title, description, runtimeMins })
+    })
+    
+    if(!res.ok) {
+      throw new Error('Fetching failed')
+    }
+    const data = await res.json()
+    console.log('Movie Created: ', data)
+
+    } catch (error) {
+      console.log('Error creating movie: ', error)
+    }
   }
 
   return (

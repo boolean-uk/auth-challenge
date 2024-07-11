@@ -5,9 +5,9 @@ import { PrismaClient } from '@prisma/client'
 import { json } from 'express';
 const prisma = new PrismaClient();
 
-import  {registerDb}  from '../domains/user.js'
+import  {registerDb, loginDb }  from '../domains/user.js'
 
-const jwtSecret = 'mySecret'
+const jwtSecret = 'mysecret';
 
 const register = async (req, res) => {
     const { username, password } = req.body;
@@ -18,11 +18,10 @@ const register = async (req, res) => {
               })
         }
         
-
-        const registeredUser = await registerDb(username, password)
+        const saltRound = 10
+        const hashedPassword = await bcrypt.hash(password, saltRound)
+        const registeredUser = await registerDb(username, hashedPassword)
         
-        // const createdUser = null;
-
         res.status(201).json({ user: registeredUser });
     } catch (e) {
         if(e instanceof PrismaClientKnownRequestError) {
@@ -37,21 +36,27 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    const foundUser = null;
+    const foundUser = await prisma.user.findFirst({
+        where : { username }
+      })
 
     if (!foundUser) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const passwordsMatch = false;
+    try {
+        const passwordsMatch = await bcrypt.compare(password, foundUser.password)
 
     if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid username or password.' });
     }
 
-    const token = null;
+    const token = jwt.sign({ sub : foundUser.username }, jwtSecret)
 
-    res.json({ data: token });
+    res.status(200).json({ data: token });
+    } catch (error) {
+        return res.status(500).json({error : 'An error occured duiting login!'})
+    }
 };
 
 export {
