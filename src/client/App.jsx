@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import UserForm from './components/UserForm'
 import MovieForm from './components/MovieForm'
-import MovieLi from './components/MovieLi'
+import { Route, Routes } from 'react-router-dom'
+import LoginPage from './components/LoginPage'
+import RegisterPage from './components/RegisterPage'
+import {useNavigate} from 'react-router-dom'
+import Aside from './components/Aside'
+import HomePage from './components/HomePage'
 
 const port = import.meta.env.VITE_PORT
 const apiUrl = `http://localhost:${port}`
@@ -12,6 +16,8 @@ function App() {
   const [registerError, setRegisterError] = useState(null)
   const [loginError, setLoginError] = useState(null)
   const [createMovieError, setCreateMovieError] = useState(null)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
@@ -40,6 +46,8 @@ function App() {
     }
 
     setRegisterError(null)
+
+    navigate('/')
   }
 
   async function handleLogin(user) {
@@ -66,6 +74,8 @@ function App() {
 
     const data = await response.json()
     localStorage.setItem("jwt", data.token)
+
+    navigate('/movie-list')
   }
 
   async function handleCreateMovie(movie) {
@@ -102,21 +112,33 @@ function App() {
 
   return (
     <div className='app'>
-      <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} error={registerError} setError={setRegisterError} />
 
-      <h2>Login</h2>
-      <UserForm handleSubmit={handleLogin} error={loginError} setError={setLoginError} />
+      <Aside />
 
-      <h2>Create a movie</h2>
-      <MovieForm handleSubmit={handleCreateMovie} error={createMovieError} setError={setCreateMovieError} />
+      <Routes>
+        
+        <Route 
+          path='/'
+          element={<HomePage />}        
+        />
 
-      <h2>Movie list</h2>
-        <ul className='movie-ul'>
-          {movies.map((movie, index) => {
-            return <MovieLi key={index} movie={movie} />})
-          }
-        </ul>
+        <Route 
+          path='/login'
+          element={<LoginPage handleSubmit={handleLogin} error={loginError} setError={setLoginError}/>}
+        />
+
+        <Route 
+          path='/register'
+          element={<RegisterPage handleSubmit={handleRegister} error={registerError} setError={setRegisterError}/>}
+        />
+
+        <Route 
+            path='/movie-list'
+            element={<MovieForm handleSubmit={handleCreateMovie} error={createMovieError} setError={setCreateMovieError} movies={movies} />}
+        />
+
+      </Routes>
+      
     </div>
   )
 }

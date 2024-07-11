@@ -1,6 +1,7 @@
 import { useState } from "react"
+import MovieLi from "./MovieLi"
 
-function MovieForm({ handleSubmit, error, setError }) {
+function MovieForm({ handleSubmit, error, setError, movies }) {
     const [movieData, setMovieData] = useState({ 
         title: '', 
         description: '', 
@@ -37,14 +38,25 @@ function MovieForm({ handleSubmit, error, setError }) {
     }
 
     return (
-        <form onSubmit={handleSubmitDecorator}>
-            {error && <p>{error}</p>}
+        <>
+            <h2>Create a movie</h2>
 
-            <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
-            <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />
-            <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movieData.runtimeMins} onChange={handleChange} />
-            <button type="submit">Submit</button>
-        </form>
+            <form onSubmit={handleSubmitDecorator}>
+                {error && <p>{error}</p>}
+
+                <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
+                <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />
+                <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movieData.runtimeMins} onChange={handleChange} />
+                <button type="submit">Submit</button>
+            </form>
+
+            <h2>Movie list</h2>
+            <ul className='movie-ul'>
+            {movies.map((movie, index) => {
+                return <MovieLi key={index} movie={movie} />})
+            }
+            </ul>
+        </>
     )
   }
   
