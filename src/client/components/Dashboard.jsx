@@ -22,7 +22,7 @@ export default function Dashboard() {
       },
     })
       .then((res) => {
-        if (res.status === 401) {
+        if (res.status === 401 || res.status === 500) {
           setIsTokenValid(false);
           return;
         }
