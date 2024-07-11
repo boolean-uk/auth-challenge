@@ -20,7 +20,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   role  Role    @default(USER)
-  movie Movie[]
+  movies Movie[]
 }
 
 model Movie {

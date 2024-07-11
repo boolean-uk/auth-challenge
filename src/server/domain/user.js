@@ -2,7 +2,11 @@ import prisma from "../utils/prisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const getAllUsersDb = async () => await prisma.user.findMany();
+const getAllUsersDb = async () => await prisma.user.findMany({
+  include: {
+    movies: true
+  }
+});
 
 const verifyUsername = async (username) =>
   await prisma.user.findUnique({
@@ -10,7 +14,7 @@ const verifyUsername = async (username) =>
       username: username,
     },
     include: {
-      movie: true,
+      movies: true,
     },
   });
 
@@ -24,7 +28,7 @@ const createUserDb = async (username, password) => {
       password: await bcrypt.hash(password, 8),
     },
     include: {
-      movie: true,
+      movies: true,
     },
   });
 
@@ -41,7 +45,7 @@ const deleteUserDb = async (id) =>
       id: id,
     },
     include: {
-      movie: true,
+      movies: true,
     },
   });
 

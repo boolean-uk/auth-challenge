@@ -1,3 +1,5 @@
+import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -5,6 +7,7 @@ export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [isAdmin, setIsAdmin] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
 
   const navigate = useNavigate();
 
@@ -66,6 +69,12 @@ export default function Dashboard() {
     });
   };
 
+  const handleSearchBarChange = (e) => {
+    const { value } = e.target;
+
+    setSearchInput(value);
+  };
+
   if (!isTokenValid) {
     return (
       <section id="token-not-valid">
@@ -86,26 +95,46 @@ export default function Dashboard() {
   if (!isAdmin) {
     return (
       <span id="not-admin">
-        Access denied: Admins only. <Link to={"/"}>Go back</Link>
+        Access denied: Admins only. <Link to={"/"}>&larr; Go back</Link>
       </span>
     );
   }
 
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   return (
     <main id="user-list">
-      <span>
+      <span id="user-go-back">
         <Link to={"/"}>&larr; Go back</Link>
       </span>
+
+      <div id="search-user-bar">
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+        <input
+          type="search"
+          name="search-movie"
+          placeholder="Search..."
+          value={searchInput}
+          onChange={handleSearchBarChange}
+        />
+      </div>
 
       <h1>User list</h1>
 
       {users && users.length > 0 && (
         <section id="users">
-          {users.map((user) => (
+          {filteredUsers.map((user) => (
             <div key={user.id} id="user">
               <div id="user-id">
                 <h2>Id</h2>
                 <span>{user.id}</span>
+                <FontAwesomeIcon
+                  onClick={() => handleDeleteClick(user.id)}
+                  id="icon-remove-user"
+                  icon={faXmark}
+                />
               </div>
 
               <div id="user-username">
@@ -113,10 +142,23 @@ export default function Dashboard() {
                 <span>{user.username}</span>
               </div>
 
-              <button onClick={() => handleDeleteClick(user.id)}>Delete</button>
+              {user.movies.length > 0 && (
+                <>
+                  <h2>Movies</h2>
+                  {user.movies.map((movie) => (
+                    <div key={movie.id} id="user-movies-title">
+                      <span>{movie.title}</span>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           ))}
         </section>
+      )}
+
+      {filteredUsers.length === 0 && (
+        <p style={{ textAlign: "center" }}>No user was found.</p>
       )}
 
       {users && users.length === 0 && (

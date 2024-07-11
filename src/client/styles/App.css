@@ -97,7 +97,7 @@ span a:hover {
   justify-items: center;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas:
-    "go-back go-back"
+    "go-back search-movie-bar"
     "create-movie movie-list";
   row-gap: 2rem;
   column-gap: 10rem;
@@ -106,7 +106,30 @@ span a:hover {
 
 #go-back {
   justify-self: left;
+  align-self: center;
   grid-area: go-back;
+}
+
+#search-movie-bar,
+#search-user-bar {
+  border: 1px solid #3f72af;
+  border-radius: 0.15rem;
+  grid-area: search-movie-bar;
+  width: max-content;
+  height: max-content;
+  padding-left: 0.4rem;
+}
+
+#search-movie-bar input,
+#search-user-bar input {
+  border: none;
+  height: 2rem;
+  width: 18.5rem;
+}
+
+#search-movie-bar input:focus,
+#search-user-bar input:focus {
+  outline: none;
 }
 
 #movies form {
@@ -152,11 +175,30 @@ span a:hover {
 
 /* Users */
 #user-list {
+  grid-template-areas:
+    "span"
+    "h1"
+    "search-bar"
+    "users";
   gap: 2rem;
   margin: 2rem 0 2rem 0;
 }
 
+#user-go-back {
+  grid-area: span;
+}
+
+#search-user-bar {
+  justify-self: center;
+  grid-area: search-bar;
+}
+
+#user-list h1 {
+  grid-area: h1;
+}
+
 #users {
+  grid-area: users;
   display: grid;
   grid-template-columns: repeat(3, minmax(12rem, 1fr));
   gap: 2rem;
@@ -164,27 +206,21 @@ span a:hover {
 
 #user {
   display: grid;
-  justify-items: center;
   padding: 2rem;
   border: 1px solid #3f72af;
   gap: 1rem;
-  grid-template-areas:
-    "id username"
-    "button button";
   border-radius: 0.15rem;
-}
-
-#user-id {
-  grid-area: id;
-}
-
-#user-username {
-  grid-area: username;
+  width: 20rem;
+  height: max-content;
+  word-break: break-all;
 }
 
 #user button {
   width: 10rem;
-  grid-area: button;
+}
+
+#user span {
+  justify-self: left;
 }
 
 #user-id,
@@ -192,6 +228,40 @@ span a:hover {
   display: grid;
   gap: 0.5rem;
   text-align: center;
+}
+
+#user-id {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  justify-items: center;
+  grid-template-areas:
+    "h2 icon"
+    "span span";
+}
+
+#user h2 {
+  justify-self: left;
+}
+
+#user-id h2 {
+  grid-area: h2;
+}
+
+#user-id span {
+  grid-area: span;
+}
+
+#icon-remove-user {
+  cursor: pointer;
+  width: 1.25rem;
+  height: 1.25rem;
+  justify-self: right;
+  grid-area: icon;
+}
+
+#user-movies-title {
+  display: grid;
+  gap: 0.5rem;
 }
 
 #token-not-valid {

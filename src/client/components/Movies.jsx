@@ -1,3 +1,5 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,6 +9,8 @@ export default function Movies() {
     description: "",
     runtime: "",
   });
+
+  const [searchInput, setSearchInput] = useState("");
 
   const [movies, setMovies] = useState([]);
   const [uniqueTitle, setUniqueTitle] = useState(true);
@@ -32,6 +36,12 @@ export default function Movies() {
       ...movieData,
       [name]: value,
     });
+  };
+
+  const handleSearchBarChange = (e) => {
+    const { value } = e.target;
+
+    setSearchInput(value);
   };
 
   const handleMovieSubmit = (e) => {
@@ -69,11 +79,26 @@ export default function Movies() {
     });
   };
 
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   return (
     <main id="movies">
       <span id="go-back">
         <Link to={"/"}>&larr; Go back</Link>
       </span>
+
+      <div id="search-movie-bar">
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+        <input
+          type="search"
+          name="search-movie"
+          placeholder="Search..."
+          value={searchInput}
+          onChange={handleSearchBarChange}
+        />
+      </div>
 
       <form onSubmit={handleMovieSubmit}>
         <h1>Create a movie</h1>
@@ -128,7 +153,7 @@ export default function Movies() {
         <h1>Movie list</h1>
 
         {movies.length > 0 &&
-          movies.map((movie) => (
+          filteredMovies.map((movie) => (
             <div key={movie.id} id="movie">
               <div>
                 <h2>Title</h2>
@@ -148,6 +173,10 @@ export default function Movies() {
           ))}
 
         {movies.length === 0 && <p>No movie was created yet.</p>}
+
+        {filteredMovies.length === 0 && (
+          <p style={{ textAlign: "center" }}>No movie was found.</p>
+        )}
       </section>
     </main>
   );

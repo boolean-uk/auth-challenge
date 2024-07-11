@@ -7,7 +7,7 @@ async function main() {
       username: "Leo",
       password: await bcrypt.hash("123", 8),
       role: "ADMIN",
-      movie: {
+      movies: {
         create: {
           title: "The incredible movie",
           description: "You gotta see it, it's incredible",
@@ -16,7 +16,7 @@ async function main() {
       },
     },
     include: {
-      movie: true,
+      movies: true,
     },
   });
 
@@ -34,7 +34,7 @@ const user = async () =>
       password: await bcrypt.hash("123", 8),
     },
     include: {
-      movie: true,
+      movies: true,
     },
   });
 
