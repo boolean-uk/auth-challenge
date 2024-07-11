@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [isAdmin, setIsAdmin] = useState(true);
+
+  const navigate = useNavigate();
 
   const checkTokenAndLoadUsers = () => {
     const token = localStorage.getItem("jwt");
@@ -42,6 +44,10 @@ export default function Dashboard() {
   }, []);
 
   const handleDeleteClick = (id) => {
+    const token = localStorage.getItem("jwt");
+    const payload = token.split(".")[1];
+    const decoded = JSON.parse(atob(payload))
+
     fetch("http://localhost:4000/users", {
       method: "DELETE",
       headers: {
@@ -53,6 +59,10 @@ export default function Dashboard() {
       }),
     }).then(() => {
       checkTokenAndLoadUsers();
+
+      if (decoded.id === id) {
+        navigate("/register");
+      }
     });
   };
 
