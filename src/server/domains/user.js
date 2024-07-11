@@ -15,6 +15,9 @@ async function getUser(username) {
     where: {
       username: username,
     },
+    include: {
+      movies: true
+    }
   });
 }
 

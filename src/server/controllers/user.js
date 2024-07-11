@@ -26,7 +26,7 @@ async function loginUser(req, res) {
       );
       if (passwordMatch) {
         const token = jwt.sign({ username: username }, process.env.JWT_SECRET);
-        return res.status(200).json({ token });
+        return res.status(200).json({ token, username });
       } 
       throw Error
     } catch (e) {
@@ -39,4 +39,18 @@ async function loginUser(req, res) {
   }
 }
 
-export { registerUser, loginUser };
+async function getUserProfile(req, res) {
+  const [_, token] = req.headers.authorization.split(' ')
+  if (token) {
+    const decoded = jwt.decode(token)
+    const user = await getUser(decoded.username)
+    const propsToDelete = ['passwordHash', 'updatedAt', 'createdAt', 'id']
+
+    propsToDelete.forEach((prop) => {
+      delete user[prop]
+    })
+    res.status(200).json({user})
+  }
+}
+
+export { registerUser, loginUser, getUserProfile };
