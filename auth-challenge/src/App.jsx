@@ -5,6 +5,7 @@ import Dashboard from './components/dashboard/home'
 import RegisterForm from './components/register/registerForm'
 import LoginForm from './components/login/loginForm'
 import SideDecoration from './components/filmdecoration/sideDecoration'
+import AddFilm from './components/films/addFilm'
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
         <Route 
         path='/login'
         element={<LoginForm />}/>
+        <Route 
+        path='/films'
+        element={<AddFilm />}/>
       </Routes>
       <SideDecoration />
     </div>

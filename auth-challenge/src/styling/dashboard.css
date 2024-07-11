@@ -1,11 +1,17 @@
-.dashboard_header, .register_header, .login_header {
-    background-color: black;
+.dashboard_header, .register_header, .login_header, .film_header {
     grid-area: header;
+    background-color: #638889;
     padding: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    color: #EBD9B4;
+}
+#filmreel {
+    width: 40px;
 }
 
-.dashboard_main, .register_main, .login_main {
-    background-color: blue;
+.dashboard_main, .register_main, .login_main, .film_main {
+    background-color: #F9EFDB;
     grid-area: main;
     place-content: center;
     padding: 9rem;
@@ -19,7 +25,7 @@
 }
 
 .left_side {
-    background-color: green;
+    background-color: #EBD9B4;
     grid-area: left;
     place-content: center;
 }
@@ -39,5 +45,5 @@
 .right_aside {
     margin: 0;
     grid-area: right;
-    background-color: yellow;
+    background-color: #EBD9B4;
 }
