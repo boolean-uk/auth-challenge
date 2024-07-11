@@ -1,25 +1,41 @@
 import { useEffect, useState } from "react"
 import MovieLi from "./MovieLi"
+import { useContext } from "react"
+import { DataContext } from "../App"
 
-function MovieForm({ handleSubmit, error, setError, movies, setMovies, apiUrl }) {
+function MovieForm() {
+    const { handleCreateMovie, createMovieError, setCreateMovieError, movies, setMovies, apiUrl } = useContext(DataContext)
+
     useEffect(() => {
         async function getMovies() {
-          const options = {
-            method: 'GET',
-            headers: {
-              'Content-type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-            },
-          }
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                },
+            }
     
-          const response = await fetch(apiUrl + '/movie', options)
-          const data = await response.json()
-    
-          setMovies(data.data)
+            const response = await fetch(apiUrl + '/movie', options)
+
+            if (response.status >= 400) {
+                const errorText = await response.text()
+                const errorData = JSON.parse(errorText)
+        
+                setCreateMovieError(errorData.error)
+        
+                return
+            }
+
+            setCreateMovieError(null)
+
+            const data = await response.json()
+        
+            setMovies(data.data)
         }
     
         getMovies()
-      }, [apiUrl, setMovies])
+      }, [apiUrl, setMovies, setCreateMovieError])
     
     const [movieData, setMovieData] = useState({ 
         title: '', 
@@ -40,14 +56,14 @@ function MovieForm({ handleSubmit, error, setError, movies, setMovies, apiUrl })
         e.preventDefault()
 
         if (!movieData.title || !movieData.description || !movieData.runtimeMins) {
-            setError('Missing fields in body')
+            setCreateMovieError('Missing fields in body')
 
             return
         }
 
-        setError(null)
+        setCreateMovieError(null)
         
-        handleSubmit(movieData)
+        handleCreateMovie(movieData)
         
         setMovieData({ 
             title: '', 
@@ -61,7 +77,7 @@ function MovieForm({ handleSubmit, error, setError, movies, setMovies, apiUrl })
             <h2>Create a movie</h2>
 
             <form onSubmit={handleSubmitDecorator}>
-                {error && <p className="error-message">{error}</p>}
+                {createMovieError && <p className="error-message">{createMovieError}</p>}
 
                 <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
                 <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />

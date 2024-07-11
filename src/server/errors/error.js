@@ -37,7 +37,7 @@ class AuthorizationMissingError extends APIError {
 
 class UnauthorizedError extends APIError {
     constructor() {
-      super(401, 'Must be logged in to create a movie')
+      super(401, 'Must be logged in to create or see movies')
     }
 }
   

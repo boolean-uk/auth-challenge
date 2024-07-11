@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useState } from 'react'
 import './App.css'
 import MovieForm from './components/MovieForm'
 import { Route, Routes } from 'react-router-dom'
@@ -7,6 +7,8 @@ import RegisterPage from './components/RegisterPage'
 import {useNavigate} from 'react-router-dom'
 import Aside from './components/Aside'
 import HomePage from './components/HomePage'
+
+export const DataContext = createContext()
 
 const port = import.meta.env.VITE_PORT
 const apiUrl = `http://localhost:${port}`
@@ -104,36 +106,52 @@ function App() {
     ])
   }
 
+  const value = {
+    handleLogin,
+    loginError,
+    setLoginError,
+    handleRegister,
+    registerError,
+    setRegisterError,
+    handleCreateMovie,
+    createMovieError,
+    setCreateMovieError,
+    movies,
+    setMovies,
+    apiUrl
+  }
+
   return (
-    <div className='app'>
+    <DataContext.Provider value={value}>
+      <div className='app'>
+        <Aside />
 
-      <Aside />
+        <Routes>
+          
+          <Route 
+            path='/'
+            element={<HomePage />}        
+          />
+          
+          <Route 
+            path='/login'
+            element={<LoginPage />}
+          />
 
-      <Routes>
+          <Route 
+            path='/register'
+            element={<RegisterPage />}
+          />
+
+          <Route 
+              path='/movie-list'
+              element={<MovieForm />}
+          />
+
+        </Routes>
         
-        <Route 
-          path='/'
-          element={<HomePage />}        
-        />
-
-        <Route 
-          path='/login'
-          element={<LoginPage handleSubmit={handleLogin} error={loginError} setError={setLoginError}/>}
-        />
-
-        <Route 
-          path='/register'
-          element={<RegisterPage handleSubmit={handleRegister} error={registerError} setError={setRegisterError}/>}
-        />
-
-        <Route 
-            path='/movie-list'
-            element={<MovieForm handleSubmit={handleCreateMovie} error={createMovieError} setError={setCreateMovieError} movies={movies} setMovies={setMovies} apiUrl={apiUrl} />}
-        />
-
-      </Routes>
-      
-    </div>
+      </div>
+    </DataContext.Provider>
   )
 }
 
