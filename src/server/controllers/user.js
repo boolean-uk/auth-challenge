@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 import  {registerDb}  from '../domains/user.js'
 
-const jwtSecret = process.env.VITE_JWT_SECRET
+const jwtSecret = 'mySecret'
 
 const register = async (req, res) => {
     const { username, password } = req.body;

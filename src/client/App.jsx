@@ -34,7 +34,24 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
+    try {
+      const res = await fetch(`${apiUrl}/user/register`, {
+        method : 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, password})
+      })
 
+      if(!res.ok) {
+        throw new Error('fetching failed')
+      }
+
+      const data = await res.json()
+      console.log('User registered', data)
+    } catch (error) {
+      console.log('Error registreing user: ', error)
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
