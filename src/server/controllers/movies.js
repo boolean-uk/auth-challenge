@@ -1,6 +1,5 @@
 import { getMoviesDb, createMovieDb } from "../domains/movies.js";
 
-
 async function getMovies(req, res) {
   const movies = await getMoviesDb();
   res.status(200).json({ movies });
@@ -20,8 +19,9 @@ async function createMovie(req, res) {
   } catch (e) {
     if (e.code === "P2002") {
       res.status(409).json({ error: "A movie already exists with that title" });
+    } else {
+      res.status(400).json({ error: "Something went wrong adding movie" });
     }
-    res.status(400).json({ error: "Something went wrong adding movie" });
     console.log(e);
   }
 }

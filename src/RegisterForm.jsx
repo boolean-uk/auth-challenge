@@ -65,7 +65,7 @@ export default function RegisterForm() {
       >
         Submit
       </button>
-      {success && <p className="text-green-700 ">{success}</p>}
+      {success && <p className="text-green-700">{success}</p>}
       {error && <p className="text-red-700 text-center">{error}</p>}
     </form>
     

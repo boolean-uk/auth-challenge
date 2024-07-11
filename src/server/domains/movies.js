@@ -12,7 +12,7 @@ async function createMovieDb(title, description, runtimeMins, username) {
     data: {
       title: title,
       description: description,
-      runtimeMins: runtimeMins,
+      runtimeMins: Number(runtimeMins),
       userId: user.id,
     },
   });

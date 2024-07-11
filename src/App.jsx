@@ -30,20 +30,20 @@ function App() {
 
   if (loggedIn) {
     return (
-    <>
+    <main>
     <MoviesPage user={user} />
-    </>
+    </main>
     )
   }
 
   return (
-    <>
+    <main>
       <div className="grid place-items-center">
         <h1 className="text-4xl my-4">The Boolean Movie Database</h1>
         {register ? <RegisterForm /> : <LoginForm setLoggedIn={setLoggedIn} />}
        <FormChange register={register} setRegister={setRegister}/>
       </div>
-    </>
+    </main>
   );
 }
 

@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function LogInForm({ setLoggedIn }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -25,7 +26,10 @@ export default function LogInForm({ setLoggedIn }) {
     if (json.token) {
         localStorage.setItem("jwt", json.token);
         setLoggedIn(true)
+        return
     }
+
+   setError(json.error)
   }
 
   return (
@@ -57,6 +61,7 @@ export default function LogInForm({ setLoggedIn }) {
         >
           Submit
         </button>
+        {error && <p className="text-red-700 text-center">{error}</p>}
       </form>
     </>
   );

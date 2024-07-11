@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 
-export default function AddNewMovieform() {
-    const [formData, setFormData] = useState({ title: "", description: "", runtimeMins: 0 });
+export default function AddNewMovieform({getMovies}) {
+    const [formData, setFormData] = useState({ title: "", description: "", runtimeMins: ''});
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -10,15 +11,24 @@ export default function AddNewMovieform() {
     
       async function handleSubmit(e) {
         e.preventDefault();
- 
+        await fetch('http://localhost:3000/movies', {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        getMovies()
+        setFormData({ title: "", description: "", runtimeMins: ''})
       }
 
     return (
         <form
-      className="flex flex-col place-items-center p-4 bg-gradient-to-bl from-teal-200 rounded-md w-56 max-w-56"
+      className="flex flex-col place-items-center p-4 bg-gradient-to-bl from-teal-200 rounded-md w-56 max-w-56 mt-4"
       onSubmit={handleSubmit}
     >
-   
+    <p className="text-2xl">Add New Movie</p>
       <label htmlFor="title">Title </label>
       <input
         className="border"
@@ -33,7 +43,15 @@ export default function AddNewMovieform() {
         onChange={handleChange}
         type="textbox"
         name="description"
-        value={formData.Description}
+        value={formData.description}
+      />
+        <label htmlFor="runtimeMins">Runtime (minutes)</label>
+      <input
+        className="border"
+        onChange={handleChange}
+        type="textbox"
+        name="runtimeMins"
+        value={formData.runtimeMins}
       />
       <button
         type="submit"
