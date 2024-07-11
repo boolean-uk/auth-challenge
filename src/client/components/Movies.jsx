@@ -174,7 +174,7 @@ export default function Movies() {
 
         {movies.length === 0 && <p>No movie was created yet.</p>}
 
-        {filteredMovies.length === 0 && (
+        {filteredMovies.length === 0 && movies.length > 0 && (
           <p style={{ textAlign: "center" }}>No movie was found.</p>
         )}
       </section>
