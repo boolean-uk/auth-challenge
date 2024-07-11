@@ -123,7 +123,7 @@ function App() {
 
   return (
     <DataContext.Provider value={value}>
-      <div className='app'>
+      <>
         <Aside />
 
         <Routes>
@@ -150,7 +150,7 @@ function App() {
 
         </Routes>
         
-      </div>
+      </>
     </DataContext.Provider>
   )
 }

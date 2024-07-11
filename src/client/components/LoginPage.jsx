@@ -6,10 +6,11 @@ function LoginPage() {
     const { handleLogin, loginError, setLoginError, } = useContext(DataContext)
 
     return (
-        <>
+        <div className="main">
             <h2>Login</h2>
             <UserForm handleSubmit={handleLogin} error={loginError} setError={setLoginError} />
-        </>
+        </div>
+
     )
   }
   

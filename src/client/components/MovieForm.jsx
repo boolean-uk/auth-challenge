@@ -73,25 +73,36 @@ function MovieForm() {
     }
 
     return (
-        <>
-            <h2>Create a movie</h2>
+        <div className="movie-page">
+            <div className="create-movie">
+                <div className="h2">
+                    <h2>Create a movie</h2>
+                </div>
 
-            <form onSubmit={handleSubmitDecorator}>
-                {createMovieError && <p className="error-message">{createMovieError}</p>}
+                <form onSubmit={handleSubmitDecorator} className="movie-form">
+                    <div>
+                        {createMovieError && <p className="error-message">{createMovieError}</p>}
+                    </div>
 
-                <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
-                <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />
-                <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movieData.runtimeMins} onChange={handleChange} />
-                <button type="submit">Submit</button>
-            </form>
+                    <div className="create-movie-inputs">
+                        <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
+                        <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />
+                        <input type='number' name='runtimeMins' placeholder="Runtime (minutes)" value={movieData.runtimeMins} onChange={handleChange} />
+                        <button type="submit">Submit</button>
+                    </div>
 
-            <h2>Movie list</h2>
-            <ul className='movie-ul'>
-            {movies.map((movie, index) => {
-                return <MovieLi key={index} movie={movie} />})
-            }
-            </ul>
-        </>
+                </form>
+            </div>
+
+            <div className="movie-list">
+                <h2>Movie list</h2>
+                <ul className='movie-ul'>
+                {movies.map((movie, index) => {
+                    return <MovieLi key={index} movie={movie} />})
+                }
+                </ul>
+            </div>
+        </div>
     )
   }
   
