@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
-import { NotValidTokenError } from "../errors/APIError.js"
+import { InvalidCredentialsError, NotValidTokenError } from "../errors/APIError.js"
+import prisma from "../utils/prisma.js"
 
 function isTokenValid(req, res, next) {
   try {
@@ -11,8 +12,23 @@ function isTokenValid(req, res, next) {
 
     next()
   } catch (error) {
-    throw new NotValidTokenError("Access denied: token not valid")
+    console.log(error)
+    throw new InvalidCredentialsError("Access denied: token not valid")
   }
 }
 
-export { isTokenValid }
+async function isAdmin(req, res, next) {
+  const checkRole = await prisma.user.findUnique({
+    where: {
+      username: req.user.username
+    }
+  })
+
+  if (checkRole.role !== "ADMIN") {
+    throw new NotValidTokenError("Access denied: ADMINS only")
+  }
+
+  next()
+}
+
+export { isTokenValid, isAdmin }

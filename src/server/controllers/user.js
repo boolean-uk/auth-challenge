@@ -8,8 +8,22 @@ import {
   comparePassword,
   createTokenDb,
   createUserDb,
+  deleteUserDb,
+  getAllUsersDb,
   verifyUsername,
 } from "../domain/user.js"
+
+const getAllUsers = async (req, res) => {
+  const users = await getAllUsersDb()
+
+  for (let i = 0; i < users.length; i++) {
+    delete users[i].password
+  }
+
+  res.json({
+    users,
+  })
+}
 
 const createUser = async (req, res) => {
   const { username, password } = req.body
@@ -60,4 +74,24 @@ const createToken = async (req, res) => {
   })
 }
 
-export { createUser, createToken }
+const deleteUser = async (req, res) => {
+  const id = req.body.id
+
+  if (isNaN(id)) {
+    throw new MissingFieldsError("The id provided is not a number")
+  }
+
+  const user = await deleteUserDb(id)
+
+  if (!user) {
+    throw new UserNotFoundError(`The user with id of ${id} was not found`)
+  }
+
+  console.log(id)
+
+  res.json({
+    user
+  })
+}
+
+export { getAllUsers, createUser, createToken, deleteUser }

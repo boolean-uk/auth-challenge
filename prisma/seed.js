@@ -1,15 +1,16 @@
-import bcrypt from "bcrypt"
-import prisma from "../src/server/utils/prisma.js"
+import bcrypt from "bcrypt";
+import prisma from "../src/server/utils/prisma.js";
 
 async function main() {
-  const user = await prisma.user.create({
+  const admin = await prisma.user.create({
     data: {
-      username: "Lodi",
+      username: "Leo",
       password: await bcrypt.hash("123", 8),
+      role: "ADMIN",
       movie: {
         create: {
           title: "The incredible movie",
-          description: "You gotta see it, its incredible",
+          description: "You gotta see it, it's incredible",
           runtime: 90,
         },
       },
@@ -17,19 +18,32 @@ async function main() {
     include: {
       movie: true,
     },
-  })
+  });
 
-  console.log("User created", user)
+  console.log("Admin created", admin);
 
-  return user
+  await user();
+
+  return admin;
 }
+
+const user = async () =>
+  await prisma.user.create({
+    data: {
+      username: "Lodi",
+      password: await bcrypt.hash("123", 8),
+    },
+    include: {
+      movie: true,
+    },
+  });
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
