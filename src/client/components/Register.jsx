@@ -7,7 +7,11 @@ export default function Register() {
     password: "",
   });
 
+  const [uniqueUsername, setUniqueUsername] = useState(true);
+
   const handleRegisterChange = (e) => {
+    setUniqueUsername(true);
+
     const { name, value } = e.target;
 
     setRegisterData({
@@ -28,7 +32,12 @@ export default function Register() {
         username: registerData.username,
         password: registerData.password,
       }),
-    }).then(() => {
+    }).then((res) => {
+      if (res.status === 409) {
+        setUniqueUsername(false);
+        return;
+      }
+
       setRegisterData({
         username: "",
         password: "",
@@ -52,6 +61,12 @@ export default function Register() {
           onChange={handleRegisterChange}
           required
         />
+
+        {!uniqueUsername && (
+          <span id="username-not-unique">
+            The username provided already exists
+          </span>
+        )}
 
         <input
           type="password"

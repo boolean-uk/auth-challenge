@@ -7,7 +7,13 @@ export default function Login() {
     password: "",
   });
 
+  const [userFound, setUserFound] = useState(true);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
   const handleLoginChange = (e) => {
+    setUserFound(true);
+    setPasswordMatch(true);
+
     const { name, value } = e.target;
 
     setLoginData({
@@ -29,7 +35,19 @@ export default function Login() {
         password: loginData.password,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 404) {
+          setUserFound(false);
+          return;
+        }
+
+        if (res.status === 401) {
+          setPasswordMatch(false);
+          return;
+        }
+
+        return res.json();
+      })
       .then((data) => {
         localStorage.setItem("jwt", data.token);
       })
@@ -53,7 +71,12 @@ export default function Login() {
         name="username"
         value={loginData.username}
         onChange={handleLoginChange}
+        required
       />
+
+      {!userFound && (
+        <span id="user-not-found">The username provided does not exist</span>
+      )}
 
       <input
         type="password"
@@ -61,7 +84,12 @@ export default function Login() {
         name="password"
         value={loginData.password}
         onChange={handleLoginChange}
+        required
       />
+
+      {!passwordMatch && (
+        <span id="user-not-found">The password provided does not match</span>
+      )}
 
       <button type="submit">Submit</button>
 

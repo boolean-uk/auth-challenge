@@ -45,7 +45,9 @@ button:hover {
 #movies,
 #user-list,
 #token-not-valid,
-#not-admin {
+#not-admin,
+#homepage,
+#page-not-found {
   display: grid;
   padding: 5rem 4rem 5rem 4rem;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -54,7 +56,8 @@ button:hover {
 
 #register span,
 #login span,
-#movies span {
+#movies span,
+#page-not-found span {
   display: grid;
   justify-content: center;
   gap: 0.15rem;
@@ -75,16 +78,34 @@ span a:hover {
 }
 
 #register span,
-#login span {
+#login span,
+#page-not-found span {
   grid-template-columns: repeat(2, auto);
+}
+
+#user-not-found,
+#username-not-unique,
+#title-not-unique {
+  font-size: 14px;
+  color: red;
+  font-weight: bold;
 }
 
 /* Movies */
 #movies {
   justify-items: center;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10rem;
+  grid-template-areas:
+    "go-back go-back"
+    "create-movie movie-list";
+  row-gap: 2rem;
+  column-gap: 10rem;
   margin: 2rem 0 2rem 0;
+}
+
+#go-back {
+  justify-self: left;
+  grid-area: go-back;
 }
 
 #movies form {
@@ -105,6 +126,11 @@ span a:hover {
   border: 1px solid #3f72af;
   border-radius: 0.15rem;
   gap: 1rem;
+  width: 20rem;
+}
+
+#movie p {
+  word-break: break-all;
 }
 
 #movies form span {
@@ -113,21 +139,14 @@ span a:hover {
 
 #movies form span div {
   display: grid;
+  justify-content: center;
   gap: 0.5rem;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: repeat(3, max-content);
 }
 
 #movie div {
   display: grid;
   gap: 0.5rem;
-}
-
-#register-link {
-  justify-self: right;
-}
-
-#login-link {
-  justify-self: left;
 }
 
 /* Users */
@@ -189,4 +208,20 @@ span a:hover {
   display: grid;
   gap: 0.5rem;
   justify-items: center;
+}
+
+/* Homepage */
+#homepage {
+  gap: 2rem;
+}
+
+#homepage span {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(7, max-content);
+}
+
+/* PageNotFound */
+#page-not-found {
+  gap: 1rem;
 }

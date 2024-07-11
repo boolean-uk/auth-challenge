@@ -46,7 +46,7 @@ export default function Dashboard() {
   const handleDeleteClick = (id) => {
     const token = localStorage.getItem("jwt");
     const payload = token.split(".")[1];
-    const decoded = JSON.parse(atob(payload))
+    const decoded = JSON.parse(atob(payload));
 
     fetch("http://localhost:4000/users", {
       method: "DELETE",
@@ -76,7 +76,7 @@ export default function Dashboard() {
           </Link>
           |
           <Link to={"/login"} id="login-link">
-            Log in.
+            Log in
           </Link>
         </span>
       </section>
@@ -86,13 +86,17 @@ export default function Dashboard() {
   if (!isAdmin) {
     return (
       <span id="not-admin">
-        Access denied: Admins only. <Link to={"/movies"}>Go back</Link>
+        Access denied: Admins only. <Link to={"/"}>Go back</Link>
       </span>
     );
   }
 
   return (
     <main id="user-list">
+      <span>
+        <Link to={"/"}>&larr; Go back</Link>
+      </span>
+
       <h1>User list</h1>
 
       {users && users.length > 0 && (
