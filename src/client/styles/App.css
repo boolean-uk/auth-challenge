@@ -85,7 +85,8 @@ span a:hover {
 
 #user-not-found,
 #username-not-unique,
-#title-not-unique {
+#title-not-unique,
+#token-not-valid-movies {
   font-size: 14px;
   color: red;
   font-weight: bold;

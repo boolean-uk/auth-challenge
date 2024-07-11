@@ -10,6 +10,7 @@ export default function Movies() {
 
   const [movies, setMovies] = useState([]);
   const [uniqueTitle, setUniqueTitle] = useState(true);
+  const [validToken, setValidToken] = useState(true);
 
   const loadMovies = () => {
     fetch("http://localhost:4000/movies")
@@ -23,6 +24,7 @@ export default function Movies() {
 
   const handleMovieChange = (e) => {
     setUniqueTitle(true);
+    setValidToken(true);
 
     const { name, value } = e.target;
 
@@ -49,6 +51,11 @@ export default function Movies() {
     }).then((res) => {
       if (res.status === 409) {
         setUniqueTitle(false);
+        return;
+      }
+
+      if (res.status === 401 || res.status === 500) {
+        setValidToken(false);
         return;
       }
 
@@ -99,6 +106,12 @@ export default function Movies() {
           value={movieData.runtime}
           onChange={handleMovieChange}
         />
+
+        {!validToken && (
+          <span id="token-not-valid-movies">
+            Register or sing in to an account
+          </span>
+        )}
 
         <button type="submit">Submit</button>
 
