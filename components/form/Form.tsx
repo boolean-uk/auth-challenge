@@ -1,26 +1,68 @@
 'use client'
 import { FormType } from '../../lib/definitions'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 
 
 export default function Form({ type }: FormType) {
     const router = useRouter()
-
-    const [formData, setFormData] = useState({
+    const blankForm = {
         username: '',
         password: '',
-    })
+        title: '',
+        description: '',
+        runtimeMins: '',
+    }
 
-    const [token, setToken] = useState('')
+    const [formData, setFormData] = useState({...blankForm})
 
-    useEffect(() => {
-      setToken(localStorage.getItem('token') || '')
-      if(token) {
-        router.push('/')
-      }
-    }, [])
+    function formFields() {
+        if (type === 'login' || type === 'register') {
+            return (
+                <>
+                    <input
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
+                </>
+            )
+        }
+
+        if (type === 'movie') {
+            return (
+                <>
+                    <input
+                        type="text"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="text"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="number"
+                        name="runtimeMins"
+                        id=""
+                        value={formData.runtimeMins}
+                        onChange={handleChange}
+                    />
+                </>
+            )
+        }
+    }
 
     function handleChange(e) {
         const { name, value } = e.target
@@ -39,37 +81,33 @@ export default function Form({ type }: FormType) {
         }
 
         if (type === 'login') {
-          const response = await fetch('/api/users/login', {
-              method: 'POST',
-              body: JSON.stringify(formData),
-          })
-          const responseBody = await response.json()
+            const response = await fetch('/api/users/login', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+            })
+            const responseBody = await response.json()
 
-          if(responseBody.error){
-            alert("error" + responseBody.error)
-            return;
-          }
+            if (responseBody.error) {
+                alert('error' + responseBody.error)
+                return
+            }
 
-          localStorage.setItem('token', responseBody.token)
-          router.push('/')
-      }
+            localStorage.setItem('token', responseBody.token)
+            router.push('/')
+        }
+        if (type === 'movie') {
+            const response = await fetch('/api/movies', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+            })
+            console.log(response)
+            setFormData({...blankForm})
+        }
     }
-
 
     return (
         <form onSubmit={onSubmit} method="POST">
-            <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-            />
-            <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-            />
+            {formFields()}
             <input type="submit" value="Submit" />
         </form>
     )

@@ -1,5 +1,9 @@
 import { PrismaClient } from '@prisma/client'
-import { AccountCredentials } from './definitions'
+import {
+    AccountCredentials,
+    MovieDetails,
+    UserToSearchFor,
+} from './definitions'
 import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
@@ -19,17 +23,49 @@ export const registerUser = async ({
         delete newUser.passwordHash
 
         return newUser
-    } catch(e) {
+    } catch (e) {
         return e.message
     }
 }
 
-export const getUserInfo = async (username) => {
-    const user = await prisma.user.findUniqueOrThrow({
-        where: {
-            username: username,
-        },
-    })
+export const getUserInfo = async (query) => {
+    const userToFind: UserToSearchFor = {where:{}}
+
+    if (typeof query === 'string') {
+        userToFind.where.username = query
+    }
+
+    if (typeof query === 'number'){
+        userToFind.where.id = query
+    }
+         // @ts-ignore directive
+        const user = await prisma.user.findUniqueOrThrow({...userToFind})
 
     return user
+}
+
+export const getMovies = async () => {
+    const movies = await prisma.movie.findMany()
+
+    return movies
+}
+
+export const createMovie = async ({
+    title,
+    description,
+    runtimeMins,
+}: MovieDetails) => {
+    try {
+        const newMovie = await prisma.movie.create({
+            data: {
+                title,
+                description,
+                runtimeMins,
+            },
+        })
+
+        return newMovie
+    } catch (e) {
+        return e
+    }
 }

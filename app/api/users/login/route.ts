@@ -22,14 +22,14 @@ export async function POST(req: NextRequest) {
 
         if (!verify) {
             return NextResponse.json(
-                { error: 'Requirements missing in the request body' },
+                { error: 'Incorrect Credentials' },
                 { status: 403 }
             )
         }
         
         const token = jwt.sign({sub:userData.id}, secret)
 
-        return NextResponse.json({ token }, { status: 200 })
+        return NextResponse.json({ token }, { status: 201 })
     } catch (e: any) {
         if (e.code === 'P2025') {
             return NextResponse.json({ error: e.message }, { status: 404 })
