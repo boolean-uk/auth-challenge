@@ -36,7 +36,7 @@ function UserForm({ handleSubmit, error, setError }) {
 
     return (
         <form onSubmit={handleSubmitDecorator}>
-            {error && <p>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
 
             <input type="text" name="username" placeholder="Username" value={userData.username} onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" value={userData.password} onChange={handleChange} />

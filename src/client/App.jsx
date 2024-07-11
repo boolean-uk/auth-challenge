@@ -19,12 +19,6 @@ function App() {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data))
-  }, [])
-
   async function handleRegister(user) {
     const options = {
       method: 'POST',
@@ -47,7 +41,7 @@ function App() {
 
     setRegisterError(null)
 
-    navigate('/')
+    navigate('/login')
   }
 
   async function handleLogin(user) {
@@ -134,7 +128,7 @@ function App() {
 
         <Route 
             path='/movie-list'
-            element={<MovieForm handleSubmit={handleCreateMovie} error={createMovieError} setError={setCreateMovieError} movies={movies} />}
+            element={<MovieForm handleSubmit={handleCreateMovie} error={createMovieError} setError={setCreateMovieError} movies={movies} setMovies={setMovies} apiUrl={apiUrl} />}
         />
 
       </Routes>

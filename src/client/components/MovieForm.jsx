@@ -1,7 +1,26 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import MovieLi from "./MovieLi"
 
-function MovieForm({ handleSubmit, error, setError, movies }) {
+function MovieForm({ handleSubmit, error, setError, movies, setMovies, apiUrl }) {
+    useEffect(() => {
+        async function getMovies() {
+          const options = {
+            method: 'GET',
+            headers: {
+              'Content-type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+            },
+          }
+    
+          const response = await fetch(apiUrl + '/movie', options)
+          const data = await response.json()
+    
+          setMovies(data.data)
+        }
+    
+        getMovies()
+      }, [apiUrl, setMovies])
+    
     const [movieData, setMovieData] = useState({ 
         title: '', 
         description: '', 
@@ -42,7 +61,7 @@ function MovieForm({ handleSubmit, error, setError, movies }) {
             <h2>Create a movie</h2>
 
             <form onSubmit={handleSubmitDecorator}>
-                {error && <p>{error}</p>}
+                {error && <p className="error-message">{error}</p>}
 
                 <input type='text' name='title' placeholder="Title" value={movieData.title} onChange={handleChange} />
                 <input type='text' name='description' placeholder="Description" value={movieData.description} onChange={handleChange} />
