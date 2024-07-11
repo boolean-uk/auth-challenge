@@ -9,7 +9,7 @@ export default function page() {
 
     return (
         <>
-            <Navbar token={token} />
+            <Navbar token={token} setToken={setToken} />
             <section className="py-24 md:py-32 bg-white">
                 <div className="container px-4 mx-auto">
                     <div className="mb-6 text-center">

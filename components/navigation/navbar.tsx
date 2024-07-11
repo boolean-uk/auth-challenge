@@ -3,9 +3,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import logo from '../../public/assets/Boolean Logo.png'
+import { useEffect, useState } from 'react'
 
-export default function Navbar({ token }) {
+export default function Navbar({ token , setToken}) {
     const router = useRouter()
+    
 
     const buttonStyles =
         '"inline-block py-2 px-4 w-full text-sm leading-5 text-white bg-gray-500 hover:bg-gray-600 font-medium text-center focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md"'
@@ -13,7 +15,10 @@ export default function Navbar({ token }) {
     function handleSignOut() {
         router.refresh()
         localStorage.removeItem('token')
+        setToken(localStorage.getItem('token'))
     }
+
+    console.log(token)
 
     function checkToken() {
         if (token) {

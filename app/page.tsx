@@ -1,26 +1,17 @@
 'use client'
 
 import Navbar from '../components/navigation/navbar'
-import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import angus from '../public/assets/angus_icon.jpg'
 
 export default function Page() {
-    const router = useRouter()
 
-    const [token, setToken] = useState('')
-
-    useEffect(() => {
-        setToken(localStorage.getItem('token') || '')
-        if (token) {
-            router.push('/')
-        }
-    }, [])
+    const [token, setToken] = useState(localStorage.getItem('token'))
 
     return (
         <>
-            <Navbar token={token} />
+            <Navbar token={token} setToken={setToken} />
             <section className="py-24 md:pb-28 bg-white">
                 <div className="container px-4 mx-auto">
                     <div className="relative max-w-5xl sm:px-6 pb-6 mb-10 mx-auto text-center">
@@ -31,7 +22,13 @@ export default function Page() {
                         </div>
                     </div>
                     <div className="text-center mb-8">
-                    <Image className="w-24 h-24 mx-auto mb-6 rounded-full" src={angus} width={500} height={500} alt=""/>
+                        <Image
+                            className="w-24 h-24 mx-auto mb-6 rounded-full"
+                            src={angus}
+                            width={500}
+                            height={500}
+                            alt=""
+                        />
 
                         <h3 className="mb-2 text-xl md:text-2xl font-semibold">
                             Angus Townsley

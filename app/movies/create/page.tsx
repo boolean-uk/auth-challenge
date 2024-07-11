@@ -1,24 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Form from '../../../components/form/Form'
-import { useRouter } from 'next/navigation'
 import Navbar from '../../../components/navigation/navbar'
 
 export default function page() {
-    const router = useRouter()
-    const [token, setToken] = useState('')
-
-    useEffect(() => {
-        setToken(localStorage.getItem('token') || '')
-        if (token) {
-            router.push('/')
-        }
-    }, [])
+    const [token, setToken] = useState(localStorage.getItem('token'))
 
     return (
         <>
-            <Navbar token={token} />
+            <Navbar token={token} setToken={setToken} />
             <section className="py-24 md:py-32 bg-white">
                 <div className="container px-4 mx-auto">
                     <div className="mb-6 text-center">
