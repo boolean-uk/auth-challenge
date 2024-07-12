@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { registerUserDb, getUser, getAllUsersDb } from "../domains/user.js";
+import { registerUserDb, getUser, getAllUsersDb, deleteUserDb } from "../domains/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -45,7 +45,7 @@ async function getUserProfile(req, res) {
   if (token) {
     const decoded = jwt.decode(token);
     const user = await getUser(decoded.username);
-    const propsToDelete = ["passwordHash", "updatedAt", "createdAt", "id"];
+    const propsToDelete = ["passwordHash", "updatedAt", "createdAt"];
 
     propsToDelete.forEach((prop) => {
       delete user[prop];
@@ -63,4 +63,14 @@ async function getAllUsers(req, res) {
   }
 }
 
-export { registerUser, loginUser, getUserProfile, getAllUsers };
+async function deleteUser(req, res) {
+  const userId = Number(req.params.id)
+  try {
+    const user = await deleteUserDb(userId)
+    res.status(200).json({user})
+  } catch(e) {
+    res.status(400).json({error: 'Failed to delete user'})
+  }
+}
+
+export { registerUser, loginUser, getUserProfile, getAllUsers, deleteUser };

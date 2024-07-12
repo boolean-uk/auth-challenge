@@ -7,6 +7,7 @@ import AdminDashboard from "./AdminDashboard";
 
 export default function MoviesPage({ user }) {
   const [movies, setMovies] = useState([]);
+  const [adminDash, setAdminDash] = useState(false)
 
   async function getMovies() {
     const data = await fetch("http://localhost:3000/movies", {
@@ -40,7 +41,8 @@ export default function MoviesPage({ user }) {
       </ul>
 
       <AddNewMovieform getMovies={getMovies} />
-      {user.role === "ADMIN" && <AdminDashboard />}
+      {user.role === "ADMIN" && <p onClick={() => {setAdminDash(!adminDash)}} className="text-xs my-4 cursor-pointer">{adminDash ? 'Hide ' : 'Show '}Admin Dashboard</p>}
+      {adminDash && <AdminDashboard loggedInUser={user}/>}
       <button onClick={handleClick} className="my-4 cursor-pointer">
         Log Out
       </button>

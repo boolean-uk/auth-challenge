@@ -1,29 +1,37 @@
-import { useState, useEffect } from "react"
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
+import AdminDashElement from "./AdminDashElement";
 
-export default function AdminDashboard() {
-const [users, setUsers] = useState([])
+export default function AdminDashboard( {loggedInUser} ) {
+  const [users, setUsers] = useState([]);
 
-useEffect(() => {
-    async function getAllUsers() {
-        const data = await fetch('http://localhost:3000/user/', {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('jwt')}`
+  async function getAllUsers() {
+    const data = await fetch("http://localhost:3000/user/", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+    const json = await data.json();
+    setUsers(json.users);
+  }
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
+  return (
+    <section>
+      <ul className="bg-slate-200 p-4 rounded-md">
+        {users.length === 1 && <p>No registered users</p>}
+        {users.map((user, index) => {
+            if (user.username === loggedInUser.username) {
+                return
             }
-        })
-        const json = await data.json()
-        setUsers(json.users)
-    }
-    getAllUsers()
-}, [])
-
-
-    return (
-        <section>
-            {users.map((user, index) => {
-                return <p key={`adminList${index}`}>{user.username}</p>
-            })}
-
-        </section>
-    )
+          return (
+            <AdminDashElement key={`admin${index}`} user={user} getAllUsers={getAllUsers} />
+          );
+        })}
+      </ul>
+    </section>
+  );
 }

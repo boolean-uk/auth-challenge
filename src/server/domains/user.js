@@ -22,4 +22,12 @@ async function getAllUsersDb() {
   return await prisma.user.findMany()
 }
 
-export { registerUserDb, getUser, getAllUsersDb };
+async function deleteUserDb(userId) {
+  return await prisma.user.delete({
+    where: {
+      id: userId
+    }
+  })
+}
+
+export { registerUserDb, getUser, getAllUsersDb, deleteUserDb };
