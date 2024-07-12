@@ -1,4 +1,5 @@
-import { getMoviesDb, createMovieDb } from "../domains/movies.js";
+/* eslint-disable no-unused-vars */
+import { getMoviesDb, createMovieDb, deleteMovieDb } from "../domains/movies.js";
 import jwt from 'jsonwebtoken'
 
 async function getMovies(req, res) {
@@ -30,4 +31,15 @@ async function createMovie(req, res) {
   }
 }
 
-export { getMovies, createMovie };
+async function deleteMovie(req, res) {
+    try {
+      const id = Number(req.params.id)
+      const movie = await deleteMovieDb(id)
+      res.status(200).json({movie})
+    }  catch (e) {
+      console.log(e)
+      res.status(400).json({error: "Failed to delete movie"})
+    }
+}
+
+export { getMovies, createMovie, deleteMovie };

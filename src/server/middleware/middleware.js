@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import jwt from "jsonwebtoken";
 import prisma from "../../utils/prisma.js";
 

@@ -24,4 +24,12 @@ async function createMovieDb(title, description, runtimeMins, username) {
   });
 }
 
-export { getMoviesDb, createMovieDb };
+async function deleteMovieDb(id) {
+  return await prisma.movie.delete({
+    where: {
+      id: id
+    }
+  })
+}
+
+export { getMoviesDb, createMovieDb, deleteMovieDb };

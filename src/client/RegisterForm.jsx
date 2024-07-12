@@ -14,6 +14,14 @@ export default function RegisterForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if(!formData.username || !formData.password) {
+      setError('Please include a username and password')
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      return
+    }
+
     const data = await fetch(`${url}/user/register`, {
       method: "POST",
       headers: {

@@ -14,7 +14,7 @@ export default function MoviesPage({ user }) {
     const data = await fetch(`${url}/movies`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
         "Content-Type": "application/json",
       },
     });
@@ -33,7 +33,7 @@ export default function MoviesPage({ user }) {
 
   return (
     <div className="grid place-items-center">
-      <h1 className="text-4xl my-4">The Boolean Movie Database</h1>
+      <h1 className="text-4xl my-4">The Boolean Movie Database 🎬</h1>
       <p className="my-2">{`${user.username}`}'s Movies</p>
       <ul className="flex flex-row flex-wrap gap-2 place-items-center justify-evenly mx-10">
         {movies.length === 0 ? (
@@ -42,7 +42,7 @@ export default function MoviesPage({ user }) {
           </p>
         ) : (
           movies?.map((movie) => {
-            return <MovieCard key={movie.id} movie={movie} />;
+            return <MovieCard key={movie.id} movie={movie} getMovies={getMovies}/>;
           })
         )}
       </ul>
@@ -59,9 +59,12 @@ export default function MoviesPage({ user }) {
         </p>
       )}
       {adminDash && <AdminDashboard loggedInUser={user} />}
-      <button onClick={handleClick} className="my-4 cursor-pointer">
-        Log Out
-      </button>
+      <div className="flex place-items-center mt-2">
+        <button onClick={handleClick} className="cursor-pointer">
+          Log Out
+        </button>
+        <img className="h-4 ml-2" src="../../assets/exit.svg" />
+      </div>
     </div>
   );
 }
