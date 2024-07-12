@@ -109,6 +109,7 @@ export default function Movies() {
           name="title"
           value={movieData.title}
           onChange={handleMovieChange}
+          required
         />
 
         {!uniqueTitle && (
@@ -121,6 +122,7 @@ export default function Movies() {
           name="description"
           value={movieData.description}
           onChange={handleMovieChange}
+          required
         />
 
         <input
@@ -130,6 +132,7 @@ export default function Movies() {
           min={0}
           value={movieData.runtime}
           onChange={handleMovieChange}
+          required
         />
 
         {!validToken && (
