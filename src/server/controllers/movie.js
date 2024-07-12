@@ -21,6 +21,6 @@ export const createMovie = async (req, res) => {
         throw new ExistingDataError('This movie exists')
     }
 
-    const newMovie = await createMovieDb(title, description, runtimeMins)
+    const newMovie = await createMovieDb(title, description, runtimeMins, req.user.id)
     res.status(201).json({movie_added: newMovie, added_by: req.user.username, jwt: req.token})
 }

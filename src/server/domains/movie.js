@@ -5,13 +5,15 @@ const prisma = new PrismaClient()
 export const createMovieDb = async (
 	title,
 	description,
-	runtimeMins
+	runtimeMins,
+	userId
 ) => {
 	const newMovie = await prisma.movie.create({
 		data: {
 			title: title,
 			description: description,
 			runtimeMins: runtimeMins,
+			userId: userId
 		},
 	})
 	return newMovie
