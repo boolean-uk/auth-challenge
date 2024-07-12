@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
   /**
@@ -44,16 +44,30 @@ function App() {
 
     const response = await fetch(`${apiUrl}/user/register`, options);
     const newUser = await response.json();
-
+    return console.log(newUser);
   };
 
   const handleLogin = async ({ username, password }) => {
+    const data = {
+      username,
+      password,
+    };
 
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    const response = await fetch(`${apiUrl}/user/login`, options);
+    const user = await response.json();
+    const token = user.data;
+
+    localStorage.setItem("token", token);
   };
 
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
-  }
+  // eslint-disable-next-line no-unused-vars
+  const handleCreateMovie = async ({ title, description, runtimeMins }) => {};
 
   return (
     <div className="App">
@@ -68,7 +82,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
