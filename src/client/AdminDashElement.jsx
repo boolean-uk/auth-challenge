@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
+import url from "../utils/baseurl";
+
 export default function AdminDashElement({ user, getAllUsers }) {
 
   async function handleClick() {
-    await fetch(`http://localhost:3000/user/${user.id}`, {
+    await fetch(`${url}/user/${user.id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,

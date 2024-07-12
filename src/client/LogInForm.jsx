@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
-
-
 import { useState } from "react";
+import url from "../utils/baseurl";
 
 export default function LogInForm({ setLoggedIn }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -15,7 +14,7 @@ export default function LogInForm({ setLoggedIn }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const data = await fetch("http://localhost:3000/user/login", {
+    const data = await fetch(`${url}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

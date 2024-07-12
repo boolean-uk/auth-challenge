@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import url from "../utils/baseurl";
 
 export default function AddNewMovieform({getMovies}) {
     const [formData, setFormData] = useState({ title: "", description: "", runtimeMins: ''});
@@ -11,7 +12,7 @@ export default function AddNewMovieform({getMovies}) {
     
       async function handleSubmit(e) {
         e.preventDefault();
-        await fetch('http://localhost:3000/movies', {
+        await fetch(`${url}/movies`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('jwt')}`,

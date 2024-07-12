@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import AdminDashElement from "./AdminDashElement";
+import url from "../utils/baseurl";
 
 export default function AdminDashboard( {loggedInUser} ) {
   const [users, setUsers] = useState([]);
 
   async function getAllUsers() {
-    const data = await fetch("http://localhost:3000/user/", {
+    const data = await fetch(`${url}/user/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
