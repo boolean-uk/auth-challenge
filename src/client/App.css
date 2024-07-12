@@ -1,0 +1,154 @@
+#root {
+  height: 100vh;
+  width: 100vw;
+
+  display: grid;
+  grid-template: 
+  'aside main' 1fr /
+  240px 1fr;
+
+  background-color: #E2E8F6;
+  color: #242625;
+}
+
+.error-message {
+  color: red;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  margin: 0;
+}
+
+/* Aside */
+aside {
+  background-color: white;
+  margin: 1.5rem;
+  border-radius: 10px;
+}
+
+aside ul {
+  list-style: none;
+  padding-left: 20px;
+  display: grid;
+  gap: 1rem;
+}
+
+aside ul li a {
+  font-size: 1.4rem;
+  color: #787878;
+  text-decoration: none;
+}
+
+/* Main */
+h1 {
+  color: #6959FF;
+  font-size: 5rem;
+}
+
+.main {
+  display: grid;
+  place-content: center;
+}
+
+input {
+  background-color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  color: black;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #6959FF;
+  color: white;
+}
+
+button:hover {
+  background-color: white;
+  border: #6959FF 2px solid;
+  color: #787878;
+}
+
+/* User form */
+.inputs {
+  display: grid;
+  gap: 1rem;
+  width: 300px;
+}
+
+/* Movie page */
+.movie-page {
+  display: grid;
+  grid-template: 
+  'create' 150px
+  'list' 1fr /
+  1fr;
+}
+
+.create-movie {
+  display: grid;
+  grid-template-rows: 50px;
+  justify-content: center;
+}
+
+.h2 {
+  display: grid;
+  place-content: center;
+}
+
+.movie-form {
+  display: grid;
+  justify-content: center;
+  grid-template: 
+  'error' min-content
+  'inputs' min-content /
+  1fr;
+  gap: 1rem;
+  width: 300px;
+}
+
+.create-movie-inputs {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  width: 300px;
+}
+
+.movie-ul {
+  list-style: none;
+  padding: 0 30px 0 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.movie-ul li {
+  border: #6959FF 2px dashed;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+/* Admin Dashboard */
+.user-ul {
+  list-style: none;
+  padding: 0 30px 0 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.user-ul li {
+  border: #6959FF 2px dashed;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+
