@@ -4,6 +4,7 @@ import RegisterForm from "./RegisterForm";
 import LoginForm from "./LogInForm";
 import FormChange from "./FormChange";
 import MoviesPage from "./MoviesPage";
+import url from '../utils/baseurl'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -16,7 +17,7 @@ function App() {
       if (!token) {
         return;
       }
-      const data = await fetch("http://localhost:3000/user/profile", {
+      const data = await fetch(`${url}/user/profile`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

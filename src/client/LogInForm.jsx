@@ -23,12 +23,12 @@ export default function LogInForm({ setLoggedIn }) {
     });
     const json = await data.json();
     if (json.token) {
-        localStorage.setItem("jwt", json.token);
-        setLoggedIn(true)
-        return
+      localStorage.setItem("jwt", json.token);
+      setLoggedIn(true);
+      return;
     }
 
-   setError(json.error)
+    setError(json.error);
   }
 
   return (
@@ -60,7 +60,9 @@ export default function LogInForm({ setLoggedIn }) {
         >
           Submit
         </button>
-        {error && <p className="text-red-700 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-700 text-center text-xs mt-2">{error}</p>
+        )}
       </form>
     </>
   );

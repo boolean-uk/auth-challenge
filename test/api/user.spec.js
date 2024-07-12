@@ -3,6 +3,7 @@ import app from "../../src/server/server.js";
 import { createUser } from "../helpers/createData.js";
 
 
+
 describe("Register endpoint", () => {
     describe("POST /user/register", () => {
         it("should allow users to register", async () => {
@@ -47,5 +48,34 @@ describe("Login endpoint", () => {
             expect(response.body.error).toEqual('Incorrect password')
             expect(response.status).toEqual(403)
         })
+    })
+})
+
+describe('Admin endpoints', () => {
+    it('should allow admins to get a list of all users', async () => {
+        await createUser('TestAdmin', 'password123', 'ADMIN')
+        await createUser('TestUser', 'password123')
+
+        const response = await supertest(app).post('/user/login').send({ username: 'TestAdmin', password: 'password123'})
+        const { token } = response.body
+
+        const userResponse = await supertest(app).get('/user').set('Authorization', `Bearer ${token}`)
+        const { users } = userResponse.body
+
+        expect(users.length).toEqual(2)
+    })
+
+    it('should allow admins to delete users', async () => {
+        await createUser('TestAdmin', 'password123', 'ADMIN')
+        const testUser = await createUser('TestUser', 'password123')
+
+        const response = await supertest(app).post('/user/login').send({ username: 'TestAdmin', password: 'password123'})
+        const { token } = response.body
+       
+        const deleteResponse = await supertest(app).delete(`/user/${testUser.id}`).set('Authorization', `Bearer ${token}`)
+        
+        const { user } = deleteResponse.body
+
+        expect(user.username).toEqual('TestUser')
     })
 })

@@ -7,12 +7,12 @@ export default function FormChange( {register, setRegister} ) {
 
     if (register) {
         return (
-            <p onClick={handleClick} className="text-xs cursor-pointer">I am already a member, take me to log in</p>
+            <p onClick={handleClick} className="text-xs cursor-pointer mt-2">I am already a member, take me to log in</p>
         )
     }
 
     return (
-        <p onClick={handleClick} className="text-xs cursor-pointer">I need to sign up, take me to register</p>
+        <p onClick={handleClick} className="text-xs cursor-pointer mt-2">I need to sign up, take me to register</p>
     )
 
 }
