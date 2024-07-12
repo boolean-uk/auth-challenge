@@ -2,11 +2,12 @@ import prisma from "../../src/utils/prisma";
 import bcrypt from "bcrypt";
 
 
-async function createUser(username, password) {
+async function createUser(username, password, role) {
     return await prisma.user.create({
         data: {
             username: username,
-            passwordHash: await bcrypt.hash(password, 8)
+            passwordHash: await bcrypt.hash(password, 8),
+            role: role
         }
     })
 }

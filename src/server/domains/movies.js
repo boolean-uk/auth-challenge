@@ -1,8 +1,14 @@
 import prisma from "../../utils/prisma.js";
 import { getUser } from "../domains/user.js";
 
-async function getMoviesDb() {
-  return await prisma.movie.findMany();
+async function getMoviesDb(username) {
+  const user = await getUser(username);
+
+  return await prisma.movie.findMany({
+    where: {
+      userId: user.id
+    }
+  });
 }
 
 async function createMovieDb(title, description, runtimeMins, username) {

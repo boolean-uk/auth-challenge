@@ -13,18 +13,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   username     String   @unique
   passwordHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  role         Role     @default(USER)
   movies       Movie[]  
 }
 
 model Movie {
   id          Int      @id @default(autoincrement())
-  title       String   @unique
+  title       String   
   description String
   runtimeMins Int
   createdAt   DateTime @default(now())

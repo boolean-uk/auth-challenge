@@ -18,6 +18,14 @@ async function seedUsers() {
 
   await prisma.user.create({
     data: {
+      username: "AdminTest",
+      passwordHash: await bcrypt.hash("password", 8),
+      role: 'ADMIN'
+    },
+  });
+
+  await prisma.user.create({
+    data: {
       username: "Mikey",
       passwordHash: await bcrypt.hash("password321", 8),
       movies: {

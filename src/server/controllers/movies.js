@@ -1,7 +1,11 @@
 import { getMoviesDb, createMovieDb } from "../domains/movies.js";
+import jwt from 'jsonwebtoken'
 
 async function getMovies(req, res) {
-  const movies = await getMoviesDb();
+  const [_, token] = req.headers.authorization.split(' ')
+  const { username } = jwt.decode(token)
+
+  const movies = await getMoviesDb(username);
   res.status(200).json({ movies });
 }
 
