@@ -9,3 +9,7 @@ const create = async (title, description, runtimeMins) =>
       runtimeMins,
     },
   });
+
+const all = async () => await prisma.movie.findMany();
+
+export { create, all };
