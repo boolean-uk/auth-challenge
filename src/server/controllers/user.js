@@ -5,7 +5,6 @@ import { PrismaClient } from '@prisma/client'
 import { json } from 'express';
 const prisma = new PrismaClient();
 
-import  {registerDb, loginDb }  from '../domains/user.js'
 
 const jwtSecret = 'mysecret';
 
@@ -20,7 +19,12 @@ const register = async (req, res) => {
         
         const saltRound = 10
         const hashedPassword = await bcrypt.hash(password, saltRound)
-        const registeredUser = await registerDb(username, hashedPassword)
+        const registeredUser = await prisma.user.create({
+            data : {
+            username,
+            password : hashedPassword
+            }
+        })
         
         res.status(201).json({ user: registeredUser });
     } catch (e) {
