@@ -35,7 +35,7 @@ export default function MoviesPage({ user }) {
       <h1 className="text-4xl my-4">The Boolean Movie Database</h1>
       <p className="my-2">{`${user.username}`}'s Movies</p>
       <ul className="flex flex-row flex-wrap gap-2 place-items-center justify-evenly mx-10">
-        {movies?.map((movie) => {
+      {movies.length === 0 ? <p className="bg-slate-200 p-4 text-xs rounded-md">{'No movies :('}</p> : movies?.map((movie) => {
           return <MovieCard key={movie.id} movie={movie} />;
         })}
       </ul>
