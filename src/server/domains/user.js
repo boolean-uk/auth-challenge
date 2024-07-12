@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const register = async (username, hash) =>
+const create = async (username, hash) =>
   await prisma.user.create({
     data: {
       username,
@@ -9,4 +9,16 @@ const register = async (username, hash) =>
     },
   });
 
-export { register };
+const find = async (username) => {
+  return await prisma.user.findFirst({
+    where: {
+      username,
+    },
+    select: {
+      username: true,
+      password: true,
+    },
+  });
+};
+
+export { create, find };
