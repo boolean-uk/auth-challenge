@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const jwtSecret = "mysecret";
 
-import { create } from "../domains/movie";
+import { create } from "../domains/movie.js";
 
 const getAllMovies = async (req, res) => {
   const movies = await prisma.movie.findMany();

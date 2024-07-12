@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const jwtSecret = "mysecret";
 
-import { create, find } from "../domain/user.js";
+import { create, find } from "../domains/user.js";
 
 const register = async (req, res) => {
   const { username, password } = req.body;
