@@ -24,6 +24,10 @@ export const getAllMoviesDb = async () => {
 	return allmovies
 }
 
+export const getMoviesByUsernameDb = async (username) => {
+	
+}
+
 export const getMovieByTitleDB = async (title) => {
     const movie = await prisma.movie.findFirst({
         where: {

@@ -2,36 +2,43 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
+// import RegisterUser from './components/RegisterUser.jsx';
+import RegisterUser from './components/RegisterUser';
+import LoginUser from './components/LogInUser';
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
+
 function App() {
   const [movies, setMovies] = useState([]);
+  const [users, setUsers] = useState([])
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+  // useEffect(() => {
+  //   fetch(`${apiUrl}/movies`)
+  //     .then(res => res.json())
+  //     .then(res => setMovies(res.allMovies));
+  // }, []);
+
+    useEffect(() => {
+    const fetchMovies = async () => {
+      // try {
+        const res = await fetch(`${apiUrl}/movies`);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        setMovies(data.allMovies);
+      // } catch (error) {
+      //   console.error('Error fetching movies:', error);
+      // }
+    };
+
+    fetchMovies();
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
+  console.log('UE',movies);
+
 
   const handleRegister = async ({ username, password }) => {
 
@@ -48,10 +55,12 @@ function App() {
   return (
     <div className="App">
       <h1>Register</h1>
-      <UserForm handleSubmit={handleRegister} />
+      {/* <UserForm handleSubmit={handleRegister} /> */}
+      <RegisterUser />
 
       <h1>Login</h1>
-      <UserForm handleSubmit={handleLogin} />
+      {/* <UserForm handleSubmit={handleLogin} /> */}
+      <LoginUser />
 
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
