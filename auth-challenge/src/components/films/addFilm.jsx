@@ -11,23 +11,52 @@ export default function AddFilm() {
     runTime: "",
   });
 
-  fetch('http://localhost:4040/films/users')
-    .then(res => res.json())
-    .then(json => setAllFilms(json.movies))
+
+  // fetch('http://localhost:4040/movies/users')
+  //   .then(res => res.json())
+  //   .then(json => setAllFilms(json.movies))
+
+  function handleChange(e) {
+    const {name, value} = e.target
+    setNewFilm({
+      ...newFilm,
+      [name]: value
+    })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const titleTooLong = newFilm.title >100
+    const descTooLong = newFilm.description > 250
+
+    if(titleTooLong || descTooLong) {
+      return alert("Exceded entry capacity")
+    }
+
+    if(
+      newFilm.title === "" ||
+      newFilm.description === "" ||
+      newFilm.runTime === ""
+    ) {
+      return alert("Missing fields for movie entry")
+    }
+
+    fetch(`http://localhost:4040/movies/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newFilm),})
+    
+    setNewFilm({
+      title: "",
+      description: "",
+      runTime: "",
+    })
+  }
 
   return (
     <div className="film_container">
-      <header className="film_header">
-        <h1>Good Films</h1>
-        <img
-          src={filmreel}
-          alt="film reel icon"
-          id="filmreel"
-          className="icon"
-        />
-      </header>
       <main className="film_main">
-        <form>
+        <form className="film_form" onSubmit={(e) => handleSubmit(e)}>
           <input
             name="title"
             placeholder="Film Title"
@@ -35,6 +64,7 @@ export default function AddFilm() {
             className="text_input"
             required
             value={newFilm.title}
+            onChange={(e) => handleChange(e)}
           />
           <input
             name="description"
@@ -43,6 +73,7 @@ export default function AddFilm() {
             className="text_input"
             required
             value={newFilm.description}
+            onChange={(e) => handleChange(e)}
           />
           <input
             name="runTime"
@@ -51,8 +82,9 @@ export default function AddFilm() {
             className="text_input"
             required
             value={newFilm.runTime}
+            onChange={(e) => handleChange(e)}
           />
-          <button name="submit" type="submit">
+          <button name="submit" type="submit" className="enter_button">
             <img
               src={enter}
               className="icon"

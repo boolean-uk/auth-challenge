@@ -10,7 +10,7 @@
     width: 40px;
 }
 
-.dashboard_main, .register_main, .login_main, .film_main {
+.dashboard_container, .register_container, .login_form_container, .film_container {
     background-color: #F9EFDB;
     grid-area: main;
     place-content: center;
@@ -31,14 +31,21 @@
 }
 
 .films_list {
-    overflow: auto;
-    max-height: 100%;
+    min-height: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column-reverse;
     scrollbar-width: none;
     place-items: center;
     margin: 0;
     padding: 0;
+    animation: scroll 40s linear infinite;
+}
+
+@keyframes scroll {
+    to {
+        transform: translateY(-100%);
+    }
 }
 
 .films_list::-webkit-scrollbar {

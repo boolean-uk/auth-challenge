@@ -39,16 +39,44 @@
 }
 
 .text_input {
-  border: none;
+  border: transparent;
   border-bottom: 2px solid #9DBC98;
   background-color: #F9EFDB;
+  height: 2rem;
+  color:  #638889;
+  font-size: medium;
+}
+
+.text_input:focus {
+  outline: none;
 }
 
 #form {
+  display: flex;
   gap: 2rem;
 }
 
 .enter_button {
   border: none;
   background-color: #F9EFDB;
+}
+
+
+.register_main_form, .login_main_form {
+  display: flex;
+  gap: 2rem;
+}
+
+.register_head {
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.login_main h2 {
+  padding: 1rem;
+}
+
+.film_form {
+  display: flex;
+  gap: 2rem;
 }
