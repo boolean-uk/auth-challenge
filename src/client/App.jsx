@@ -7,6 +7,7 @@ import RegisterPage from './components/RegisterPage'
 import {useNavigate} from 'react-router-dom'
 import Aside from './components/Aside'
 import HomePage from './components/HomePage'
+import AdminDashboard from './components/AdminDashboard'
 
 export const DataContext = createContext()
 
@@ -144,8 +145,13 @@ function App() {
           />
 
           <Route 
-              path='/movie-list'
-              element={<MovieForm />}
+            path='/movie-list'
+            element={<MovieForm />}
+          />
+
+          <Route 
+            path='/admin-dashboard'
+            element={<AdminDashboard />}
           />
 
         </Routes>

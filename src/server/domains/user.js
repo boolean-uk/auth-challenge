@@ -3,10 +3,11 @@ const prisma = new PrismaClient()
 import bcrypt from 'bcrypt'
 
 
-const createUserDb = async (username, password) => await prisma.user.create({
+const createUserDb = async (username, password, role = 'USER') => await prisma.user.create({
   data: {
     username,
-    password: await bcrypt.hash(password, 10)
+    password: await bcrypt.hash(password, 10),
+    role: role
   },
   select: {
     username: true,
@@ -22,7 +23,18 @@ async function getUserDb(username) {
     })
 }
 
+async function getAllUsersDb() {
+  return await prisma.user.findMany({
+    select: {
+      username: true,
+      id: true,
+      role: true
+    }
+  })
+}
+
 export {
    createUserDb,
-   getUserDb 
+   getUserDb,
+   getAllUsersDb
 } 

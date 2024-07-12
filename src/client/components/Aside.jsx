@@ -8,6 +8,7 @@ function Aside() {
           <li><Link to='/register'>Register</Link></li>
           <li><Link to='/login'>Login</Link></li>
           <li><Link to='/movie-list'>Movies</Link></li>
+          <li><Link to='/admin-dashboard'>Dashboard</Link></li>
         </ul>
       </aside>
     )

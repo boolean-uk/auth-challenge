@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import { createUserDb, getUserDb } from '../domains/user.js'
+import { createUserDb, getAllUsersDb, getUserDb } from '../domains/user.js'
 import bcrypt from 'bcrypt'
 import { AlreadyExistsError, IncorrectPasswordError, MissingFieldsError, NotFoundError } from '../errors/error.js'
 
@@ -52,7 +52,16 @@ async function login(req, res) {
     })
 }
 
+async function getAllUsers(req, res) {
+    const users = await getAllUsersDb()
+
+    res.json({
+        data: users
+    })
+}
+
 export {
     register,
-    login
+    login,
+    getAllUsers
 }
