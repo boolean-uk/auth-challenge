@@ -18,4 +18,8 @@ async function getUser(username) {
   });
 }
 
-export { registerUserDb, getUser };
+async function getAllUsersDb() {
+  return await prisma.user.findMany()
+}
+
+export { registerUserDb, getUser, getAllUsersDb };

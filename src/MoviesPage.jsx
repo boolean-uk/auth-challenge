@@ -3,34 +3,31 @@
 import MovieCard from "./MovieCard";
 import AddNewMovieform from "./AddNewMovieForm";
 import { useEffect, useState } from "react";
-
-
+import AdminDashboard from "./AdminDashboard";
 
 export default function MoviesPage({ user }) {
-  const [movies, setMovies] = useState([])
+  const [movies, setMovies] = useState([]);
 
   async function getMovies() {
     const data = await fetch("http://localhost:3000/movies", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json',
-      }
-    })
-    const json = await data.json()
-    setMovies(json.movies)
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await data.json();
+    setMovies(json.movies);
   }
-
 
   useEffect(() => {
-    getMovies()
-  }, [])
+    getMovies();
+  }, []);
 
   function handleClick() {
-    localStorage.removeItem('jwt')
+    localStorage.removeItem("jwt");
     window.location.reload();
   }
-
 
   return (
     <div className="grid place-items-center">
@@ -42,8 +39,12 @@ export default function MoviesPage({ user }) {
         })}
       </ul>
 
-      <AddNewMovieform getMovies={getMovies}/>
-      <button onClick={handleClick} className="my-4 cursor-pointer">Log Out</button>
+      <AddNewMovieform getMovies={getMovies} />
+      {user.role === "ADMIN" && <AdminDashboard />}
+      <button onClick={handleClick} className="my-4 cursor-pointer">
+        Log Out
+      </button>
+      
     </div>
   );
 }
