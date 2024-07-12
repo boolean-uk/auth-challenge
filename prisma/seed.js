@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt'
 async function createAdmin() {
   const user = await prisma.user.create({
     data: {
-        username: 'Jake',
+        username: 'jake',
         password: await bcrypt.hash('mypassword', 10),
         role: 'ADMIN'
     }

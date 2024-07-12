@@ -16,11 +16,11 @@ const createUserDb = async (username, password, role = 'USER') => await prisma.u
 })
 
 async function getUserDb(username) {
-    return await prisma.user.findUnique({
-        where: {
-            username: username
-        }
-    })
+  return await prisma.user.findUnique({
+    where: {
+      username: username
+    }
+  })
 }
 
 async function getAllUsersDb() {
@@ -33,8 +33,17 @@ async function getAllUsersDb() {
   })
 }
 
+async function deleteUserDb(userId) {
+  return await prisma.user.delete({
+    where: {
+      id: userId
+    }
+  })
+}
+
 export {
    createUserDb,
    getUserDb,
-   getAllUsersDb
+   getAllUsersDb,
+   deleteUserDb
 } 

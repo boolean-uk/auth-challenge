@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import { createUserDb, getAllUsersDb, getUserDb } from '../domains/user.js'
+import { createUserDb, deleteUserDb, getAllUsersDb, getUserDb } from '../domains/user.js'
 import bcrypt from 'bcrypt'
 import { AlreadyExistsError, IncorrectPasswordError, MissingFieldsError, NotFoundError } from '../errors/error.js'
 
@@ -60,8 +60,19 @@ async function getAllUsers(req, res) {
     })
 }
 
+async function deleteUser(req, res) {
+    const userId = Number(req.params.id)
+
+    const deletedUser = await deleteUserDb(userId)
+
+    res.json({
+        data: deletedUser
+    })
+}
+
 export {
     register,
     login,
-    getAllUsers
+    getAllUsers,
+    deleteUser
 }

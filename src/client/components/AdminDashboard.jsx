@@ -37,7 +37,7 @@ function AdminDashboard() {
         }
     
         getUsers()
-      }, [apiUrl])
+      }, [apiUrl, setUsers])
 
     return (
         <div className="dahsboard">
@@ -49,7 +49,7 @@ function AdminDashboard() {
                 <h2>User list</h2>
                 <ul className='user-ul'>
                 {users.map((user, index) => {
-                    return <UserLi key={index} user={user} />})
+                    return <UserLi key={index} user={user} users={users} setUsers={setUsers}/>})
                 }
                 </ul>
             </div>
