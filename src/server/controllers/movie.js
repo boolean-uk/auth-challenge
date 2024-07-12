@@ -22,5 +22,5 @@ export const createMovie = async (req, res) => {
     }
 
     const newMovie = await createMovieDb(title, description, runtimeMins)
-    res.status(201).json({movie_added: newMovie})
+    res.status(201).json({movie_added: newMovie, added_by: req.user.username, jwt: req.token})
 }
