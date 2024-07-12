@@ -34,6 +34,16 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
+    const data = { username, password };
+
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    const response = await fetch(`${apiUrl}/user/register`, options);
+    const newUser = await response.json();
 
   };
 
