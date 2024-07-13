@@ -15,7 +15,7 @@
     grid-area: main;
     place-content: center;
     padding: 9rem;
-    
+    height: 100%;
 }
 .button_box {
     display: flex;
@@ -31,11 +31,14 @@
     margin: 0;
 }
 
-.films_list {
+.right_aside, .left_side {
     max-height: 100vh;
-    max-width: 100vw;
-    overflow: hidden;
+    overflow: auto;
     display: flex;
+}
+
+.films_list {
+    max-width: 100vw;
     flex-direction: column;
     scrollbar-width: none;
     place-items: center;
@@ -62,4 +65,5 @@
     margin: 0;
     grid-area: right;
     background-color: #EBD9B4;
+    padding: 1.5rem;
 }
