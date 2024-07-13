@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import { createUserDb, getUserByUserNameDb } from "../domains/user.js"
+import { createUserDb, getUserByIdDb, getUserByUserNameDb } from "../domains/user.js"
 import {
 	ExistingDataError,
 	MissingFieldsError,
@@ -56,4 +56,11 @@ export const logInUser = async (req, res) => {
 	const payload = { username: existingUser.username }
 	const token = jwt.sign(payload, process.env.JWT_SECRET)
 	res.status(200).json({ token })
+}
+
+export const getUserById = async (req, res) => {
+	const userId = Number(req.params.id)
+	console.log(userId);
+	const user = await getUserByIdDb(userId)
+	res.status(200).json({user})
 }

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { getUserByUserNameDb } from "./user.js"
 
 const prisma = new PrismaClient()
 
@@ -6,15 +7,16 @@ export const createMovieDb = async (
 	title,
 	description,
 	runtimeMins,
-	userId
+	username
 ) => {
+	const user = await getUserByUserNameDb(username)
 	const newMovie = await prisma.movie.create({
 		data: {
 			title: title,
 			description: description,
 			runtimeMins: runtimeMins,
-			userId: userId
-		},
+			userId: user.id
+		}, 
 	})
 	return newMovie
 }
@@ -24,15 +26,21 @@ export const getAllMoviesDb = async () => {
 	return allmovies
 }
 
-export const getMoviesByUsernameDb = async (username) => {
-	
+export const getUserMoviesDb = async (username) => {
+	const user = await getUserByUserNameDb(username)
+	const userMovies = await prisma.movie.findMany({
+		where: {
+			userId: user.id,
+		},
+	})
+	return userMovies
 }
 
 export const getMovieByTitleDB = async (title) => {
-    const movie = await prisma.movie.findFirst({
-        where: {
-            title: title
-        }
-    })
-    return movie
+	const movie = await prisma.movie.findFirst({
+		where: {
+			title: title,
+		},
+	})
+	return movie
 }

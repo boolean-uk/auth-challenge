@@ -26,3 +26,12 @@ export const getUserByUserNameDb = async (username) => {
 	})
 	return foundUser
 }
+
+export const getUserByIdDb = async (userId) => {
+	const foundUser = await prisma.user.findFirst({
+		where: {
+			id: userId,
+		},
+	})
+	return foundUser
+}

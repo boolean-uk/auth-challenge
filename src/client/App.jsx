@@ -14,12 +14,6 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [users, setUsers] = useState([])
 
-  // useEffect(() => {
-  //   fetch(`${apiUrl}/movies`)
-  //     .then(res => res.json())
-  //     .then(res => setMovies(res.allMovies));
-  // }, []);
-
     useEffect(() => {
     const fetchMovies = async () => {
       // try {
@@ -33,37 +27,19 @@ function App() {
       //   console.error('Error fetching movies:', error);
       // }
     };
-
     fetchMovies();
   }, []);
-
-  console.log('UE',movies);
-
-
-  const handleRegister = async ({ username, password }) => {
-
-  };
-
-  const handleLogin = async ({ username, password }) => {
-
-  };
-
-  const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
-  }
 
   return (
     <div className="App">
       <h1>Register</h1>
-      {/* <UserForm handleSubmit={handleRegister} /> */}
       <RegisterUser />
 
       <h1>Login</h1>
-      {/* <UserForm handleSubmit={handleLogin} /> */}
       <LoginUser />
 
       <h1>Create a movie</h1>
-      <MovieForm handleSubmit={handleCreateMovie} />
+      <MovieForm />
 
       <h1>Movie list</h1>
       <ul>

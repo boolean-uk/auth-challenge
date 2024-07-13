@@ -3,61 +3,6 @@ import { useState } from "react";
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
-// export default function RegisterUser() {
-//     const [userData, setUserData] = useState({ username: '', password: '' })
-    
-//     const handleChange = (e) => {
-//         const { name, value } = e.target
-//         setUserData({
-//             ...userData, [name]:value
-//         })
-//     }
-
-//     const handleSubmit = async (e) => {
-//         e.preventDefault()
-
-//         const data = await fetch(`${apiUrl}/users/register`, {
-//             method: "POST",
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ username: userData.username, password: userData.password })
-//         })
-//         setUserData({ username: '', password: '' })
-//     }
-
-
-
-//     return (
-//         <>
-//             <form onSubmit={handleSubmit} id="register">
-//                 <h1>Register</h1>
-
-//                 <input
-//                 type="text"
-//                 name="username"
-//                 placeholder="Username"
-//                 maxLength={50}
-//                 value={userData.username}
-//                 onChange={handleChange}
-//                 required
-//                 />
-
-//                 <input
-//                 type="password"
-//                 name="password"
-//                 placeholder="Password"
-//                 value={userData.password}
-//                 onChange={handleChange}
-//                 required
-//                 />
-
-//                 <button type="submit">Submit</button>
-//             </form>
-//         </>
-//     )
-// }
-
 export default function RegisterUser() {
     const [userData, setUserData] = useState({ username: '', password: '' });
     const [error, setError] = useState(null);
@@ -91,7 +36,7 @@ export default function RegisterUser() {
                 throw new Error(result.error);
             }
 
-            setSuccess('User registered successfully!');
+            setSuccess('User created!');
 
             setUserData({ username: '', password: '' });
 

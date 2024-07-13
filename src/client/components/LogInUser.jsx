@@ -20,7 +20,7 @@ export default function LoginUser() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        try {
+        // try {
             const response = await fetch(`${apiUrl}/users/login`, {
                 method: "POST",
                 headers: {
@@ -38,9 +38,9 @@ export default function LoginUser() {
                 setError(json.error)
             }
 
-        }catch (error) {
-            setError(error.message);
-        }
+        // }catch (error) {
+        //     setError(error.message);
+        // }
     }
 
     return (
