@@ -8,9 +8,6 @@ export async function register(formData) {
 
     const responseBody = await response.json()
 
-    if (responseBody.error) {
-        return responseBody
-    }
 
     return responseBody
 }
@@ -22,18 +19,18 @@ export async function login(formData) {
     })
     const responseBody = await response.json()
 
-    if (responseBody.error) {
-        return responseBody
-    }
 
     return responseBody
 }
 
-export async function createMovie(formData) {
+export async function createMovie(formData, token) {
     const response = await fetch('/api/movies', {
+        headers:{'Authorization': `Bearer ${token}`},
         method: 'POST',
         body: JSON.stringify(formData),
     })
 
-    return await response.json()
+    const responseBody = await response.json()
+
+    return await responseBody
 }

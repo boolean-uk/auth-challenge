@@ -1,4 +1,4 @@
-export type FormType = { type: 'login' | 'register' | 'movie' }
+export type FormType = { type: 'login' | 'register' | 'movie'; token?: string }
 
 export type AccountCredentials = { username: string; password: string }
 

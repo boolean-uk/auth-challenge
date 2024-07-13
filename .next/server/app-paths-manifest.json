@@ -3,5 +3,6 @@
   "/page": "app/page.js",
   "/login/page": "app/login/page.js",
   "/movies/page": "app/movies/page.js",
-  "/movies/create/page": "app/movies/create/page.js"
+  "/movies/create/page": "app/movies/create/page.js",
+  "/api/movies/route": "app/api/movies/route.js"
 }

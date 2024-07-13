@@ -5,7 +5,7 @@ import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import * as formSubmit from '../../lib/formSubmitions'
 
-export default function Form({ type }: FormType) {
+export default function Form({ type , token} : FormType) {
     const router = useRouter()
     const blankForm = {
         username: '',
@@ -94,9 +94,6 @@ export default function Form({ type }: FormType) {
         setFormData({ ...formData, [name]: value })
     }
 
-    const handleClick = (e) => {
-        e.currentTarget.disabled = true;
-      };
 
     async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -134,12 +131,13 @@ export default function Form({ type }: FormType) {
             }
 
             case 'movie': {
-                const movieResponse = await formSubmit.createMovie(formData)
+                const movieResponse = await formSubmit.createMovie(formData, token)
                 if (!!movieResponse.error) {
                     alert('Error: ' + movieResponse.error)
                     return
                 }
                 setFormData({ ...blankForm })
+                alert('Succesfully Created Movie!')
                 break
             }
 

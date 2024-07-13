@@ -58,7 +58,7 @@ export const createMovie = async ({
     description,
     runtimeMins,
 }: MovieDetails) => {
-    try {
+    try {        
         const newMovie = await prisma.movie.create({
             data: {
                 title,
@@ -69,6 +69,7 @@ export const createMovie = async ({
 
         return newMovie
     } catch (e) {
+        console.log(e)
         return e
     }
 }

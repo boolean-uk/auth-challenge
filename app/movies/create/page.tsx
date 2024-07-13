@@ -33,7 +33,7 @@ export default function page() {
                             Make sure it's a good one!
                         </p>
                     </div>
-                    <Form type="movie" />
+                    <Form type="movie" token={token}/>
                 </div>
             </section>
         </>

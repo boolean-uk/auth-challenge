@@ -7,19 +7,20 @@ export async function POST(req: NextRequest) {
     try {
         const {title, description, runtimeMins} = await req.json()
 
-        if(!title || !description || !runtimeMins) {
+        const parseMins = Number(runtimeMins)
+
+        if(!title || !description || !runtimeMins || isNaN(parseMins)) {
             return NextResponse.json(
                 { error: 'Fields missing in the request body' },
                 { status: 400 }
             )
         }
-        
         const token = req.headers.get('authorization').split(' ')[1]
         const tokenData = hasValidToken(token)
 
         if (!tokenData || isNaN(Number(tokenData.sub))) {
             return NextResponse.json(
-                { error: 'Invalid Credentials' },
+                { error: 'Invalid Credentials: Bad Token' },
                 { status: 401 }
             )
         }
@@ -33,7 +34,11 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        const newMovie = await createMovie({title, description, runtimeMins})
+        
+
+        
+
+        const newMovie = await createMovie({title, description, runtimeMins:parseMins})
 
         return NextResponse.json({ movie:newMovie }, { status: 201 })
     } catch (e) {
