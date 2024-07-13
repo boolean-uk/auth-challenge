@@ -3,12 +3,13 @@ import enter from "../../assets/svg/enter.svg";
 import UsersFilms from "./usersFilms";
 
 export default function AddFilm() {
-    const [allFilms, setAllFilms] = useState([])
+  const [allFilms, setAllFilms] = useState([])
   const [newFilm, setNewFilm] = useState({
     title: "",
     description: "",
-    runTime: "",
+    runtime: "",
   });
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -22,7 +23,6 @@ export default function AddFilm() {
     .then(res => res.json())
     .then(json => setAllFilms(json.movies))
   }, [setAllFilms])
-
   
 
   function handleChange(e) {
@@ -45,7 +45,7 @@ export default function AddFilm() {
     if(
       newFilm.title === "" ||
       newFilm.description === "" ||
-      newFilm.runTime === ""
+      newFilm.runtime === ""
     ) {
       return alert("Missing fields for movie entry")
     }
@@ -67,15 +67,13 @@ export default function AddFilm() {
          }}
     )
     .then(res => res.json())
-    .then(json => setAllFilms(json.movies))
+    .then(json => setAllFilms([json.movies, {...newFilm}]))
 
     setNewFilm({
       title: "",
       description: "",
-      runTime: "",
+      runtime: "",
     })
-
-    
   }
 
   return (
@@ -93,7 +91,7 @@ export default function AddFilm() {
           />
           <input
             name="description"
-            placeholder="Film Descript"
+            placeholder="Film Description"
             id="film_desc"
             className="text_input"
             required
@@ -101,12 +99,12 @@ export default function AddFilm() {
             onChange={(e) => handleChange(e)}
           />
           <input
-            name="runTime"
+            name="runtime"
             placeholder="Film Runtime"
             id="film_runTime"
             className="text_input"
             required
-            value={newFilm.runTime}
+            value={newFilm.runtime}
             onChange={(e) => handleChange(e)}
           />
           <button name="submit" type="submit" className="enter_button">

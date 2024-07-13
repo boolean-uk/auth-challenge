@@ -1,10 +1,10 @@
 import prisma from "../utils/prisma.js";
 
-const createMovieDb = async (title, description, runTime, userID) => await prisma.movie.create({
+const createMovieDb = async (title, description, runtime, userID) => await prisma.movie.create({
     data: {
         title: title,
         description: description,
-        runtime: runTime,
+        runtime: runtime,
         users: {
             create: [
                 {

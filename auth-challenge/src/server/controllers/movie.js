@@ -5,14 +5,14 @@ const createMovie = async (req, res) => {
     const {
         title,
         description,
-        runTime
+        runtime
     } = req.body
     const userID = req.user.id
 
     if(
         !title ||
         !description ||
-        !runTime
+        !runtime
     ) {
         return res.status(400).json({
             message: "Missing Fields from movie form"
@@ -28,7 +28,7 @@ const createMovie = async (req, res) => {
     }
 
     try {
-        const newFilm = await createMovieDb(title, description, Number(runTime), userID)
+        const newFilm = await createMovieDb(title, description, Number(runtime), userID)
         res.status(201).json({
         movie: newFilm
     })
