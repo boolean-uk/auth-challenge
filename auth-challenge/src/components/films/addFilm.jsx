@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import filmreel from "../../assets/svg/filmreel.svg";
 import enter from "../../assets/svg/enter.svg";
 import UsersFilms from "./usersFilms";
 
@@ -12,19 +11,7 @@ export default function AddFilm() {
   });
   const token = localStorage.getItem('token')
 
-
-  useEffect(() =>  {
-    fetch('http://localhost:4040/movies/users',
-      { method: "GET",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-         }}
-    )
-    .then(res => res.json())
-    .then(json => setAllFilms(json.movies))
-  }, [token])
-  console.log(allFilms)
+  
 
   function handleChange(e) {
     const {name, value} = e.target
@@ -59,12 +46,24 @@ export default function AddFilm() {
        },
       body: JSON.stringify(newFilm)
     })
-    
+
+    fetch('http://localhost:4040/movies/users',
+      { method: "GET",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+         }}
+    )
+    .then(res => res.json())
+    .then(json => setAllFilms(json.movies))
+
     setNewFilm({
       title: "",
       description: "",
       runTime: "",
     })
+
+    
   }
 
   return (
@@ -111,7 +110,7 @@ export default function AddFilm() {
             {allFilms.length === 0 ? (
                 <li></li>
             ) : (
-                allFilms.map((film) => <UsersFilms film={film.movie} key={film.id}/>)
+                allFilms.map((film) => <UsersFilms film={film.movie} key={film.id}/>).reverse()
             )}
         </ul>
       </main>

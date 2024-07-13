@@ -3,7 +3,7 @@ import enter from "../../assets/svg/enter.svg";
 import { Link } from "react-router-dom";
 
 export default function Form({ route }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isRegistered, setIsRegistered] = useState(false)
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -36,7 +36,7 @@ export default function Form({ route }) {
       .then(res => res.json())
       .then(json => localStorage.setItem('token', json.user))
 
-    setIsLoggedIn(true);
+    setIsRegistered(true);
 
     setUser({
       username: "",
@@ -45,12 +45,7 @@ export default function Form({ route }) {
   }
 
   return (
-    <>
-    {isLoggedIn &&
-    <Link to='/films'>
-    <h3>Add Films!</h3>
-    </Link>
-    }
+    <div className="form_box">
       <form name="form" id="form" onSubmit={(e) => handleSubmit(e)}>
         <input
           name="username"
@@ -76,6 +71,11 @@ export default function Form({ route }) {
           <img src={enter} className="icon" id="enter_form" alt="enter icon" />
         </button>
       </form>
-    </>
+      {isRegistered &&
+    <Link to='/films'>
+    <h3 className="add_film_link">Start adding your films!</h3>
+    </Link>
+    }
+    </div>
   );
 }

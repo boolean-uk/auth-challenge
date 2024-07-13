@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import FilmBanner from "./filmBanner";
 import filmreel from "../../assets/svg/filmreel.svg";
+import { Link } from "react-router-dom";
 
 export default function SideDecoration() {
   const [films, setFilms] = useState([]);
@@ -24,12 +25,14 @@ export default function SideDecoration() {
     <>
       <header className="dashboard_header">
         <h1>Good Films</h1>
+        <Link to='/'>
         <img
           src={filmreel}
           alt="film reel icon"
           id="filmreel"
           className="icon"
         />
+        </Link>
       </header>
       <section className="left_side">
         <ul className="films_list">

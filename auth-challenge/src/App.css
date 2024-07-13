@@ -80,3 +80,17 @@
   display: flex;
   gap: 2rem;
 }
+
+.form_box {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.film_container{
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.film_container::-webkit-scrollbar {
+  display: none;
+}

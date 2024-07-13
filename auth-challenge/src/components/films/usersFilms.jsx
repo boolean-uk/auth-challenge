@@ -1,10 +1,10 @@
 export default function UsersFilms({film}) {
-    console.log(film)
     return (
         <li>
+            <img />
             <h4>{film.title}</h4>
             <p>{film.description}</p>
-            <p>{film.runTime}</p>
+            <p>Runtime: {film.runtime} mins</p>
         </li>
     )
 }
