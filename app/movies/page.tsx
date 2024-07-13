@@ -1,11 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '../../components/navigation/navbar'
 import Movies from './Movies'
 
 export default function page() {
-    const [token, setToken] = useState('token')
+    const [token, setToken] = useState(null)
+
+    useEffect(() => {
+        const getToken = localStorage.getItem('token')
+        setToken(getToken || null)
+    }, [])
 
     return (
         <>

@@ -12,34 +12,37 @@ export const registerUser = async ({
     username,
     password,
 }: AccountCredentials) => {
-    try {
-        const newUser = await prisma.user.create({
-            data: {
-                username,
-                passwordHash: await bcrypt.hash(password, 8),
-            },
-        })
+    const usernameInUse =
+        (await prisma.user.findUnique({ where: { username } })) !== null
 
-        delete newUser.passwordHash
-
-        return newUser
-    } catch (e) {
-        return e.message
+    if (usernameInUse) {
+        throw Error('Username already in use')
     }
+
+    const newUser = await prisma.user.create({
+        data: {
+            username,
+            passwordHash: await bcrypt.hash(password, 8),
+        },
+    })
+
+    delete newUser.passwordHash
+
+    return newUser
 }
 
 export const getUserInfo = async (query) => {
-    const userToFind: UserToSearchFor = {where:{}}
+    const userToFind: UserToSearchFor = { where: {} }
 
     if (typeof query === 'string') {
         userToFind.where.username = query
     }
 
-    if (typeof query === 'number'){
+    if (typeof query === 'number') {
         userToFind.where.id = query
     }
-         // @ts-ignore directive
-        const user = await prisma.user.findUniqueOrThrow({...userToFind})
+    // @ts-ignore directive
+    const user = await prisma.user.findUniqueOrThrow({ ...userToFind })
 
     return user
 }

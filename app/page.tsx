@@ -1,14 +1,19 @@
 'use client'
 
 import Navbar from '../components/navigation/navbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import angus from '../public/assets/angus_icon.jpg'
 
 export default function Page() {
+    //In future, will refactor to use cookies to manage the JWT.
+    const [token, setToken] = useState(null)
 
-    const [token, setToken] = useState(localStorage.getItem('token'))
-
+    useEffect(() => {
+        const getToken = localStorage.getItem('token')
+        setToken(getToken || null)
+    }, [])
+    
     return (
         <>
             <Navbar token={token} setToken={setToken} />
@@ -38,7 +43,7 @@ export default function Page() {
                         </span>
                     </div>
                     <div className="text-center">
-                        <button className="inline-block h-3 w-3 mr-3 rounded-full bg-green-500"></button>
+                        <span className="inline-block h-3 w-3 mr-3 rounded-full bg-green-500"></span>
                     </div>
                 </div>
             </section>

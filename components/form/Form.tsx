@@ -93,14 +93,22 @@ export default function Form({ type }: FormType) {
                 method: 'POST',
                 body: JSON.stringify(formData),
             })
+
+            const responseBody = await response.json()
+
+            if (responseBody.error) {
+                console.log(responseBody)
+                alert('Error: ' + responseBody.error)
+                return;
+            }
             const response2 = await fetch('/api/users/login', {
                 method: 'POST',
                 body: JSON.stringify(formData),
             })
-            const responseBody = await response2.json()
+            const responseBody2 = await response2.json()
 
-            if (responseBody.error) {
-                alert('error' + responseBody.error)
+            if (responseBody2.error) {
+                alert('Error: ' + responseBody.error)
                 return;
             }
 

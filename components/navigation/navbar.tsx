@@ -1,9 +1,8 @@
-'use client'
+
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import logo from '../../public/assets/Boolean Logo.png'
-import { useEffect, useState } from 'react'
 
 export default function Navbar({ token , setToken}) {
     const router = useRouter()
@@ -18,7 +17,6 @@ export default function Navbar({ token , setToken}) {
         setToken(localStorage.getItem('token'))
     }
 
-    console.log(token)
 
     function checkToken() {
         if (token) {
