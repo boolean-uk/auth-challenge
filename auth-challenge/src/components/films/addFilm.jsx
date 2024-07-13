@@ -11,6 +11,18 @@ export default function AddFilm() {
   });
   const token = localStorage.getItem('token')
 
+  useEffect(() => {
+    fetch('http://localhost:4040/movies/users',
+      { method: "GET",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+         }}
+    )
+    .then(res => res.json())
+    .then(json => setAllFilms(json.movies))
+  }, [setAllFilms])
+
   
 
   function handleChange(e) {

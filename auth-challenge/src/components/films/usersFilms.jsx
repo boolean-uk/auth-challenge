@@ -4,7 +4,7 @@ export default function UsersFilms({film}) {
             <img />
             <h4>{film.title}</h4>
             <p>{film.description}</p>
-            <p>Runtime: {film.runtime} mins</p>
+            <p><strong>Runtime:</strong> {film.runtime} mins</p>
         </li>
     )
 }

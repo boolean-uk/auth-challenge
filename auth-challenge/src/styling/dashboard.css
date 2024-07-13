@@ -35,6 +35,7 @@
     max-height: 100vh;
     overflow: auto;
     display: flex;
+    scrollbar-width: none;
 }
 
 .films_list {

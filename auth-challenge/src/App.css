@@ -11,7 +11,7 @@
   'left main right' 1fr
   'left main right' 1fr/
   15rem 1fr 15rem;
-  height: 100%;
+  height: 100vh;
   width: 100vw;
 }
 
@@ -79,6 +79,7 @@
 .film_form {
   display: flex;
   gap: 2rem;
+  padding-bottom: 2rem;
 }
 
 .form_box {
@@ -86,11 +87,17 @@
   grid-template-rows: 1fr 1fr;
 }
 
-.film_container{
-  overflow: scroll;
+.film_container {
+  display: flex;
+  overflow-y: scroll;
   scrollbar-width: none;
+  padding-bottom: 1rem;
 }
 
-.film_container::-webkit-scrollbar {
+.film_container::-webkit-scrollbar, .right_aside::-webkit-scrollbar, .left_side::-webkit-scrollbar {
   display: none;
+}
+
+.film_container, .right_aside, .left_side {
+  scrollbar-width: none;
 }
