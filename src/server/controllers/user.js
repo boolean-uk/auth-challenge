@@ -10,7 +10,6 @@ import {
 
 export const createUser = async (req, res) => {
 	const { username, password } = req.body
-
 	if (!username || !password) {
 		throw new MissingFieldsError(
 			"Both username AND password must be provided in order to register a new user"
@@ -18,11 +17,10 @@ export const createUser = async (req, res) => {
 	}
 
 	const existingUser = await getUserByUserNameDb(username)
-
 	if (existingUser) {
 		throw new ExistingDataError("This username is already in use")
 	}
-
+	
 	const newUser = await createUserDb(username, password)
 	res.status(201).json({ newUser: newUser})
 }
@@ -60,7 +58,6 @@ export const logInUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
 	const userId = Number(req.params.id)
-	console.log(userId);
 	const user = await getUserByIdDb(userId)
 	res.status(200).json({user})
 }

@@ -32,7 +32,7 @@ export const createMovie = async (req, res) => {
 	const newMovie = await createMovieDb(
 		title,
 		description,
-		runtimeMins,
+		Number(runtimeMins),
 		req.user.username
 	)
 	res.status(201).json({
@@ -44,9 +44,6 @@ export const createMovie = async (req, res) => {
 
 export const getUserMovies = async (req, res) => {
     const username = req.user.username
-    // console.log(username);
-
 	const userMovies = await getUserMoviesDb(username)
-
 	res.status(200).json({ userMovies })
 }
