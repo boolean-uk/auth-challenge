@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import filmreel from "../../assets/svg/filmreel.svg";
 import enter from "../../assets/svg/enter.svg";
 import UsersFilms from "./usersFilms";
@@ -10,11 +10,21 @@ export default function AddFilm() {
     description: "",
     runTime: "",
   });
+  const token = localStorage.getItem('token')
 
 
-  // fetch('http://localhost:4040/movies/users')
-  //   .then(res => res.json())
-  //   .then(json => setAllFilms(json.movies))
+  useEffect(() =>  {
+    fetch('http://localhost:4040/movies/users',
+      { method: "GET",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+         }}
+    )
+    .then(res => res.json())
+    .then(json => setAllFilms(json.movies))
+  }, [token])
+  console.log(allFilms)
 
   function handleChange(e) {
     const {name, value} = e.target
@@ -41,10 +51,14 @@ export default function AddFilm() {
       return alert("Missing fields for movie entry")
     }
 
-    fetch(`http://localhost:4040/movies/`, {
+    fetch(`http://localhost:4040/movies`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newFilm),})
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+       },
+      body: JSON.stringify(newFilm)
+    })
     
     setNewFilm({
       title: "",
@@ -97,7 +111,7 @@ export default function AddFilm() {
             {allFilms.length === 0 ? (
                 <li></li>
             ) : (
-                allFilms.map((film) => <UsersFilms film={film} key={film.id}/>)
+                allFilms.map((film) => <UsersFilms film={film.movie} key={film.id}/>)
             )}
         </ul>
       </main>

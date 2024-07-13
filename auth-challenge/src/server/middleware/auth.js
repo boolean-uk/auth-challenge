@@ -15,11 +15,14 @@ const verifyToken = async (req, res, next) => {
         if(!foundUser) {
             throw "User not found"
         }
+        req.user = foundUser
     } catch(e) {
+        console.log('error',e)
         return res.status(401).json({
             message: "Invalid Token"
         })
     }
+    next()
 }
 
 export {

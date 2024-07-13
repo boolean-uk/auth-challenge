@@ -1,4 +1,5 @@
 export default function UsersFilms({film}) {
+    console.log(film)
     return (
         <li>
             <h4>{film.title}</h4>

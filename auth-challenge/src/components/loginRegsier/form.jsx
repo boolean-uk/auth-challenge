@@ -32,7 +32,9 @@ export default function Form({ route }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
-    });
+    })
+      .then(res => res.json())
+      .then(json => localStorage.setItem('token', json.user))
 
     setIsLoggedIn(true);
 

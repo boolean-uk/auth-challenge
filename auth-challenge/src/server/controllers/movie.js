@@ -1,15 +1,17 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { createMovieDb, getAllUsersMovies } from "../domains/movieDb.js"
 
 const createMovie = async (req, res) => {
     const {
         title,
-        decription,
+        description,
         runTime
     } = req.body
+    const userID = req.user.id
 
     if(
         !title ||
-        !decription ||
+        !description ||
         !runTime
     ) {
         return res.status(400).json({
@@ -18,21 +20,27 @@ const createMovie = async (req, res) => {
     }
     if(
         title.length > 100 ||
-        decription.length > 250
+        description.length > 250
     ) {
         return res.status(400).json({
             message: "Title or Description too long"
         })
     }
 
-    const newFilm = await createMovieDb()
-    res.status(201).json({
+    try {
+        const newFilm = await createMovieDb(title, description, Number(runTime), userID)
+        res.status(201).json({
         movie: newFilm
     })
+    } catch(e) {
+        console.log(e)
+    }
+    
 }
 
 const getAllMovies = async (req, res) => {
-    const usersMovies = await getAllUsersMovies()
+    const id = req.user.id
+    const usersMovies = await getAllUsersMovies(id)
     res.status(201).json({
         movies: usersMovies
     })
