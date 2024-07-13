@@ -17,7 +17,7 @@ export default function HomePage({
             Cine<span>Note</span>
           </h1>
           <p>
-            CineAddress is an innovative web application that allows movie
+            CineNote is an innovative web application that allows movie
             enthusiasts to create personalized addresses for their favorite
             films. Users can create an account and add movies to their unique
             address by providing the movie&#39;s title, description, and
