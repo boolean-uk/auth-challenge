@@ -3,6 +3,7 @@ import { FormType } from '../../lib/definitions'
 import { useState } from 'react'
 import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import * as formSubmit from '../../lib/formSubmitions'
 
 export default function Form({ type }: FormType) {
     const router = useRouter()
@@ -14,9 +15,10 @@ export default function Form({ type }: FormType) {
         runtimeMins: '',
     }
     const labelClass = '"block mb-2 text-coolGray-800 font-medium"'
-    const fieldClass = '"appearance-none block w-auto p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-md placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"'
+    const fieldClass =
+        '"appearance-none block w-auto p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-md placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"'
     const [formData, setFormData] = useState({ ...blankForm })
-    
+
     function formFields() {
         if (type === 'login' || type === 'register') {
             return (
@@ -52,7 +54,9 @@ export default function Form({ type }: FormType) {
         if (type === 'movie') {
             return (
                 <>
-                    <label className={labelClass} htmlFor="title">Title</label>
+                    <label className={labelClass} htmlFor="title">
+                        Title
+                    </label>
                     <input
                         type="text"
                         name="title"
@@ -60,7 +64,9 @@ export default function Form({ type }: FormType) {
                         value={formData.title}
                         onChange={handleChange}
                     />
-                    <label className={labelClass} htmlFor="description">Description</label>
+                    <label className={labelClass} htmlFor="description">
+                        Description
+                    </label>
                     <input
                         type="text"
                         name="description"
@@ -68,7 +74,9 @@ export default function Form({ type }: FormType) {
                         value={formData.description}
                         onChange={handleChange}
                     />
-                    <label className={labelClass} htmlFor="runtimeMins">Runtime, in minutes</label>
+                    <label className={labelClass} htmlFor="runtimeMins">
+                        Runtime, in minutes
+                    </label>
                     <input
                         type="number"
                         name="runtimeMins"
@@ -86,65 +94,70 @@ export default function Form({ type }: FormType) {
         setFormData({ ...formData, [name]: value })
     }
 
+    const handleClick = (e) => {
+        e.currentTarget.disabled = true;
+      };
+
     async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        if (type === 'register') {
-            const response = await fetch('/api/users/register', {
-                method: 'POST',
-                body: JSON.stringify(formData),
-            })
 
-            const responseBody = await response.json()
+        switch (type) {
+            case 'register': {
+                const registerRequest = await formSubmit.register(formData)
 
-            if (responseBody.error) {
-                console.log(responseBody)
-                alert('Error: ' + responseBody.error)
-                return;
-            }
-            const response2 = await fetch('/api/users/login', {
-                method: 'POST',
-                body: JSON.stringify(formData),
-            })
-            const responseBody2 = await response2.json()
+                if (!!registerRequest.error) {
+                    alert('Error: ' + registerRequest.error)
+                    return
+                }
 
-            if (responseBody2.error) {
-                alert('Error: ' + responseBody.error)
-                return;
+                const loginRequest = await formSubmit.login(formData)
+
+                if (!!loginRequest.error) {
+                    alert('Error: ' + loginRequest.error)
+                    return
+                }
+
+                localStorage.setItem('token', loginRequest.token)
+                router.push('/')
+                break
             }
 
-            localStorage.setItem('token', responseBody.token)
-            router.push('/')
-        }
-
-        if (type === 'login') {
-            const response = await fetch('/api/users/login', {
-                method: 'POST',
-                body: JSON.stringify(formData),
-            })
-            const responseBody = await response.json()
-
-            if (responseBody.error) {
-                alert('error' + responseBody.error)
-                return;
+            case 'login': {
+                const loginResponse = await formSubmit.login(formData)
+                if (!!loginResponse.error) {
+                    alert('Error: ' + loginResponse.error)
+                    return
+                }
+                localStorage.setItem('token', loginResponse.token)
+                router.push('/')
+                break
             }
 
-            localStorage.setItem('token', responseBody.token)
-            router.push('/')
-        }
-        if (type === 'movie') {
-            const response = await fetch('/api/movies', {
-                method: 'POST',
-                body: JSON.stringify(formData),
-            })
-            console.log(response)
-            setFormData({ ...blankForm })
+            case 'movie': {
+                const movieResponse = await formSubmit.createMovie(formData)
+                if (!!movieResponse.error) {
+                    alert('Error: ' + movieResponse.error)
+                    return
+                }
+                setFormData({ ...blankForm })
+                break
+            }
+
+            default: {
+                alert('Unknown form submission type')
+                break
+            }
         }
     }
 
     return (
         <form onSubmit={onSubmit} method="POST">
             {formFields()}
-            <input type="submit" value="Submit" className="inline-block py-3 px-7 mb-6 w-auto text-base text-green-50 font-medium text-center leading-6 bg-green-500 hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md shadow-sm"/>
+            <input
+                type="submit"
+                value="Submit"
+                className="inline-block py-3 px-7 mb-6 w-auto text-base text-green-50 font-medium text-center leading-6 bg-green-500 hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md shadow-sm"
+            />
         </form>
     )
 }

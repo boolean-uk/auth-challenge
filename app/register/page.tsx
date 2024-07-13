@@ -3,13 +3,21 @@
 import { useState, useEffect } from 'react'
 import Form from '../../components/form/Form'
 import Navbar from '../../components/navigation/navbar'
+import { useRouter } from 'next/navigation'
 
 export default function page() {
-    const [token, setToken] = useState(null)
+    const [token, setToken] = useState('')
+    const router = useRouter()
 
     useEffect(() => {
         const getToken = localStorage.getItem('token')
         setToken(getToken || null)
+    }, [])
+
+    useEffect(() => {
+        if (token === null) {
+            router.push('/')
+        }
     }, [])
 
     return (

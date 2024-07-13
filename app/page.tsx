@@ -14,6 +14,9 @@ export default function Page() {
         setToken(getToken || null)
     }, [])
     
+    useEffect(() => {
+        
+    }, [token])
     return (
         <>
             <Navbar token={token} setToken={setToken} />
