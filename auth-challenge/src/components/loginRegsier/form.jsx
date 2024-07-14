@@ -3,7 +3,8 @@ import enter from "../../assets/svg/enter.svg";
 import { Link } from "react-router-dom";
 
 export default function Form({ route }) {
-  const [isRegistered, setIsRegistered] = useState(false)
+  const [isLoggedIn, setisLoggedIn] = useState(false)
+  const [isReggister, setIsRegistered] = useState(false)
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -28,15 +29,30 @@ export default function Form({ route }) {
       return alert("Username or password fields are missing");
     }
 
-    fetch(`http://localhost:4040/${route}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-    })
-      .then(res => res.json())
-      .then(json => localStorage.setItem('token', json.user))
+    if(route === 'login') {
+      fetch(`http://localhost:4040/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      })
+        .then(res => res.json())
+        .then(json => localStorage.setItem('token', json.user))
+    }
 
-    setIsRegistered(true);
+    if(route === 'register') {
+      fetch(`http://localhost:4040/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      })
+      setIsRegistered(true)
+    }
+    
+
+    const token = localStorage.getItem('token')
+    if(typeof token === 'string') {
+      setisLoggedIn(true);
+    }
 
     setUser({
       username: "",
@@ -71,11 +87,15 @@ export default function Form({ route }) {
           <img src={enter} className="icon" id="enter_form" alt="enter icon" />
         </button>
       </form>
-      {isRegistered &&
+      {isLoggedIn &&
     <Link to='/films'>
     <h3 className="add_film_link">Start adding your films!</h3>
     </Link>
     }
+    {isReggister &&
+    <Link to='/login'>
+    <h3>Login!</h3>
+    </Link>}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import enter from "../../assets/svg/enter.svg";
 import UsersFilms from "./usersFilms";
 
 export default function AddFilm() {
+  const [state, setState] = useState(false)
   const [allFilms, setAllFilms] = useState([])
   const [newFilm, setNewFilm] = useState({
     title: "",
@@ -22,7 +23,7 @@ export default function AddFilm() {
     )
     .then(res => res.json())
     .then(json => setAllFilms(json.movies))
-  }, [setAllFilms])
+  }, [state])
   
 
   function handleChange(e) {
@@ -58,7 +59,8 @@ export default function AddFilm() {
        },
       body: JSON.stringify(newFilm)
     })
-
+    
+    setState(true)
     fetch('http://localhost:4040/movies/users',
       { method: "GET",
         headers: { 
@@ -67,13 +69,14 @@ export default function AddFilm() {
          }}
     )
     .then(res => res.json())
-    .then(json => setAllFilms([json.movies, {...newFilm}]))
+    .then(json => setAllFilms(json.movies))
 
     setNewFilm({
       title: "",
       description: "",
       runtime: "",
     })
+    
   }
 
   return (
@@ -116,11 +119,11 @@ export default function AddFilm() {
             />
           </button>
         </form>
-        <ul>
-            {allFilms.length === 0 ? (
+        <ul className="users_films">
+            {allFilms.length === 0 || allFilms === undefined ? ( 
                 <li></li>
             ) : (
-                allFilms.map((film) => <UsersFilms film={film.movie} key={film.id}/>).reverse()
+                allFilms.map((film) => <UsersFilms film={film.movie} key={film.movieID}/>).reverse()
             )}
         </ul>
       </main>

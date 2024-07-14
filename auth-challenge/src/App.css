@@ -102,3 +102,7 @@
 .film_container, .right_aside, .left_side {
   scrollbar-width: none;
 }
+
+.users_films_item {
+  padding: 1rem;
+}
