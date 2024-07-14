@@ -6,7 +6,7 @@ const movRouter = express.Router()
 
 movRouter.get('/', getAllMovies)
 
-movRouter.get('/:user', verifyToken, getUserMovies)
+movRouter.get('/:username', verifyToken, getUserMovies)
 
 movRouter.post('/', verifyToken, createMovie)
 

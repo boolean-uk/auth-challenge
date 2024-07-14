@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { json } from "react-router-dom";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -34,7 +33,7 @@ export default function AddMovieForm({ onAddMovie }){
             if (!response.ok) {
                 throw new Error(result.error)
             } else {
-                // onAddMovie(json.movie_added)
+                onAddMovie(result.movie_added)
                 setMovie({ title: '', description: '', runtimeMins: '' })
                 setSuccess('Movie added succesfully!')
                 setError(null)

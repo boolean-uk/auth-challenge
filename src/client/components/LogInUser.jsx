@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -7,6 +8,7 @@ export default function LoginUser() {
     const [credentials, setCredentials] = useState({ username: '', password: '' })
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const navigate = useNavigate()
     
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,6 +36,7 @@ export default function LoginUser() {
                 setSuccess('User loged-in successfully!');
                 setCredentials({ username: '', password: '' });
                 setError(null);
+                navigate(`/userpage?username=${credentials.username}`)
             } else {
                 setError(json.error)
             }
