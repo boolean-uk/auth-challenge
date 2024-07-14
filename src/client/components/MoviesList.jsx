@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
-export default function MoviesList({ username }) {
-    const [movies, setMovies] = useState([])
+export default function MoviesList({ username, movies, setMovies }) {
+    // const [movies, setMovies] = useState([])
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -15,7 +15,7 @@ export default function MoviesList({ username }) {
                     }
                 })
                  if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
                 setMovies(data.userMovies);

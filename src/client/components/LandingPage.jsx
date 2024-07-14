@@ -10,7 +10,7 @@ export default function LandingPage() {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
     const username = query.get('username');
-    
+
     return (        
         <>
             <Routes>
@@ -20,7 +20,7 @@ export default function LandingPage() {
                         <div>
                             <LoginUser apiUrl={apiUrl} />
                         </div>
-                        <p>`Or, create an account if you do not have one`</p>
+                        <p>Or, create an account if you do not have one</p>
                         <div>
                             <RegisterUser apiUrl={apiUrl} />
                         </div>
