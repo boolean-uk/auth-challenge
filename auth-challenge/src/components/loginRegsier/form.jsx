@@ -39,25 +39,27 @@ export default function Form({ route }) {
         .then(json => localStorage.setItem('token', json.user))
     }
 
+    setUser({
+      username: "",
+      password: "",
+    });
+
     if(route === 'register') {
       fetch(`http://localhost:4040/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
       })
-      setIsRegistered(true)
+       return setIsRegistered(true)
     }
     
 
     const token = localStorage.getItem('token')
     if(typeof token === 'string') {
-      setisLoggedIn(true);
+      return setisLoggedIn(true);
     }
 
-    setUser({
-      username: "",
-      password: "",
-    });
+    
   }
 
   return (

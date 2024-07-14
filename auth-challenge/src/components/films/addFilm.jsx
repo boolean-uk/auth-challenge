@@ -61,6 +61,7 @@ export default function AddFilm() {
     })
     
     setState(true)
+    
     fetch('http://localhost:4040/movies/users',
       { method: "GET",
         headers: { 
