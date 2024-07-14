@@ -3,6 +3,8 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import Navbar from '../../components/navigation/navbar'
 import Movies from './Movies'
+import Form from '../../components/form/Form'
+import MovieForm from './MovieForm'
 
 export default function page() {
     const router = useRouter()
@@ -23,6 +25,7 @@ export default function page() {
         <>
             <Navbar token={token} setToken={setToken} />
             <Movies />
+            <MovieForm token={token}/>
         </>
     )
 }
