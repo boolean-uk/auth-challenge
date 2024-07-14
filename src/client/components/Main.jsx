@@ -21,7 +21,7 @@ export default function Main({ token, baseURL }) {
         .then((data) => {
           if (data && !data.error) {
             setError("");
-            setMovies(data);
+            setMovies(data.movies);
           } else {
             setError(data.error);
           }

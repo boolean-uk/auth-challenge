@@ -19,7 +19,7 @@ export const createMovie = async (req, res) => {
       runtimeMins,
       req.user.userId
     );
-    res.status(201).json(movie);
+    res.status(201).json({ movie });
   } catch (error) {
     res.status(409).json(error);
   }
@@ -30,7 +30,7 @@ export const getMovies = async (req, res) => {
   // This condition to only get this user's movies
   try {
     const movies = await getMoviesDb(req.user.userId);
-    res.status(200).json(movies);
+    res.status(200).json({ movies });
   } catch (error) {
     res.status(404).json({ error: "Failed to load movies" });
   }
