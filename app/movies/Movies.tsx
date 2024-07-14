@@ -39,8 +39,12 @@ export default function Movies() {
                     {data.movies.map((element) => {
                         return (
                             <li className="group relative h-full px-8 pt-16 pb-8 bg-coolGray-50 group-hover:bg-white rounded-md shadow-md hover:shadow-xl transition duration-200">
-                                <h3 className="mb-4 text-xl leading-7 text-coolGray-900 font-bold max-w-xs">Title:{element.title}</h3>
-                                <p className="text-coolGray-500 group-hover:text-coolGray-600 font-medium transition duration-200">{element.description}</p>
+                                <h3 className="mb-4 text-xl leading-7 text-coolGray-900 font-bold max-w-xs">
+                                    Title:{element.title}
+                                </h3>
+                                <p className="text-coolGray-500 group-hover:text-coolGray-600 font-medium transition duration-200">
+                                    {element.description}
+                                </p>
                                 <p className="text-coolGray-500 group-hover:text-coolGray-600 font-medium transition duration-200">
                                     Runtime: {`${element.runtimeMins} minute`}
                                     {pluralise(element.runtimeMins)}

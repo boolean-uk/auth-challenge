@@ -13,10 +13,8 @@ export default function Page() {
         const getToken = localStorage.getItem('token')
         setToken(getToken || null)
     }, [])
-    
-    useEffect(() => {
-        
-    }, [token])
+
+    useEffect(() => {}, [token])
     return (
         <>
             <Navbar token={token} setToken={setToken} />

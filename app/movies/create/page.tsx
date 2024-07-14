@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Form from '../../../components/form/Form'
 import Navbar from '../../../components/navigation/navbar'
 import { useRouter } from 'next/navigation'
 import MovieForm from '../MovieForm'
@@ -24,7 +23,7 @@ export default function page() {
     return (
         <>
             <Navbar token={token} setToken={setToken} />
-            <MovieForm token={token}/>
+            <MovieForm token={token} />
         </>
     )
 }

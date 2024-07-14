@@ -18,6 +18,6 @@ export type UserInfo = {
     isAdmin?: boolean
 }
 
-export interface UserToSearchFor {
+export type UserToSearchFor = {
     where: { id?: number; username?: string }
 }

@@ -1,5 +1,3 @@
-
-
 export async function register(formData) {
     const response = await fetch('/api/users/register', {
         method: 'POST',

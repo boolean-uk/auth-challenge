@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken'
 
 export async function POST(req: NextRequest) {
     const secret = process.env['SECRET_STRING']
-    
+
     try {
         const { username, password } = await req.json()
 
@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
                 { status: 401 }
             )
         }
-        
-        const token = jwt.sign({sub:userData.id}, secret)
+
+        const token = jwt.sign({ sub: userData.id }, secret)
 
         return NextResponse.json({ token }, { status: 200 })
     } catch (e: any) {

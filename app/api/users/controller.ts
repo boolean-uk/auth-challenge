@@ -9,9 +9,9 @@ export async function registerUser(req: NextApiRequest, res: NextApiResponse) {
                 .status(400)
                 .send({ error: 'Requirements missing in the request body' })
         }
-        const newUser = await data.registerUser({username, password})
+        const newUser = await data.registerUser({ username, password })
 
-        return res.status(201).send({user:newUser})
+        return res.status(201).send({ user: newUser })
     } catch (e) {
         console.log(e.message)
         return res.status(500).send({ error: e.message })

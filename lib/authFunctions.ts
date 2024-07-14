@@ -14,7 +14,7 @@ export const hasValidToken = (token: string) => {
 }
 
 export const isAdmin = (userInfo: UserInfo) => {
-    if(userInfo.role === 'ADMIN') {
+    if (userInfo.role === 'ADMIN') {
         userInfo.isAdmin = true
         return true
     }

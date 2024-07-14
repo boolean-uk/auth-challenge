@@ -23,14 +23,16 @@ export default function page() {
 
     return (
         <>
-            <Navbar token={token} setToken={setToken}/>
+            <Navbar token={token} setToken={setToken} />
             <section className="py-24 md:py-32 bg-white">
                 <div className="container px-4 mx-auto">
                     <div className="mb-6 text-center">
                         <h3 className="mb-4 text-2xl md:text-3xl font-bold">
                             Sign in to your account
                         </h3>
-                        <p className="text-lg text-coolGray-500 font-medium">Gosh, I hope this works</p>
+                        <p className="text-lg text-coolGray-500 font-medium">
+                            Gosh, I hope this works
+                        </p>
                     </div>
                     <Form type="login" />
                 </div>

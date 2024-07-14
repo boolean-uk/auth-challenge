@@ -3,7 +3,6 @@ import { registerUser } from '../../../../lib/data'
 import { error } from 'console'
 
 export async function POST(req: NextRequest) {
-  
     try {
         const { username, password } = await req.json()
 
@@ -17,11 +16,10 @@ export async function POST(req: NextRequest) {
         const newUser = await registerUser({ username, password })
         return NextResponse.json({ user: newUser }, { status: 201 })
     } catch (e: any) {
-
-        if(e.message === 'Username already in use') {
-            return NextResponse.json({error:e.message},{status:409})
+        if (e.message === 'Username already in use') {
+            return NextResponse.json({ error: e.message }, { status: 409 })
         }
-        
+
         console.error(e.message)
         return NextResponse.json({ error: e.message }, { status: 500 })
     }

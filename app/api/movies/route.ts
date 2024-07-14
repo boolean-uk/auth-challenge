@@ -5,11 +5,11 @@ import { UserInfo } from '../../../lib/definitions'
 
 export async function POST(req: NextRequest) {
     try {
-        const {title, description, runtimeMins} = await req.json()
+        const { title, description, runtimeMins } = await req.json()
 
         const parseMins = Number(runtimeMins)
 
-        if(!title || !description || !runtimeMins || isNaN(parseMins)) {
+        if (!title || !description || !runtimeMins || isNaN(parseMins)) {
             return NextResponse.json(
                 { error: 'Fields missing in the request body' },
                 { status: 400 }
@@ -34,13 +34,13 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        
+        const newMovie = await createMovie({
+            title,
+            description,
+            runtimeMins: parseMins,
+        })
 
-        
-
-        const newMovie = await createMovie({title, description, runtimeMins:parseMins})
-
-        return NextResponse.json({ movie:newMovie }, { status: 201 })
+        return NextResponse.json({ movie: newMovie }, { status: 201 })
     } catch (e) {
         return NextResponse.json({ error: e.message }, { status: 500 })
     }
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     try {
         const movies = await getMovies()
-        
+
         return NextResponse.json({ movies }, { status: 200 })
     } catch (e) {
         return NextResponse.json({ error: e.message }, { status: 500 })
