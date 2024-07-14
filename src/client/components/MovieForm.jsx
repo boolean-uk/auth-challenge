@@ -21,7 +21,7 @@ export default function MovieForm({ token, addMovie, baseURL }) {
       .then((data) => {
         console.log(data);
         if (data && !data.error) {
-          addMovie(data);
+          addMovie(data.movie);
           setTitle("");
           setDescription("");
           setruntimeMins("");
