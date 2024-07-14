@@ -8,6 +8,12 @@ export default function AddMovieForm({ onAddMovie }){
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
+    const handleClick = () => {
+        setError(null)
+        setSuccess(null)
+        setMovie({ title: '', description: '', runtimeMins: '' })
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setMovie(prevMovie => ({
@@ -49,22 +55,22 @@ export default function AddMovieForm({ onAddMovie }){
             <div>
                 <label>
                     Title:
-                    <input type="text" name="title" value={movie.title} onChange={handleChange} />
+                    <input className="m-7 px-3 py-1 text-center border-2 border-stone-900 rounded-md shadow-xl" type="text" name="title" value={movie.title} onChange={handleChange} onClick={handleClick} />
                 </label>
             </div>
             <div>
                 <label>
                     Description:
-                    <input type="text" name="description" value={movie.description} onChange={handleChange} />
+                    <input className="m-7 px-3 py-1 text-center border-2 border-stone-900 rounded-md shadow-xl" type="text" name="description" value={movie.description} onChange={handleChange} />
                 </label>
             </div>
             <div>
                 <label>
                     Runtime (mins):
-                    <input type="number" name="runtimeMins" value={movie.runtimeMins} onChange={handleChange} />
+                    <input className="m-7 px-3 py-1 text-center border-2 border-stone-900 rounded-md shadow-xl"  type="number" name="runtimeMins" value={movie.runtimeMins} onChange={handleChange} />
                 </label>
             </div>
-            <button type="submit">Add Movie</button>
+            <button type="submit" className="m-7 px-3 py-1 text-center border-2 border-stone-900 rounded-md shadow-xl ">Add Movie</button>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
         </form>

@@ -34,11 +34,20 @@ export default function UserPage({ username }) {
 
 
     return (
-        <div>
-            <h2>Welcome, {username} </h2>
-            <AddMovieForm onAddMovie={handleAddMovie} />
-            <h3>Your Movies</h3>
-            <MoviesList username={username} movies={movies} setMovies={setMovies} />
-        </div>
+        <>
+            <div className="h-5/6">
+
+            <h2 className="mt-12 p-3 text-2xl text-center">Welcome, {username} </h2>
+            <div className='sticky grid gap-3 grid-cols-2'>
+                <div className="p-5 bg-stone-800 border-2 border-solid border-stone-700 rounded-md">
+                    <AddMovieForm onAddMovie={handleAddMovie} />
+                </div>
+                <div className="p-5 bg-stone-800 border-2 border-solid border-stone-700 rounded-md shadow-xl">
+                    <h3 className="mb-3 text-xl text-center" >Your Movies</h3>
+                    <MoviesList username={username} movies={movies} setMovies={setMovies} />
+                </div>
+            </div>
+            </div>
+        </>
     );
 }

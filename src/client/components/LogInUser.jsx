@@ -9,6 +9,12 @@ export default function LoginUser() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate()
+
+    const handleClick = (e) => {
+        setError(null)
+        setSuccess(null)
+         setCredentials({ username: '', password: '' })
+    }
     
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,7 +28,7 @@ export default function LoginUser() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // try {
+        try {
             const response = await fetch(`${apiUrl}/users/login`, {
                 method: "POST",
                 headers: {
@@ -41,9 +47,9 @@ export default function LoginUser() {
                 setError(json.error)
             }
 
-        // }catch (error) {
-        //     setError(error.message);
-        // }
+        }catch (error) {
+            setError(error.message);
+        }
     }
 
     return (
@@ -57,6 +63,7 @@ export default function LoginUser() {
                             name="username"
                             value={credentials.username}
                             onChange={handleChange}
+                            onClick={handleClick}
                         />
                     </label>
                 </div>

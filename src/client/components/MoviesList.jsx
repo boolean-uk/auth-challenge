@@ -28,12 +28,14 @@ export default function MoviesList({ username, movies, setMovies }) {
 
 
     return (
-        <ul>
+        <ul className="h-full overflow-auto">
             {movies.map(movie => (
-                <li key={movie.id}>
-                    <h3>{movie.title}</h3>
-                    <p>Description: {movie.description}</p>
-                    <p>Runtime: {movie.runtimeMins} minutes</p>
+                <li className="m-2" key={movie.id}>
+                    <div className="max-h-80 p-3 bg-stone-900 rounded ">
+                        <h3>{movie.title}</h3>
+                        <p>Description: {movie.description}</p>
+                        <p>Runtime: {movie.runtimeMins} minutes</p>
+                    </div>
                 </li>
             ))}
         </ul>

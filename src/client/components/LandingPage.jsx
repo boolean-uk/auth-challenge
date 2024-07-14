@@ -13,21 +13,25 @@ export default function LandingPage() {
 
     return (        
         <>
+                <div>
             <Routes>
                 <Route path="/" element={
                     <>
-                        <p>Login to view your Movies list or add a new movie</p>
-                        <div>
-                            <LoginUser apiUrl={apiUrl} />
-                        </div>
-                        <p>Or, create an account if you do not have one</p>
-                        <div>
-                            <RegisterUser apiUrl={apiUrl} />
+                        <div className='my-20 h-full grid gap-1 grid-cols-2'>
+                            <div className='border-stone-700 rounded-md shadow-xl  grid gap-1 grid-cols-2 p-5 bg-stone-800'>
+                            <h2>Login to view your Movie's list or add a new movie</h2>
+                                <LoginUser apiUrl={apiUrl} />
+                            </div>
+                            <div className='border-stone-700 rounded-md shadow-xl  grid gap-1 grid-cols-2 p-5 bg-stone-800 overflow-auto'>
+                            <p>Or, create an account if you do not have one</p>
+                                <RegisterUser apiUrl={apiUrl} />
+                            </div>
                         </div>
                     </>
                 } />
                 <Route path="/userpage" element={<UserPage username={username} />} />
             </Routes>
+                </div>
     </>
     )
 }
