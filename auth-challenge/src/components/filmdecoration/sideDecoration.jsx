@@ -21,11 +21,17 @@ export default function SideDecoration() {
       .then((res) => res.json())
       .then((json) => setFilms(json.results));
   }, []);
+
+  function logoutUser() {
+    localStorage.clear()
+    return '/'
+  }
+
   return (
     <>
       <header className="dashboard_header">
         <h1>Good Films</h1>
-        <Link to='/'>
+        <Link to={logoutUser()}>
         <img
           src={filmreel}
           alt="film reel icon"

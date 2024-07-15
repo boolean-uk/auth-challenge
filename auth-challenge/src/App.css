@@ -106,3 +106,8 @@
 .users_films_item {
   padding: 1rem;
 }
+
+
+.logout_btn_contatiner{
+  justify-self: end;
+}

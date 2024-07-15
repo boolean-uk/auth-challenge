@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { createMovieDb, getAllUsersMovies } from "../domains/movieDb.js"
 
 const createMovie = async (req, res) => {

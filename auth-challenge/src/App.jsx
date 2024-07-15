@@ -24,7 +24,7 @@ function App() {
         path='/login'
         element={<LoginForm />}/>
         <Route 
-        path='/films'
+        path='/movies'
         element={<AddFilm />}/>
       </Routes>
       <SideDecoration />

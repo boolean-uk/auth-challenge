@@ -1,24 +1,13 @@
 import { useState } from "react";
 import enter from "../../assets/svg/enter.svg";
-import { Link } from "react-router-dom";
+import {useNavigate} from 'react-router-dom'
 
 export default function Form({ route }) {
-  const [isRegistered, setIsRegistered] = useState(false)
+  const navigate = useNavigate()
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
-
-  function checkRoute() {
-    const token = localStorage.getItem('token')
-    if(typeof token === 'string') {
-      return '/films';
-    }
-
-    if(isRegistered) {
-      return '/login'
-    }
-  }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -45,8 +34,14 @@ export default function Form({ route }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
       })
-        .then(res => res.json())
+        .then(res => {
+          if(res.status === 400 || res.status === 401) {
+            return alert('Invalid Credentials')
+          }
+          else return res.json()
+        })
         .then(json => localStorage.setItem('token', json.user))
+        .then(checkToken())
     }
 
     setUser({
@@ -60,9 +55,23 @@ export default function Form({ route }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
       })
-       return setIsRegistered(true)
+        .then(res => {
+            if(res.status === 409) {
+              return alert('A user with that username already exists')
+            }
+            else return res.json()
+        })
+        .then(navigate('/login'))
     }
     
+  }
+
+  function checkToken() {
+    const token = localStorage.getItem('token')
+    if(typeof token === 'string') {
+      return navigate('/movies')
+    }
+    else return <p>An error occured logging in</p>
   }
 
   return (
@@ -88,11 +97,9 @@ export default function Form({ route }) {
           required
           onChange={(e) => handleChange(e)}
         />
-        <Link to={checkRoute()}>
         <button name="submit" type="submit" className="enter_button">
           <img src={enter} className="icon" id="enter_form" alt="enter icon" />
         </button>
-        </Link>
       </form>
     </div>
   );
