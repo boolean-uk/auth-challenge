@@ -4,6 +4,7 @@ import url from "../utils/baseurl";
 
 export default function AddNewMovieform({getMovies}) {
     const [formData, setFormData] = useState({ title: "", description: "", runtimeMins: ''});
+    const [error, setError] = useState('')
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -12,14 +13,28 @@ export default function AddNewMovieform({getMovies}) {
     
       async function handleSubmit(e) {
         e.preventDefault();
-        await fetch(`${url}/movies`, {
+        if (!formData.title || !formData.description || !formData.runtimeMins ) {
+          setError('Movies require a title, description, and runtime.')
+          setTimeout(() => {
+            setError("");
+          }, 3000);
+          return
+        }
+   
+        const response = await fetch(`${url}/movies`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
-        })
+        }) 
+        if (response.status === 409) {
+          setError('You already have a movie with that title')
+          setTimeout(() => {
+            setError("");
+          }, 3000);
+        }
         getMovies()
         setFormData({ title: "", description: "", runtimeMins: ''})
       }
@@ -60,6 +75,7 @@ export default function AddNewMovieform({getMovies}) {
       >
         Submit
       </button>
+      {error && <p className="text-red-700 text-center text-xs mt-2">{error}</p>}
     </form>
     )
 }
