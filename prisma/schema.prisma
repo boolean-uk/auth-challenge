@@ -6,9 +6,10 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  
+  directUrl = env("postgresql://blog_owner:ZtmOEIzsa23p@ep-lingering-queen-a54h1djp.us-east-2.aws.neon.tech/blog?sslmode=require")
 }
 
 model User {
