@@ -45,7 +45,7 @@ export default function Form({ route }) {
         })
         .then(json => localStorage.setItem('token', json.user))
         .then(setIsLoggedIn(true))
-        .then(checkToken())
+        .then(checkUserIsLoggedIn())
     }
 
     setUser({
@@ -70,11 +70,11 @@ export default function Form({ route }) {
     
   }
 
-  function checkToken() {
+  function checkUserIsLoggedIn() {
     if(isLoggedIn) {
       return navigate('/movies')
     }
-    else return alert('An error occured when logging in')
+    else return alert('An error occured when logging in, try again')
   }
 
   return (
