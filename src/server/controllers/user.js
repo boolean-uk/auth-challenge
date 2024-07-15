@@ -8,29 +8,53 @@ const jwtSecret = 'mysecret';
 const register = async (req, res) => {
     const { username, password } = req.body;
 
-    const createdUser = null;
+    try {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    res.json({ data: createdUser });
+        // Create a new user
+        const createdUser = await prisma.user.create({
+            data: {
+                username,
+                password: hashedPassword,
+            },
+        });
+
+        // Remove the password from the response
+        const { password: _, ...userWithoutPassword } = createdUser;
+
+        res.json({ data: userWithoutPassword });
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ error: 'Registration failed' });
+    }
 };
 
 const login = async (req, res) => {
     const { username, password } = req.body;
 
-    const foundUser = null;
+    try {
+        const foundUser = await prisma.user.findUnique({
+            where: { username },
+        });
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
+        if (!foundUser) {
+            return res.status(401).json({ error: 'Invalid username or password.' });
+        }
+
+        const passwordsMatch = await bcrypt.compare(password, foundUser.password);
+
+        if (!passwordsMatch) {
+            return res.status(401).json({ error: 'Invalid username or password.' });
+        }
+
+        const token = jwt.sign({ username: foundUser.username }, jwtSecret, { expiresIn: '1h' });
+
+        res.json({ data: token });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Login failed' });
     }
-
-    const passwordsMatch = false;
-
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
-
-    const token = null;
-
-    res.json({ data: token });
 };
 
 export {

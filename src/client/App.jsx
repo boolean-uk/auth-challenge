@@ -34,16 +34,85 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
-
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+  
+      const data = await response.json();
+      console.log('User registered:', data);
+      // You might want to automatically log in the user or show a success message
+    } catch (error) {
+      console.error('Registration error:', error);
+      // Handle the error (e.g., show an error message to the user)
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
-
+    try {
+      const response = await fetch(`${apiUrl}/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+  
+      const { data: token } = await response.json();
+      
+      // Save the token in local storage
+      localStorage.setItem('token', token);
+  
+      console.log('User logged in successfully');
+      // You might want to update the app state to reflect that the user is logged in
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle the error (e.g., show an error message to the user)
+    }
   };
-
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
-  }
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found. Please login first.');
+      }
+  
+      const response = await fetch(`${apiUrl}/movie`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to create movie');
+      }
+  
+      const { data: newMovie } = await response.json();
+      
+      // Update the movies state to include the new movie
+      setMovies(prevMovies => [...prevMovies, newMovie]);
+  
+      console.log('Movie created successfully');
+    } catch (error) {
+      console.error('Create movie error:', error);
+      // Handle the error (e.g., show an error message to the user)
+    }
+  };
 
   return (
     <div className="App">
