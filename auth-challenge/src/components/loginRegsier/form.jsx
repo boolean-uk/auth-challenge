@@ -3,12 +3,22 @@ import enter from "../../assets/svg/enter.svg";
 import { Link } from "react-router-dom";
 
 export default function Form({ route }) {
-  const [isLoggedIn, setisLoggedIn] = useState(false)
-  const [isReggister, setIsRegistered] = useState(false)
+  const [isRegistered, setIsRegistered] = useState(false)
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
+
+  function checkRoute() {
+    const token = localStorage.getItem('token')
+    if(typeof token === 'string') {
+      return '/films';
+    }
+
+    if(isRegistered) {
+      return '/login'
+    }
+  }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -53,13 +63,6 @@ export default function Form({ route }) {
        return setIsRegistered(true)
     }
     
-
-    const token = localStorage.getItem('token')
-    if(typeof token === 'string') {
-      return setisLoggedIn(true);
-    }
-
-    
   }
 
   return (
@@ -85,19 +88,12 @@ export default function Form({ route }) {
           required
           onChange={(e) => handleChange(e)}
         />
+        <Link to={checkRoute()}>
         <button name="submit" type="submit" className="enter_button">
           <img src={enter} className="icon" id="enter_form" alt="enter icon" />
         </button>
+        </Link>
       </form>
-      {isLoggedIn &&
-    <Link to='/films'>
-    <h3 className="add_film_link">Start adding your films!</h3>
-    </Link>
-    }
-    {isReggister &&
-    <Link to='/login'>
-    <h3>Login!</h3>
-    </Link>}
     </div>
   );
 }
