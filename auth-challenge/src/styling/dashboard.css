@@ -1,0 +1,70 @@
+.dashboard_header, .register_header, .login_header, .film_header {
+    grid-area: header;
+    background-color: #638889;
+    padding: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    color: #EBD9B4;
+}
+#filmreel {
+    width: 40px;
+}
+
+.dashboard_container, .register_container, .login_form_container, .film_container {
+    background-color: #F9EFDB;
+    grid-area: main;
+    place-content: center;
+    padding: 9rem;
+    height: 100%;
+}
+.button_box {
+    display: flex;
+    padding: 2rem;
+    gap: 1rem;
+    place-content: center;
+}
+
+.left_side {
+    background-color: #EBD9B4;
+    grid-area: left;
+    place-content: center;
+    margin: 0;
+}
+
+.right_aside, .left_side {
+    max-height: 100vh;
+    overflow: auto;
+    display: flex;
+    scrollbar-width: none;
+}
+
+.films_list {
+    max-width: 100vw;
+    flex-direction: column;
+    scrollbar-width: none;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+    animation: animate 40s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+
+.films_list::-webkit-scrollbar {
+    display: none;
+}
+
+.right_aside {
+    margin: 0;
+    grid-area: right;
+    background-color: #EBD9B4;
+    padding: 1.5rem;
+}

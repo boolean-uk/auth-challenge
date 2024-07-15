@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+.app_container {
+  display: grid;
+  grid-template: 
+  'left header right' 8rem
+  'left main right' 1fr
+  'left main right' 1fr/
+  15rem 1fr 15rem;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+.icon {
+  width: 30px;
+  cursor: pointer;
+}
+
+.button {
+  background-color: #638889;
+  border-radius: 20px;
+  border: 2px solid #9DBC98;
+  color: #EBD9B4;
+  height: 30px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #EBD9B4;
+  border-radius: 20px;
+  border: 2px solid #9DBC98;
+  color:  #638889;
+}
+
+.text_input {
+  border: transparent;
+  border-bottom: 2px solid #9DBC98;
+  background-color: #F9EFDB;
+  height: 2rem;
+  color:  #638889;
+  font-size: medium;
+}
+
+.text_input:focus {
+  outline: none;
+}
+
+#form {
+  display: flex;
+  gap: 2rem;
+}
+
+.enter_button {
+  border: none;
+  background-color: #F9EFDB;
+}
+
+
+.register_main_form, .login_main_form {
+  display: flex;
+  gap: 2rem;
+}
+
+.register_head {
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.login_main h2 {
+  padding: 1rem;
+}
+
+.film_form {
+  display: flex;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.form_box {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.film_container {
+  display: flex;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  padding-bottom: 1rem;
+}
+
+.film_container::-webkit-scrollbar, .right_aside::-webkit-scrollbar, .left_side::-webkit-scrollbar {
+  display: none;
+}
+
+.film_container, .right_aside, .left_side {
+  scrollbar-width: none;
+}
+
+.users_films_item {
+  padding: 1rem;
+}
+
+
+.logout_btn_contatiner{
+  justify-self: end;
+}
