@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import '../../styling/dashboard.css'
 
 export default function Dashboard() {
-
     return (
         <div className="dashboard_container">
             <main className="dashboard_main">

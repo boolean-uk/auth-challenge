@@ -14,7 +14,7 @@ export default function AddFilm() {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    fetch('http://localhost:4040/movies/users',
+    fetch('http://localhost:4050/movies/users',
       { method: "GET",
         headers: { 
           "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export default function AddFilm() {
       return alert("Missing fields for movie entry")
     }
 
-    fetch(`http://localhost:4040/movies`, {
+    fetch(`http://localhost:4050/movies`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function AddFilm() {
     
     setState(true)
     
-    fetch('http://localhost:4040/movies/users',
+    fetch('http://localhost:4050/movies/users',
       { method: "GET",
         headers: { 
           "Content-Type": "application/json",

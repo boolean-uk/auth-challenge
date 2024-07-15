@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import enter from "../../assets/svg/enter.svg";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { userContext } from "../../App";
+
 
 export default function Form({ route }) {
   const navigate = useNavigate()
+  const {isLoggedIn, setIsLoggedIn} = useContext(userContext)
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -29,7 +32,7 @@ export default function Form({ route }) {
     }
 
     if(route === 'login') {
-      fetch(`http://localhost:4040/login`, {
+      fetch(`http://localhost:4050/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
@@ -41,6 +44,7 @@ export default function Form({ route }) {
           else return res.json()
         })
         .then(json => localStorage.setItem('token', json.user))
+        .then(setIsLoggedIn(true))
         .then(checkToken())
     }
 
@@ -50,7 +54,7 @@ export default function Form({ route }) {
     });
 
     if(route === 'register') {
-      fetch(`http://localhost:4040/register`, {
+      fetch(`http://localhost:4050/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
@@ -67,11 +71,10 @@ export default function Form({ route }) {
   }
 
   function checkToken() {
-    const token = localStorage.getItem('token')
-    if(typeof token === 'string') {
+    if(isLoggedIn) {
       return navigate('/movies')
     }
-    else return <p>An error occured logging in</p>
+    else return alert('An error occured when logging in')
   }
 
   return (

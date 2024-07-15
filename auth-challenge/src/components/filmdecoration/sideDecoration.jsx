@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FilmBanner from "./filmBanner";
 import filmreel from "../../assets/svg/filmreel.svg";
 import { Link } from "react-router-dom";
+import { userContext } from "../../App";
 
 export default function SideDecoration() {
   const [films, setFilms] = useState([]);
+  const { setIsLoggedIn } = useContext(userContext)
 
   useEffect(() => {
     fetch(
@@ -23,15 +25,17 @@ export default function SideDecoration() {
   }, []);
 
   function logoutUser() {
-    localStorage.clear()
-    return '/'
+    localStorage.removeItem('token')
+    setIsLoggedIn(false)
+    return
   }
+  
 
   return (
     <>
       <header className="dashboard_header">
         <h1>Good Films</h1>
-        <Link to={logoutUser()}>
+        <Link to='/' onClick={logoutUser}>
         <img
           src={filmreel}
           alt="film reel icon"
