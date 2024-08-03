@@ -1,39 +1,44 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client'
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
+const jwtSecret = "mysecret";
 
 const register = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const createdUser = null;
+  const hashedPassword = await bcrypt.hash(password, 8);
 
-    res.json({ data: createdUser });
+  const user = await prisma.user.create({
+    data: {
+      username,
+      password: hashedPassword,
+    },
+  });
+  res.status(201).json({ user: { username: user.username } });
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    const foundUser = null;
+  const foundUser = await prisma.user.findUnique({
+    where: { username: username },
+  });
 
-    if (!foundUser) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  if (!foundUser) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
 
-    const passwordsMatch = false;
+  const passwordsMatch = await bcrypt.compare(password, foundUser.password);
 
-    if (!passwordsMatch) {
-        return res.status(401).json({ error: 'Invalid username or password.' });
-    }
+  if (!passwordsMatch) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
 
-    const token = null;
+  const token = jwt.sign({ username: username });
 
-    res.json({ data: token });
+  res.json({ data: token });
 };
 
-export {
-    register,
-    login
-};
+export { register, login };

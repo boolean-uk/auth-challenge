@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
   /**
@@ -34,16 +34,72 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Something went wrong!");
+      }
+
+      const data = await response.json();
+      console.log("Registration successful:", data);
+    } catch (error) {
+      console.error("Error during registration:", error);
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
+    try {
+      const response = await fetch(`${apiUrl}/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+      const token = data.token;
+
+      localStorage.setItem("authToken", token);
+
+      console.log("Login successful, token saved to local storage");
+    } catch (error) {
+      console.log("Login failed:", error);
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
-  }
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${apiUrl}/movie`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+      if (!res.ok) {
+        throw new Error("failed");
+      }
+      const data = await res.json();
+      console.log("Created Movie: ", data);
+    } catch (e) {
+      console.log("Error creating movie: ", e);
+    }
+  };
 
   return (
     <div className="App">
@@ -58,7 +114,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
