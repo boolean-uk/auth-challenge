@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
+const jwtSecret = 'this-secret-is-even-more-secret';
 
 const getAllMovies = async (req, res) => {
     const movies = await prisma.movie.findMany();
@@ -11,18 +11,27 @@ const getAllMovies = async (req, res) => {
 };
 
 const createMovie = async (req, res) => {
-    const { title, description, runtimeMins } = req.body;
-
+    const { title, description, runtimeMins } = req.body
     try {
-        const token = null;
-        // todo verify the token
+        const [_,token] = req.headers.authorization.split(' ')
+        
+        const decodedToken = jwt.verify(token, jwtSecret)
+
+        if(!decodedToken) {
+            throw new Error('Access Denied')
+        }
+        const createdMovie = await prisma.movie.create({
+            data : {
+                title : title,
+                description : description,
+                runtimeMins : runtimeMins
+            }
+        })
+        res.status(201).json({ data: createdMovie });
     } catch (e) {
-        return res.status(401).json({ error: 'Invalid token provided.' })
+        return res.status(401).json({ error: 'Invalid data provided.' })
     }
 
-    const createdMovie = null;
-
-    res.json({ data: createdMovie });
 };
 
 export {
