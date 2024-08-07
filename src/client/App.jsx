@@ -1,49 +1,57 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
-const port = import.meta.env.VITE_PORT;
-const apiUrl = `http://localhost:${port}`;
+const apiUrl = "http://localhost:4000";
 
 function App() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+      .then((res) => res.json())
+      .then((res) => setMovies(res.data));
   }, []);
 
-  /**
-   * HINTS!
-   * 1. This handle___ functions below use async/await to handle promises, but the
-   * useEffect above is using .then to handle them. Both are valid approaches, but
-   * we should ideally use one or the other. Pick whichever you prefer.
-   *
-   * 2. The default method for the `fetch` API is to make a GET request. To make other
-   * types of requests, we must provide an object as the second argument of `fetch`.
-   * The values that you must provide are:
-   * - method
-   * - headers
-   * - body (if needed)
-   * For the "headers" property, you must state the content type of the body, i.e.:
-   *   headers: {
-   *     'Content-Type': 'application/json'
-   *   }
-   * */
-
   const handleRegister = async ({ username, password }) => {
-
+    const options = {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+    fetch(`${apiUrl}/user/register`, options)
+      .then((res) => res.json())
+      .then((res) => console.log(res.data));
   };
 
   const handleLogin = async ({ username, password }) => {
+    let loginResponse;
+    const options = {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    };
+    await fetch(`${apiUrl}/user/login`, options)
+      .then((res) => res.json())
+      .then((res) => (loginResponse = res.data));
 
+    window.localStorage.setItem("accessToken", loginResponse);
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
-
-  }
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        Authorization: window.localStorage.getItem("accessToken"),
+      },
+      body: JSON.stringify({ title, description, runtimeMins }),
+    };
+    await fetch(`${apiUrl}/movie`, options)
+      .then((res) => res.json())
+      .then((res) => setMovies([...movies, res.data]));
+  };
 
   return (
     <div className="App">
@@ -58,7 +66,7 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
