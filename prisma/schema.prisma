@@ -15,5 +15,17 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
-  name String
+  username String @unique
+  password String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Movie {
+  id Int @id @default(autoincrement())
+  title String 
+  description String
+  runtime  Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
