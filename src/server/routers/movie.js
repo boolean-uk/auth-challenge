@@ -1,9 +1,9 @@
 import { Router } from 'express';
 const router = Router();
-import { createMovie } from "../controllers/movie.js";
+import { createMovie, getAllMovies } from "../controllers/movie.js";
 
 //Get all movies:
-router.get('/');
+router.get('/', getAllMovies);
 
 //Add a new movie:
 router.post('/', createMovie);
