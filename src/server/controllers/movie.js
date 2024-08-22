@@ -6,6 +6,8 @@ const secret = process.env.JWT_SECRET;
 const createMovie = async (req, res) => {
   const { title, description, runtime } = req.body;
 
+  const runtimeInt = Number(runtime);
+
   if (!title || !description || !runtime) {
     return res.status(400).json({
       error: "Title, Description, and Runtime are required",
@@ -34,7 +36,7 @@ const createMovie = async (req, res) => {
         data: {
           title,
           description,
-          runtime,
+          runtime: runtimeInt,
         },
       });
       res.status(201).json({ movie: newMovie });

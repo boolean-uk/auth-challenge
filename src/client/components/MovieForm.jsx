@@ -1,7 +1,14 @@
 import { useState } from "react";
 
-export default function MovieForm() {
-    const [movie, setMovie] = useState({title: "", description: "", runtime: 0});
+export default function MovieForm({handleURL, status}) {
+    const [movie, setMovie] = useState({title: "", description: "", runtime: undefined});
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      handleURL(movie);
+
+      setMovie({ title: "", description: "", runtime: 0 });
+    }
 
     function handleInput(event) {
       const { name, value } = event.target;
@@ -13,7 +20,7 @@ export default function MovieForm() {
       });
     }
   return (
-    <form className="user-form">
+    <form className="user-form" onSubmit={handleSubmit}>
       <input
         type="text"
         name="title"
@@ -31,11 +38,12 @@ export default function MovieForm() {
       <input
         type="number"
         name="runtime"
-        placeholder="Run Time"
+        placeholder="Runtime (Minutes)"
         value={movie.runtime}
         onChange={handleInput}
       ></input>
       <button type="submit">Submit</button>
+      {status && <p>{status}</p>}
     </form>
   );
 }
