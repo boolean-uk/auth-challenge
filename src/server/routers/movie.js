@@ -1,11 +1,11 @@
-const router = require("express").Router();
+import { Router } from 'express';
+const router = Router();
+import { createMovie } from "../controllers/movie.js";
 
 //Get all movies:
-router.get("/");
+router.get('/');
 
 //Add a new movie:
-router.post("/");
+router.post('/', createMovie);
 
-
-
-module.exports = router;
+export default router;

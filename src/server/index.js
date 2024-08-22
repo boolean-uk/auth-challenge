@@ -16,11 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Add routers below:
-const userRouter = require("./routers/user.js");
-app.use("/user", userRouter )
+import userRouter from './routers/user.js';
+app.use('/user', userRouter )
 
-const movieRouter = require("./routers/movie.js");
-app.use("/movie", movieRouter);
+import movieRouter from './routers/movie.js';
+app.use('/movie', movieRouter);
 
 // Set up a default "catch all" route to use when someone visits a route
 // that we haven't built
