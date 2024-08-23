@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [loginStatus, setLoginStatus] = useState(null);
   const [tokenStatus, setTokenStatus] = useState(false);
 
+
   const handleRegister = async (user) => {
     fetch(apiUrl + "/user/register", {
       method: "POST",
@@ -45,8 +46,7 @@ export default function Dashboard() {
           setLoginStatus(data.error);
         } else {
           console.log("Login successful:", data.token);
-          setLoginStatus("Login Successful!");
-          localStorage.setItem("jwt", data.token);
+          setLoginStatus("Login Successful!");        localStorage.setItem("jwt", data.token);
           setTokenStatus(true);
         }
       });
@@ -67,7 +67,7 @@ export default function Dashboard() {
       >
         Log Out
       </button>
-      <CreateMovie tokenStatus= {tokenStatus} setTokenStatus={setTokenStatus}/>
+      <CreateMovie setTokenStatus={setTokenStatus} tokenStatus={tokenStatus}/>
     </div>
   );
 }

@@ -3,19 +3,23 @@ import { appContext } from "../App";
 import MovieForm from "./MovieForm";
 import MovieItem from "./MovieItem";
 
-export default function CreateMovie({tokenStatus, setTokenStatus}) {
+export default function CreateMovie({setTokenStatus}) {
 const { apiUrl } = useContext(appContext);
 const [movies, setMovies] = useState([]);
 const [movieStatus, setMovieStatus] = useState(null);
+const token = localStorage.getItem("jwt");
 
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    setTokenStatus(true);
-    
+if(token) {
+  setTokenStatus(true);
+}
+
+  useEffect(() => {    
     fetch(apiUrl + "/movie")
       .then((res) => res.json())
       .then((data) => setMovies(data.movies));
   }, [movieStatus]);
+
+
   const handleCreateMovie = async (movie) => {
 
     fetch(apiUrl + "/movie", {
@@ -40,7 +44,7 @@ const [movieStatus, setMovieStatus] = useState(null);
 
   return (
     <>
-      {tokenStatus && (
+      {token && (
         <div className="movie-section">
           <h1>Create a movie</h1>
           <MovieForm handleURL={handleCreateMovie} status={movieStatus} />
