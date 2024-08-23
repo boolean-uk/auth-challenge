@@ -7,8 +7,6 @@ export default function CreateMovie({tokenStatus, setTokenStatus}) {
 const { apiUrl } = useContext(appContext);
 const [movies, setMovies] = useState([]);
 const [movieStatus, setMovieStatus] = useState(null);
-const token = localStorage.getItem("jwt");
-console.log("token", token);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");

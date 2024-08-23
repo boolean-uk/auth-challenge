@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { appContext } from "../App";
 import UserForm from "./UserForm";
 import CreateMovie from "./CreateMovie";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { apiUrl } = useContext(appContext);
@@ -52,6 +53,7 @@ export default function Dashboard() {
   };
   return (
     <div className="container">
+      <Link to={`/users`}>See All Users</Link>
       <h1>Register</h1>
       <UserForm handleURL={handleRegister} status={registerStatus} />
       <h1>Login</h1>
