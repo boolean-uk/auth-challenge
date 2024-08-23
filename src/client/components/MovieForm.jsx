@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 export default function MovieForm({handleURL, status}) {
-    const [movie, setMovie] = useState({title: "", description: "", runtime: undefined});
+    const [movie, setMovie] = useState({title: "", description: "", runtime: ""});
 
     function handleSubmit(event) {
       event.preventDefault();
       handleURL(movie);
 
-      setMovie({ title: "", description: "", runtime: 0 });
+      setMovie({ title: "", description: "", runtime: "" });
     }
 
     function handleInput(event) {
