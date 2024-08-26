@@ -7,8 +7,8 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  url               = "postgresql://neondb_owner:0oLU3FieVmED@ep-patient-sun-a53sxtxp-pooler.us-east-2.aws.neon.tech/auth%20challange?sslmode=require"
+  shadowDatabaseUrl = env("postgresql://neondb_owner:0oLU3FieVmED@ep-sparkling-dream-a53gmr91-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require")
 }
 
 model User {
