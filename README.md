@@ -19,38 +19,16 @@ The flow of the application you build looks like this:
 3. The user can then create movies once they have a valid token
 4. The list of displayed movies will update as a user creates them
 
-## Setting up
+## Requirements
 
-Take a little bit of time to familiarise yourself with the project structure - this exercise has both a front-end React
-app (`src/client/`) *and* a back-end express API (`src/server/`) in it.
+1. Both your backend _and_ your frontend must exist in this repo. We should be able to run them both together with a single command.
+2. Must use React, Express and an SQL database. Everything else is fair game.
+3. Good luck, have fun!
 
-1. Fork this repository and clone the fork.
-    1. If you want to use the more challenging `freedom` branch, or the completely empty `empty` branch, remember to UNCHECK the checkbox for "Copy the 
-       `main` branch only"
+## Extension
 
-       <img src="./assets/forking_screenshot.png" alt="forking screenshot" width=600></img>
-    2. Then, once you have cloned your fork of the repo, you can run `git checkout freedom` or `git checkout empty` in your terminal.
-    3. If you do not uncheck this box, then you will only be able to access the `main` branch.
-2. Rename `.env.example` to `.env`
-3. Edit the `DATABASE_URL` variable in `.env`, swapping `YOUR_DATABASE_URL` for the URL of your database
-4. Run `npm ci` to install the project dependencies. 
-5. If you're using the main branch, we have already created the Prisma schema and migrations for you. Run `npx prisma migrate reset` to execute the 
-   database migrations. Press `y` when it asks if you're sure.
-
-## Instructions
-
-- Run the app with `npm run dev` - this will open a React app in your browser *and* run the express server at the 
-  same time. This is thanks to the `concurrently` package that we have included in this project.
-- The frontend React app will run on Vite's default port, which is usually `5173` - check the terminal once you have
-  started the app to see what port it is running on.
-  - If you have other Vite apps running, then this port could be different.
-- The server will run on port `4000` (as set in `.env.example` - remember to create your own `.env` file). If you need 
-  to, you can change this by updating the `VITE_PORT` environment variable in your `.env`.
-  - Note: This environment variable is used in both the server and the client. Vite requires environment variables 
-    to be prefixed with `VITE_`, so do not change the name! Read more about environment variables in Vite 
-    [here](https://vitejs.dev/guide/env-and-mode.html#env-files).
-- Work through each file in the `requirements` directory in numerical order. You can choose whether to work on the
-  Client or Server version of each requirement first, but you may find it easier to do Server first.
+1. Create an admin dashboard where admins can view and delete users.
+2. Introduce a second type of auth. It should be a second option to the user, not a replacement for the original.
 
 ## Example solution
 
