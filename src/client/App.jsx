@@ -1,19 +1,38 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import MovieForm from './components/MovieForm';
-import UserForm from './components/UserForm';
+import { useEffect, useState } from "react";
+import "./App.css";
+import MovieForm from "./components/MovieForm";
+import UserForm from "./components/UserForm";
 
 const port = import.meta.env.VITE_PORT;
 const apiUrl = `http://localhost:${port}`;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/movie`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to fetch movies");
+        }
+        setMovies(data.data);
+      } catch (error) {
+        console.error("Error fetching movies:", error.message);
+        setErrorMessage("Failed to fetch movies.");
+      }
+    };
+    fetchMovies();
   }, []);
+
+  const clearMessages = () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+  };
 
   /**
    * HINTS!
@@ -34,16 +53,80 @@ function App() {
    * */
 
   const handleRegister = async ({ username, password }) => {
+    clearMessages();
+    try {
+      const response = await fetch(`${apiUrl}/user/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to register");
+      }
+      setSuccessMessage("User registered successfully!");
+    } catch (error) {
+      setErrorMessage("Registration failed: " + error.message);
+    }
   };
 
   const handleLogin = async ({ username, password }) => {
+    clearMessages();
+    try {
+      const response = await fetch(`${apiUrl}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to login");
+      }
+     localStorage.setItem("token", data.token)
+     setSuccessMessage("User  logged in successfully !")
+    } catch (error) {
+      setErrorMessage("Login failed: " + error.message)
+    }
   };
 
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    clearMessages();
+    
+    const token = localStorage.getItem("token");
 
-  }
+    if(!token){
+      setErrorMessage("You must logged in to create a movie")
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/movie`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+         },
+        body: JSON.stringify({ title, description, runtimeMins }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create movie");
+      }
+
+      // Update the movie list
+      setMovies((prevMovies) => [...prevMovies, data.data]);
+      setSuccessMessage("Movie created successfully!");
+
+    } catch (error) {
+      // console.error("Create movie error:", error.message);
+      setErrorMessage("Failed to create movie: " +  error.message)
+    }
+  };
 
   return (
     <div className="App">
@@ -56,9 +139,12 @@ function App() {
       <h1>Create a movie</h1>
       <MovieForm handleSubmit={handleCreateMovie} />
 
+      {successMessage && <p className="success">{successMessage}</p>}
+      {errorMessage && <p className="error">{errorMessage}</p>}
+
       <h1>Movie list</h1>
       <ul>
-        {movies.map(movie => {
+        {movies.map((movie) => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
